@@ -18,7 +18,7 @@ $("#submitButton").click(function(e){
 
 function createPost(content, dt){
   var post = "";
-  post+= "  <div class='post hidden col s12 m6'>";
+  post+= "  <div class='post col s12 m6'>";
   post+= "    <span class='postDate'>" + dt + "</span>";
   post+= "    <span class='post_id hidden'></span>";//TODO Add post_id
   post+= "    <p>" + content + "</p>";

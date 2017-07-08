@@ -18,18 +18,20 @@ h1 {
 }
 
 div.loginmenu {
-    display: inline-block;
+    /*display: inline-block;*/
     margin-left:auto;
     margin-right:10px;
-
+    position: absolute;
+    margin-top: -2px;
+    right: 20px;
     height: 0px;
 
 }
 .loginmenu.dropdown {
     position: fixed;
     background-color: #615756;
-    margin-top: 3px;
-    width: 100px;
+    margin-top: 0px;
+    width: 50%;
     padding: 0px;
     margin-left: 0px;
     margin-right: 0px;
@@ -55,7 +57,7 @@ p.loginmenu {
     text-align:center;
     background-color:#52FFB8;
     color:#615756;
-    margin-top:-22px;
+    margin-top:-18px;
     padding-left: 5px;
 }
 
@@ -67,6 +69,7 @@ div.post {
     margin: 10px;
     margin-left: auto;
     margin-right: auto;
+    /*display: block;*/
 }
 
 
@@ -79,6 +82,10 @@ div.post > p {
 
 div.post.col.m6 {
     padding:10px;
+}
+
+div.post{
+  position: relative;
 }
 
 span.postDate {

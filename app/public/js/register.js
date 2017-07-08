@@ -1,4 +1,4 @@
 $('#RegisterBtn').click(function(e){
     e.preventDefault();
-    console.log('Register');
+    console.log('Register completed');
 });

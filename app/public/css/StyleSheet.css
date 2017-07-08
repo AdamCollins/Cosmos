@@ -266,6 +266,12 @@ i.exit-btn {
     margin-top: -52px;
 }
 
+.toast{
+  float: none;
+  background-color: #615756;
+  color: #52FFB8;
+}
+
 
 @media only screen and (min-width: 601px) {
     .row div.post.col.m6 {

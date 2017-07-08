@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "nodemon -e css,ejs,js,json --watch app/"
   },
-  "author": "Adam Collins",
+  "author": "Adam Collins, Andy Li",
   "license": "ISC",
   "dependencies": {
     "ejs": "^2.5.6",

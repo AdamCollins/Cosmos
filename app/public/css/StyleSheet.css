@@ -200,11 +200,11 @@ div.myButtonGroup {
     visibility:hidden;
 }
 
-div.comment{
+div.reply{
     margin-top:20px;
 }
 
-#CommentArea {
+#ReplyArea {
     width: 100%;
     height: 100%;
     position: fixed;
@@ -214,19 +214,19 @@ div.comment{
     background-color: rgba(41, 127, 92,0.8);
 }
 
-#CommentPanel {
+#ReplyPanel {
     margin-left: auto;
     margin-right: auto;
     z-index: 9;
 }
 
-.col.s12.m6.commentField {
+.col.s12.m6.replyField {
     background-color: #615756;
     color: #52FFB8;
     padding:10px;
 }
 
-#SubmitComment {
+#SubmitReply {
     float:right;
     margin-right:10px;
 }
@@ -277,20 +277,20 @@ i.exit-btn {
     .row div.post.col.m6 {
         margin-left: 25%;
     }
-    #CommentPanel {
+    #ReplyPanel {
         margin-top:10%;
     }
 
 }
 
 @media only screen and (max-width: 601px) {
-    #CommentPanel {
+    #ReplyPanel {
         height: 100%;
     }
-    .col.s12.m6.commentField {
+    .col.s12.m6.replyField {
         height:100%;
     }
-    #CommentTextBox {
+    #ReplyTextBox {
         height:85%;
     }
     .input-field.col.s12 {

@@ -63,17 +63,17 @@
             <div class="col m3 hide-on-small-only"></div>
         </div>
 
-        <div ID="CommentArea" class="commentOverlay hidden" >
-            <div ID="CommentPanel" class="submitPanel row" >
+        <div ID="ReplyArea" class="replyOverlay hidden" >
+            <div ID="ReplyPanel" class="submitPanel row" >
                 <div class="col m3"></div>
-                <div class="col s12 m6 commentField">
+                <div class="col s12 m6 replyField">
                     <div class="input-field col s12">
                         <a href="javascript:void(0);" class="exit-btn"><i class="Medium material-icons exit-btn">exit_to_app</i></a>
-            <textarea ID="Commenttextarea" class="materialize-textarea" TextMode="MultiLine"></textarea>
-            <label for="Commenttextarea">Reply to Post!</label>
+            <textarea ID="Replytextarea" class="materialize-textarea" TextMode="MultiLine"></textarea>
+            <label for="Replytextarea">Reply to Post!</label>
       </div>
 
-      <button ID="SubmitComment" class="btn waves-effect waves-light" type="submit">Reply
+      <button ID="SubmitReply" class="btn waves-effect waves-light" type="submit">Reply
                     <i class="material-icons right">chat_bubble</i></button>
       <!--<HiddenField ID="Post_id" Value="-1"  />-->
     </div>
@@ -81,10 +81,10 @@
     </div>
     </div>
 
-    <div ID="RegisterMenu" class="commentOverlay hidden">
+    <div ID="RegisterMenu" class="replyOverlay hidden">
       <div ID="Panel2" class="submitPanel row">
         <div class="col m3"></div>
-        <div class="col s12 m6 commentField">
+        <div class="col s12 m6 replyField">
           <div class="input-field col s12">
             <!--Fix later-->
             <a href="javascript:void(0);" id="test" style="margin-bottom:-150px;" class="exit-btn"><i class="Medium material-icons exit-btn">exit_to_app</i></a>
@@ -128,43 +128,7 @@
 <!--MyJavascript-->
 <script type="text/javascript" src="js/posts.js"></script>
 <script type-"text/javascript" src="js/register.js"></script>
-<script type="text/javascript">
-  //Put your JavaScript code here.
-  var posts = $('div.post').hide();
-  posts.removeClass("hidden");
-  document.onLoad = $(".loading").fadeOut(800);
-  document.onLoad = posts.fadeIn(1200);
-
-  $("#CommentArea").hide().removeClass("hidden");
-  $('.exit-btn').click(function() {
-    $("#CommentArea").fadeOut(300);
-    $("#RegisterMenu").fadeOut(300);
-  });
-  $('a.OpenReplyWindowBtn').click(function(e) {
-    $("#CommentArea").fadeIn(300);
-    //post_id of post being commented on
-    var post_id = $(this).parents("div.post").children("span.post_id").eq(0).text();
-    console.log(post_id);
-    document.getElementById("").value = post_id;
-  });
-  var dropdown = $("div.loginmenu");
-  $(".loginmenu.dropdown").hide();
-  $(".loginmenu.dropdown").removeClass("hidden");
-  dropdown.click(function() {
-    $(".loginmenu.dropdown").toggle(100);
-  });
-  $("#RegisterMenu").hide().removeClass("hidden");
-  $("#loginMenuBtn").click(function(e) {
-    $("#RegisterMenu").fadeIn(300);
-  });
-  $("#passwordConfTF").keypress('keyup', function() {
-    console.log("change made")
-    console.log($(this).text());
-    if ($(this).val() == ($("#passwordTF").val())) {
-      $(this).addClass("valid");
-      $("#passwordTF").addClass("valid");
-    }
-  });
-</script>
+<script type="text/javascript" src="js/index.js"></script>
+<script type="text/javascript" src="js/reply.js"></script>
 
 </html>

@@ -5,7 +5,7 @@ var url = 'mongodb://localhost:27017/learning_mongo'
 MongoClient.connect(url, function(err, db){
   console.log('connected successfully to sever');
 
-  db.close();
+  //db.close();
 });
 
 

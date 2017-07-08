@@ -8,6 +8,9 @@ function loadPosts(postData){
   });
   //Fades in posts
   $('div.post.hidden').hide().removeClass('hidden').fadeIn(800);
+  $('a.OpenReplyWindowBtn').click(function(e) {
+    $("#ReplyArea").fadeIn(300);
+  });
 
 }
 
@@ -30,7 +33,7 @@ function createPost(content, dt){
   post+= "            <li><a class='btn-floating green testButton'><i class='material-icons'>report_problem</i></a></li>";
   post+= "        </ul>";
   post+= "    </div>";
-  //TODO Add Comment Gen here
+  //TODO Add Reply Gen here
   post+= "</div>";
   //adds
   $("#PostsPanel").append(post);

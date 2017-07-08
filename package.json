@@ -12,6 +12,7 @@
   "dependencies": {
     "ejs": "^2.5.6",
     "express": "^4.15.3",
+    "mongo": "^0.1.0",
     "nodemon": "^1.11.0",
     "reload": "^1.1.7"
   }

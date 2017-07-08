@@ -1,6 +1,9 @@
 var express = require('express');
 var MongoClient = require('mongodb').MongoClient;
-var url = 'mongodb://localhost:27017/learning_mongo'
+var router = express.Router();
+var url = 'mongodb://localhost:27017/learning_mongo';
+var postData = require('../data/posts.json');
+var bodyParser = require('body-parser');
 
 MongoClient.connect(url, function(err, db){
   console.log('connected successfully to sever');
@@ -8,10 +11,13 @@ MongoClient.connect(url, function(err, db){
   //db.close();
 });
 
-
-var router = express.Router();
-var postData = require('../data/posts.json');
 router.get('/api',function(req, res){
   res.json(postData);
+});
+
+router.use(bodyParser.json());
+router.use(bodyParser.urlencoded({extended:false}));
+router.post('/api',function(req,res){
+  console.log(req.body);
 });
 module.exports = router;

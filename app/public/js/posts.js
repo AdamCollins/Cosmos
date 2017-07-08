@@ -14,11 +14,6 @@ function loadPosts(postData){
 
 }
 
-$("#submitButton").click(function(e){
-  e.preventDefault();
-  createPost('Lorem ipsum blah some text yes yes', new Date());
-});
-
 function createPost(content, dt){
   var post = "";
   post+= "  <div class='post col s12 m6'>";
@@ -38,3 +33,11 @@ function createPost(content, dt){
   //adds
   $("#PostsPanel").append(post);
 }
+//Handles post submition
+$("#PostSubmitButton").click(function(e){
+  e.preventDefault();
+  $.post('api',{
+    text:$('#PostTextArea').val(),
+    poster:null
+  }, loadPosts);
+});

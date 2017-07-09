@@ -57,4 +57,6 @@ $("#PostSubmitButton").click(function(e) {
     text: $('#PostTextArea').val(),
     poster: null
   }, loadPosts);
+  $('#PostTextArea').val('');
+  $('#CharCount').text('');
 });

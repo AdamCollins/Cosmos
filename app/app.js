@@ -4,6 +4,7 @@ var reload = require('reload');
 var app = express();
 var postData = require('./data/posts.json');
 
+
 app.set('port',3000);
 
 app.set('view engine', 'ejs');

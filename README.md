@@ -1,8 +1,8 @@
 # COSMOS Anonymous Forum
-<img src="https://raw.githubusercontent.com/AdamCollins/Cosmos/master/logo.png" alt="alt text" width="420px">
-A Lightweight Forum Created in ASP.NET
+<img src="https://raw.githubusercontent.com/AdamCollins/Cosmos/master/logo.png" alt="alt text" width="240px">
+A Lightweight forum for university students written in NodeJS and MongoDB
 
-[![Build Status][travis-image]][travis-url]
+[![Build Status][travis-image]][travis-url]]
 
 I created Cosmos as a fun project to improve my ASP.NET, C# and SQL Database skills. However, after a week of building using these technologies I decided to build with more modern technologies like Node.js and MongoDB.
 This project allowed me to practice building full-stack applications using modern frameworks in which I could sharpen both my front-end and back-end development skills.
@@ -13,7 +13,7 @@ I chose the name Cosmos because I enjoy astronomy and referring to yourself as a
 ## Built With
 * [Node.JS](https://nodejs.org/en/)
 * [Materialize CSS](http://materializecss.com)
-* [Bootstrap](http://getbootstrap.com)
+* [MongoDB](https://www.mongodb.com/)
 
 ## License
 Distributed under the MIT license.

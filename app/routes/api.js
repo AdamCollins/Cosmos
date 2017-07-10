@@ -28,11 +28,11 @@ router.get('/api',function(req, res){
   var recentPosts = posts.find({
     "date":
     {
-      $gte:(new Date((new Date()).getTime()-(15 * 24 * 60 * 60 * 1000)))
+      $gte:(new Date((new Date()).getTime()-(15 * 48 * 60 * 60 * 1000)))
     }
   }).sort({ "date": -1 });
 
-  
+
   console.log(recentPosts)
 
 });

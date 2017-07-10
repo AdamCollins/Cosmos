@@ -1,14 +1,22 @@
-{
-  "posts":[
-    {
-      "poster":null,
-      "textContent":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed fermentum sollicitudin ligula aliquet eleifend. Proin nisi sem, venenatis a placerat sed, maximus ac mi. Mauris non molestie ligula, in mollis orci. Phasellus volutpat posuere accumsan. Maecenas sit amet quam vel nulla rhoncus faucibus. Vivamus tempor magna eleifend quam scelerisque, non ultrices tellus posuere. Fusce ultrices ultrices elit, non laoreet augue bibendum ultrices. Integer vel diam ultrices mi placerat mattis vel ut sem. Vivamus pulvinar suscipit diam id eleifend. Quisque volutpat felis quis velit semper, in porttitor arcu tristique.",
-      "dateTime":"2017-07-06"
-    },
-    {
-      "poster":null,
-      "textContent":"Heyyyyyy",
-      "datetime":"2017-07-06"
-    }
-  ]
-}
+[{
+    "_id": "5962a183744c85105faa0507",
+    "text_content": "fuuucckkkkkkkk",
+    "user": null,
+    "date": "2017-07-09T21:34:59.284Z",
+    "replies": null
+  },
+  {
+    "_id": "5962a0af3cc14e0f7eb76f97",
+    "text_content": "How is it going guys...??",
+    "user": null,
+    "date": "2017-07-09T21:31:27.124Z",
+    "replies": null
+  },
+  {
+    "_id": "59629d784044c147de1782b6",
+    "text_content": "Heyyyyy How is it going ? ",
+    "user": null,
+    "date": "2010-07-09T21:31:27.124Z",
+    "replies": null
+  }
+]

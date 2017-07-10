@@ -7,7 +7,10 @@ $('#RegisterBtn').click(function(e) {
   let passwordConfig = $('#passwordConfTF').val();
   if (password.length >= 6) {
     if (password === passwordConfig) {
-      //if(usernameAvalible(userame))
+      $.post('register',()=>{
+        'password':password,
+        'username':username
+      });
       makeValid($('#passwordTF'));
       makeValid($('#passwordConfTF'));
       makeNeutral($('#usernameTF'));
@@ -21,6 +24,11 @@ $('#RegisterBtn').click(function(e) {
     Materialize.toast('Password must be atleast 6 characters', 2000);
     $("#passwordTF").addClass('invalid');
   }
+});
+
+$('#LoginBtn').click((e)=>{
+  e.preventDefault();
+  //TODO login
 });
 
 function makeValid(item) {

@@ -1,319 +1,317 @@
 body {
-    background-color: #539987;
+  background-color: #539987;
 }
 
 h1 {
-    font-weight: bold;
-    margin:0px;
-
+  font-weight: bold;
+  margin: 0px;
 }
+
 .header {
-    color: #52FFB8;
-    padding-left: 15px;
-    background-color: #615756;
-    font-weight: bold;
-    margin-top: 0px;
-    border-bottom: solid;
-    margin-bottom: 25px;
+  color: #52FFB8;
+  padding-left: 15px;
+  background-color: #615756;
+  font-weight: bold;
+  margin-top: 0px;
+  border-bottom: solid;
+  margin-bottom: 25px;
 }
 
 div.loginmenu {
-    /*display: inline-block;*/
-    margin-left:auto;
-    margin-right:10px;
-    position: absolute;
-    margin-top: -2px;
-    right: 20px;
-    height: 0px;
-
+  /*display: inline-block;*/
+  margin-left: auto;
+  margin-right: 10px;
+  position: absolute;
+  margin-top: -2px;
+  right: 20px;
+  height: 0px;
 }
+
 .loginmenu.dropdown {
-    position: fixed;
-    background-color: #615756;
-    margin-top: 0px;
-    width: 50%;
-    padding: 0px;
-    margin-left: 0px;
-    margin-right: 0px;
+  position: absolute;
+  background-color: #615756;
+  margin-top: 0px;
+  width: 100%;
+  padding: 0px;
+  margin-left: 0px;
+  margin-right: 0px;
 }
 
 ul.loginmenu.dropdown {
-    border: solid 1px #52ffb8;
+  border: solid 1px #52ffb8;
 }
-ul.loginmenu.dropdown > li{
-    width:100%;
-    padding:5px 15px;
-    color:#52FFB8;
+
+ul.loginmenu.dropdown>li {
+  width: 100%;
+  padding: 5px 15px;
+  color: #52FFB8;
 }
-ul.loginmenu.dropdown > li:hover {
-    background-color:#52FFB8;
-    color:#615756;
+
+ul.loginmenu.dropdown>li:hover {
+  background-color: #52FFB8;
+  color: #615756;
 }
-ul.loginmenu.dropdown > li > a {
-    color:inherit;
+
+ul.loginmenu.dropdown>li>a {
+  color: inherit;
 }
 
 p.loginmenu {
-    text-align:center;
-    background-color:#52FFB8;
-    color:#615756;
-    margin-top:-18px;
-    padding-left: 5px;
+  text-align: center;
+  background-color: #52FFB8;
+  color: #615756;
+  margin-top: -18px;
+  margin-bottom: 0px;
+  padding-left: 5px;
 }
 
 div.post {
-    position: fixed;
-    background-color: #615756;
-    padding: 5px;
-    padding-top: 3px;
-    margin: 10px;
-    margin-left: auto;
-    margin-right: auto;
-    /*display: block;*/
+  position: fixed;
+  background-color: #615756;
+  padding: 5px;
+  padding-top: 3px;
+  margin: 10px;
+  margin-left: auto;
+  margin-right: auto;
+  /*display: block;*/
 }
 
-
-div.post > p {
-        margin: 0px;
-        color: #52FFB8;
-        font-size:16px;
-        font-family: 'Lato', sans-serif;
+div.post>p {
+  margin: 0px;
+  color: #52FFB8;
+  font-size: 16px;
+  font-family: 'Lato', sans-serif;
 }
 
 div.post.col.m6 {
-    padding:10px;
+  padding: 10px;
 }
 
-div.post{
+div.post {
   position: relative;
 }
 
 span.postDate {
-    font-size: 12px;
-    color: #d4d4d4;
-
+  font-size: 12px;
+  color: #d4d4d4;
 }
 
 #SubmitPanel {
-    background-color:#615756;
-    color:#52FFB8;
-    padding-bottom:1px;
-    padding-right:5px;
+  background-color: #615756;
+  color: #52FFB8;
+  padding-bottom: 1px;
+  padding-right: 5px;
 }
 
-
 #PostSubmitButton {
-    float:right;
-    margin-right:10px;
+  float: right;
+  margin-right: 10px;
 }
 
 .waves-effect.waves-brown .waves-ripple {
-    /* The alpha value allows the text and background color
+  /* The alpha value allows the text and background color
      of the button to still show through. */
-    background-color: #52FFB8;
+  background-color: #52FFB8;
 }
 
 
 /* label focus color */
-textarea.materialize-textarea:focus:not([readonly]) + label {
-    color:#539987;
+
+textarea.materialize-textarea:focus:not([readonly])+label {
+  color: #539987;
 }
 
+
 /* label underline focus color */
+
 textarea.materialize-textarea:focus:not([readonly]) {
-    border-bottom: 1px solid #539987;
-    box-shadow: 0 1px 0 0 #539987;
+  border-bottom: 1px solid #539987;
+  box-shadow: 0 1px 0 0 #539987;
 }
 
 .input-field label:not(.label-icon).active {
-    margin-top:15px;
-    font-size:1rem;
+  margin-top: 15px;
+  font-size: 1rem;
 }
 
 .loading {
-    position: fixed;
-    z-index: 999;
-    height: 100%;
-    width: 100%;
-    overflow: visible;
-    margin: auto;
-    top: 0;
-    left: 0;
-}
-.spinner {
-    height:15%;
-    margin:auto;
-    position:fixed;
-    top:0;
-    bottom:0;
-    left:0;
-    right:0;
+  position: fixed;
+  z-index: 999;
+  height: 100%;
+  width: 100%;
+  overflow: visible;
+  margin: auto;
+  top: 0;
+  left: 0;
 }
 
+.spinner {
+  height: 15%;
+  margin: auto;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
 
 .fixed-action-btn {
-    position: relative;
-    top:5px;
-    right:0px;
-    left:0px;
-    bottom:0px;
-
+  position: relative;
+  top: 5px;
+  right: 0px;
+  left: 0px;
+  bottom: 0px;
 }
+
 a.btn-floating.btn-large {
-    height: 40px;
-    width: 40px;
-    top:5px;
-
+  height: 40px;
+  width: 40px;
+  top: 5px;
 }
-a.btn-floating.btn-large >i{
-    position:absolute;
-    top:-8px;
-    right:0px;
-    left:0px;
+
+a.btn-floating.btn-large>i {
+  position: absolute;
+  top: -8px;
+  right: 0px;
+  left: 0px;
 }
 
 div.myButtonGroup {
-    border-top: solid 1px #52FFB8;
-    margin-top: 25px;
-    margin-bottom:15px;
-    z-index:0;
+  border-top: solid 1px #52FFB8;
+  margin-top: 25px;
+  margin-bottom: 15px;
+  z-index: 0;
 }
 
-.myButtonGroup > ul {
-    bottom: 0px;
-    top: 20px;
-    left: 0px;
-    right: 0px;
-    float: right;
-    position: relative;
-    /* margin-right: auto; */
-    margin-left: auto;
+.myButtonGroup>ul {
+  bottom: 0px;
+  top: 20px;
+  left: 0px;
+  right: 0px;
+  float: right;
+  position: relative;
+  /* margin-right: auto; */
+  margin-left: auto;
 }
 
 .fixed-action-btn.horizontal ul {
-    top:20px;
-    left:0px;
-    right:0px;
+  top: 20px;
+  left: 0px;
+  right: 0px;
 }
 
 .hidden {
-    visibility:hidden;
+  visibility: hidden;
 }
 
-div.reply{
-    margin-top:20px;
+div.reply {
+  margin-top: 20px;
 }
 
 #ReplyArea {
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 9;
-    background-color: rgba(41, 127, 92,0.8);
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9;
+  background-color: rgba(41, 127, 92, 0.8);
 }
 
 #ReplyPanel {
-    margin-left: auto;
-    margin-right: auto;
-    z-index: 9;
+  margin-left: auto;
+  margin-right: auto;
+  z-index: 9;
 }
 
 .col.s12.m6.replyField {
-    background-color: #615756;
-    color: #52FFB8;
-    padding:10px;
+  background-color: #615756;
+  color: #52FFB8;
+  padding: 10px;
 }
 
 #SubmitReply {
-    float:right;
-    margin-right:10px;
+  float: right;
+  margin-right: 10px;
 }
 
 a.exit-btn {
-    float:right;
+  float: right;
 }
 
 i.exit-btn {
-    font-size: 32px;
-    color: #26a69a;
+  font-size: 32px;
+  color: #26a69a;
 }
 
 .row .col {
-    padding-left: 0px;
-    padding-right: 0px;
+  padding-left: 0px;
+  padding-right: 0px;
 }
-
 
 .input-field.col.s12 {
-    padding: 10px;
+  padding: 10px;
 }
 
-
-
 #RegisterMenu {
-    width: 100%;
-    height: 100%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 9;
-    background-color: rgba(41, 127, 92,0.8);
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9;
+  background-color: rgba(41, 127, 92, 0.8);
 }
 
 .register-page {
-    margin-top: -52px;
+  margin-top: -52px;
 }
 
-.toast{
+.toast {
   float: none;
   background-color: #615756;
   color: #52FFB8;
 }
 
-
 @media only screen and (min-width: 601px) {
-    .row div.post.col.m6 {
-        margin-left: 25%;
-    }
-    #ReplyPanel {
-        margin-top:10%;
-    }
-
+  .row div.post.col.m6 {
+    margin-left: 25%;
+  }
+  #ReplyPanel {
+    margin-top: 10%;
+  }
 }
 
 @media only screen and (max-width: 601px) {
-    #ReplyPanel {
-        height: 100%;
-    }
-    .col.s12.m6.replyField {
-        height:100%;
-    }
-    #ReplyTextBox {
-        height:85%;
-    }
-    .input-field.col.s12 {
-        height:90%;
-    }
-    h1 {
-        padding-bottom: 20px;
-    }
+  #ReplyPanel {
+    height: 100%;
+  }
+  .col.s12.m6.replyField {
+    height: 100%;
+  }
+  #ReplyTextBox {
+    height: 85%;
+  }
+  .input-field.col.s12 {
+    height: 90%;
+  }
+  h1 {
+    padding-bottom: 20px;
+  }
 }
 
-@media only screen and (min-width: 601px)  {
-    .reglog-btngroup {
-        margin-right:auto;
-    }
-    #RegisterBtn {
-        margin-left:20px;
-    }
-    a#LoginBtn {
-        float: right;
-        margin-left: 15px;
-    }
-
-    a#RegisterBtn {
-        float: right;
-    }
+@media only screen and (min-width: 601px) {
+  .reglog-btngroup {
+    margin-right: auto;
+  }
+  #RegisterBtn {
+    margin-left: 20px;
+  }
+  a#LoginBtn {
+    float: right;
+    margin-left: 15px;
+  }
+  a#RegisterBtn {
+    float: right;
+  }
 }

@@ -20,22 +20,35 @@ MongoClient.connect(url, function(err, database){
   }
   console.log('connected successfully to database'); 
   db = database
+
+  //load all the existing posts within the last 48 hours
+  getData(function(){
+    db.close()
+  })
 });
 
-//load all the existing posts within the last 48 hours
-router.get('/api',function(req, res){
+
+function getData(callback){
   var posts = db.collection('posts');
-  var recentPosts = posts.find({
+  posts.find({
     "date":
     {
       $gte:(new Date((new Date()).getTime()-(15 * 48 * 60 * 60 * 1000)))
     }
-  }).sort({ "date": -1 });
+  }).sort({ "date": -1 }).toArray(function(err, docs){
+    console.log(docs)
+    callback
+  });
+}
 
 
-  console.log(recentPosts)
 
-});
+
+
+// router.get('/api',function(req, res){
+  
+
+// });
 
 
 //add post to database

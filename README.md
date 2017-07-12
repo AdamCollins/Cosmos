@@ -4,7 +4,7 @@ A Lightweight forum for university students written in NodeJS and MongoDB
 
 
 ## Building Cosmos
-I created Cosmos as a fun project to improve my ASP.NET, C# and SQL Database skills. However, after a week of building using these technologies I decided to build with more modern technologies like Node.js and MongoDB.
+I created Cosmos as a fun project to improve my ASP.NET, C# and SQL Database skills. However, after a week of building using this stack I decided to build with more modern stack consisting of Node.js and MongoDB.
 This project allowed me to practice building full-stack applications using modern frameworks in which I could sharpen both my front-end and back-end development skills.
 
 ## Name

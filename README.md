@@ -3,18 +3,19 @@
 A Lightweight forum for university students written in NodeJS and MongoDB
 
 
+## About Cosmos
 I created Cosmos as a fun project to improve my ASP.NET, C# and SQL Database skills. However, after a week of building using these technologies I decided to build with more modern technologies like Node.js and MongoDB.
 This project allowed me to practice building full-stack applications using modern frameworks in which I could sharpen both my front-end and back-end development skills.
 
-## Name
+### Name
 I chose the name Cosmos because I enjoy astronomy and referring to yourself as a cosmonaut sounds 10x more badass than an astronaut.
 
-## Built With
+### Built With
 * [Node.JS](https://nodejs.org/en/)
 * [Materialize CSS](http://materializecss.com)
 * [MongoDB](https://www.mongodb.com/)
 
-## License
+### License
 Distributed under the MIT license.
 
 [travis-image]: https://img.shields.io/travis/dbader/node-datadog-metrics/master.svg?style=flat-square

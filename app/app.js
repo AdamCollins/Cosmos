@@ -10,6 +10,7 @@ app.set('views', 'app/views');
 app.use(express.static('app/public'));
 app.use(require('./routes/index'));
 app.use(require('./routes/api'));
+app.use(require('./routes/login'));
 
 var port = app.get('port')
 var server = app.listen(port, function(){

@@ -1,15 +1,16 @@
 $('#RegisterBtn').click(function(e) {
   e.preventDefault();
   let username = $('#usernameTF').val();
-  if(username.length<0)
+  isUsernameAvailable(username);
+  if (username.length < 0)
     makeInvalid($('#usernameTF'));
   let password = $('#passwordTF').val();
   let passwordConfig = $('#passwordConfTF').val();
   if (password.length >= 6) {
     if (password === passwordConfig) {
-      $.post('register',()=>{
-        'password':password,
-        'username':username
+      $.post('login/registraion', {
+        'username': username,
+        'password': password
       });
       makeValid($('#passwordTF'));
       makeValid($('#passwordConfTF'));
@@ -26,7 +27,7 @@ $('#RegisterBtn').click(function(e) {
   }
 });
 
-$('#LoginBtn').click((e)=>{
+$('#LoginBtn').click((e) => {
   e.preventDefault();
   //TODO login
 });
@@ -41,4 +42,20 @@ function makeInvalid(item) {
 
 function makeNeutral(item) {
   $(item).removeClass('invalid').removeClass('valid');
+}
+
+$('#usernameTF').blur(()=>{
+  isUsernameAvailable($('#usernameTF').val())
+});
+
+function isUsernameAvailable(username) {
+  $.getJSON('/registraion/availible/' + username, (usernameData) => {
+    valid = !usernameData.username_exists;
+    if (valid)
+      makeValid($('#usernameTF'));
+    else{
+      makeInvalid($('#usernameTF'));
+      Materialize.toast('Username not availible', 2000);
+    }
+  });
 }

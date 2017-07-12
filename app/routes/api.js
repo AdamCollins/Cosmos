@@ -18,13 +18,13 @@ MongoClient.connect(url, function(err, database){
   if(err){
     console.log(err);
   }
-  console.log('connected successfully to database'); 
+  console.log('connected successfully to database');
   db = database
 
   //load all the existing posts within the last 48 hours
-  getData(function(){
-    db.close()
-  })
+  // getData(function(){
+  //   db.close()
+  // })
 });
 
 
@@ -46,7 +46,7 @@ function getData(callback){
 
 
 // router.get('/api',function(req, res){
-  
+
 
 // });
 
@@ -58,9 +58,10 @@ router.post('/api',function(req,res){
   var post = data.text;
   var username = data.poster;
   posts.insert({
-    'text_content':post, 
-    'username':username, 
-    'date': new Date()})
+    'text_content':post,
+    'username':username,
+    'date': new Date()
+  });
   db.close();
 });
 
@@ -81,6 +82,3 @@ module.exports = router;
 //   });
 //   return recentPosts;
 // }
-
-
-

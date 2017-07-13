@@ -9,8 +9,14 @@ var dbpassword = config.password;
 var url = 'mongodb://cosmos:' + dbpassword + '@cluster0-shard-00-00-oe5ks.mongodb.net:27017,cluster0-shard-00-01-oe5ks.mongodb.net:27017,cluster0-shard-00-02-oe5ks.mongodb.net:27017/' + dbName + '?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin';
 var database = null;
 var bcrypt = require('bcrypt');
+var session = require('express-session');
 
 router.use(bodyParser.json());
+router.use(session({
+  secret: "asdfghjhrgtygf4etr23retfgcnvhmKJHJGHJKm",
+  resave: false,
+  saveUninitialized: true
+}));
 router.use(bodyParser.urlencoded({
   extended: false
 }));
@@ -21,25 +27,44 @@ MongoClient.connect(url, function(err, db) {
 
   console.log('connected successfully to sever');
   database = db;
+
 });
 
-router.get('/login', (req, res) => {
+router.get('/logout', (req, res) => {
+  req.session.destroy();
+  res.send('Logout successfully');
+});
+router.post('/login', (req, res) => {
   var userCol = database.collection('users');
-  userCol.find({}).toArray(function(err, docs) {
-    res.json(docs);
+  userCol.findOne({
+    "username": req.body.username
+  }, function(err, user) {
+    if (user) {
+      console.log(req.body);
+      console.log(user);
+      if (passwordMatchesHash(req.body.password, user.hashed_password)) {
+        req.session.user = user;
+        console.log('logged ' + user.username + ' successfully!');
+      }
+    }
+  });
+});
 
+router.get('/listusers', (req, res) => {
+  var userCol = database.collection('users');
+  userCol.find({}).toArray(function(err, users) {
+    res.json(users);
   });
 });
 
 router.get('/registraion/availible/:username', (req, res) => {
   var userCol = database.collection('users');
-  console.log(req.params.username);
-  userCol.find({
+  userCol.findOne({
     "username": {
       $regex: new RegExp("^" + req.params.username.toLowerCase(), "i")
     }
-  }).toArray(function(err, docs) {
-    if (docs.length > 0)
+  }, function(err, docs) {
+    if (docs)
       res.json({
         "username_exists": true
       });
@@ -51,34 +76,29 @@ router.get('/registraion/availible/:username', (req, res) => {
 });
 
 
+//TODO recheck if username unique
 function addUser(userdata, callback) {
-  var valid = (database.collection('users').find({
-    "username": {
-      $regex: new RegExp("^" + userdata.username.toLowerCase(), "i")
-    }
-  }).count() == 0) ? true : false;
-
-  if (valid) {
-    database.collection('users').insertOne({
-      "username": userdata.username,
-      "password": userdata.password,
-      "score": 0,
-      "create_date": new Date()
-    }, () => {
-      database.close();
-    });
-  } else {
-    console.log("ERROR: Bad register");
-  }
+  let hashed_password = bcrypt.hashSync(userdata.password, 10);
+  database.collection('users').insertOne({
+    "username": userdata.username,
+    "hashed_password": hashed_password,
+    "score": 0,
+    "create_date": new Date()
+  }, () => {
+    database.close();
+  });
 }
 
 
-router.post('/login/registraion', (req, res) => {
+router.post('/register', (req, res) => {
   console.log(req.body);
   var userdata = req.body;
   addUser(userdata);
 });
 
+function passwordMatchesHash(plainTextPassword, hash) {
+  return bcrypt.compareSync(plainTextPassword, hash);
+}
 
 
 

@@ -1,3 +1,16 @@
+$('#LoginBtn').click(function(e){
+  e.preventDefault();
+  let username = $('#usernameTF').val();
+  let password = $('#passwordTF').val();
+  if(username.length>0 && password.length>0){
+    $.post('login',{
+      'username':username,
+      'password':password
+    });
+  }
+});
+
+
 $('#RegisterBtn').click(function(e) {
   e.preventDefault();
   let username = $('#usernameTF').val();
@@ -8,7 +21,7 @@ $('#RegisterBtn').click(function(e) {
   let passwordConfig = $('#passwordConfTF').val();
   if (password.length >= 6) {
     if (password === passwordConfig) {
-      $.post('login/registraion', {
+      $.post('register', {
         'username': username,
         'password': password
       });
@@ -27,9 +40,9 @@ $('#RegisterBtn').click(function(e) {
   }
 });
 
-$('#LoginBtn').click((e) => {
+$('#LogoutBtn').click((e) => {
   e.preventDefault();
-  //TODO login
+  window.location.href = '/logout';
 });
 
 function makeValid(item) {

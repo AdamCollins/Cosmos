@@ -12,11 +12,6 @@ var bcrypt = require('bcrypt');
 var session = require('express-session');
 
 router.use(bodyParser.json());
-router.use(session({
-  secret: "asdfghjhrgtygf4etr23retfgcnvhmKJHJGHJKm",
-  resave: false,
-  saveUninitialized: true
-}));
 router.use(bodyParser.urlencoded({
   extended: false
 }));

@@ -1,15 +1,29 @@
+$('#LoginBtn').click(function(e){
+  e.preventDefault();
+  let username = $('#usernameTF').val();
+  let password = $('#passwordTF').val();
+  if(username.length>0 && password.length>0){
+    $.post('login',{
+      'username':username,
+      'password':password
+    });
+  }
+});
+
+
 $('#RegisterBtn').click(function(e) {
   e.preventDefault();
   let username = $('#usernameTF').val();
-  if(username.length<0)
+  isUsernameAvailable(username);
+  if (username.length < 0)
     makeInvalid($('#usernameTF'));
   let password = $('#passwordTF').val();
   let passwordConfig = $('#passwordConfTF').val();
   if (password.length >= 6) {
     if (password === passwordConfig) {
-      $.post('register',()=>{
-        'password':password,
-        'username':username
+      $.post('register', {
+        'username': username,
+        'password': password
       });
       makeValid($('#passwordTF'));
       makeValid($('#passwordConfTF'));
@@ -26,9 +40,9 @@ $('#RegisterBtn').click(function(e) {
   }
 });
 
-$('#LoginBtn').click((e)=>{
+$('#LogoutBtn').click((e) => {
   e.preventDefault();
-  //TODO login
+  window.location.href = '/logout';
 });
 
 function makeValid(item) {
@@ -41,4 +55,20 @@ function makeInvalid(item) {
 
 function makeNeutral(item) {
   $(item).removeClass('invalid').removeClass('valid');
+}
+
+$('#usernameTF').blur(()=>{
+  isUsernameAvailable($('#usernameTF').val())
+});
+
+function isUsernameAvailable(username) {
+  $.getJSON('/registraion/availible/' + username, (usernameData) => {
+    valid = !usernameData.username_exists;
+    if (valid)
+      makeValid($('#usernameTF'));
+    else{
+      makeInvalid($('#usernameTF'));
+      Materialize.toast('Username not availible', 2000);
+    }
+  });
 }

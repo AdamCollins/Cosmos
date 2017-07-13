@@ -18,6 +18,7 @@ MongoClient.connect(url, function(err, database){
   if(err){
     console.log(err);
   }
+
   console.log('connected successfully to database'); 
   db = database;
 
@@ -58,6 +59,7 @@ router.get('/api',function(req, res){
     formatDate(date)
   });
 
+
   res.json(datapost);
 });
 
@@ -74,19 +76,15 @@ router.post('/api',function(req,res){
   var post = data.text;
   var username = data.poster;
   posts.insert({
-    'text_content':post, 
-    'username':username, 
-    'date': new Date()})
+    'text_content':post,
+    'username':username,
+    'date': new Date()
+  });
   db.close();
 });
 
 
 
 module.exports = router;
-
-
-
-
-
 
 

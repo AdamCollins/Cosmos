@@ -26,7 +26,7 @@ router.get('/',function(req, res){
   if(req.session.user)
     res.render('index',req.session.user);
   else
-    res.render('index',{"username":"Login"});
+    res.render('index',{"username":"Log In"});
 });
 
 router.use(bodyParser.json());

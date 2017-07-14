@@ -1,8 +1,8 @@
 //Gets JSON posts
-$.getJSON('api', loadPosts);
+$.ajax.getJSON('/api', loadPosts);
 
 function loadPosts(postData) {
-  $.each(postData, function(key, post) {
+  $.ajax.each(postData, function(key, post) {
     createPost(post);
     console.log(post)
 
@@ -16,6 +16,11 @@ function loadPosts(postData) {
 }
 
 function createPost(post) {
+  createPost(post, false)
+}
+
+function createPost(post, prepend){
+  console.log(post);
   var postDOM = '';
   var repliesDOM = '';
   $.each(post.replies,function(key,item){
@@ -39,7 +44,11 @@ function createPost(post) {
   postDOM += repliesDOM;
   postDOM += '</div>';
   //adds
-  $('#PostsPanel').append(postDOM);
+  if(prepend){
+    $('#PostsPanel').prepend(postDOM);
+  }else{
+    $('#PostsPanel').append(postDOM);
+  }
 }
 
 
@@ -64,52 +73,30 @@ $('#PostTextArea').bind('input propertychange', () => {
   }
 });
 
-// $('#clinic-form').on('submit', function(e){
-//             e.preventDefault();
-//             var params = $('form').serializeJSON();
-//             $.ajax({
-//                 method: 'post',
-//                 url: '/user',
-//                 data: params,
-//                 datatype: 'json',
-//                 success: function(data){
-//                     $('tbody').append("<tr><td>"+data.id+"</td><td>"+data.name+"</td><td>"+data.phone+"</td><td>"+data.email+"</td><td><a href=\"/admin/reports/"+data.id+"\">reports</a></td><td><a href=\"/admin/calllogs/"+data.id+"\">calllogs</a></td></tr>")
-//                 },
-//                 error: function(data){
-//                     alert("Did not add");
-//                 }
-//             });
-//         });
 
 
 $("form.submitPanel").on('submit', function(e){
   e.preventDefault();
-  var text = $('#PostTextArea').val()
+  var text = $('#PostTextArea').val();
   var params = {"text_content": text}
-  console.log(params)
+  $('#PostTextArea').val('');
+  $('#CharCount').text('')
   $.ajax({
     method: 'post',
-    url: 'api',
+    url: '/api',
     data: params,
     datatype: 'json',
     success: function(data){
-      createPost(data);
+      console.log('here')
+      console.log(data)
+      createPost(data, true);
     },
     error: function(){
-      alert("oops something went wrong")
+      alert('oops something went wrong')
     }
   });
 });
 
 
 
-// //Handles post submition
-// $("form.submitPanel").submit(function(e) {
-//   e.preventDefault();
-//   $ajax.post('api', {
-//     text: $('#PostTextArea').val(),
-//     poster: null
-//   }, loadPosts);
-//   $('#PostTextArea').val('');
-//   $('#CharCount').text('');
-// });
+

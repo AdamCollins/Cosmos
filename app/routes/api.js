@@ -34,7 +34,7 @@ function getData(callback){
   posts.find({
     "date":
     {
-      $gte:(new Date((new Date()).getTime()-(15 * 48 * 60 * 60 * 1000)))
+      $gte:(new Date((new Date()).getTime()-(48 * 60 * 60 * 1000)))
     }
   }).sort({ "date": -1 }).toArray(function(err, data){
     datapost = data
@@ -45,28 +45,49 @@ function getData(callback){
 
 
 router.get('/api',function(req, res){
-  //  getData(function(){
-  //   db.close();
-  // });
-
-  //console.log(datapost)
-
-  datapost.forEach(function(item){
-    //console.log(item)
-    var text = item.text_content
-    var username = item.username
-    var date = item.date
-    formatDate(date)
+  getData(function(){
+    db.close();
   });
 
-
-  res.json(datapost);
+  //console.log(datapost)
+  var data = []
+  datapost.forEach(function(item){
+    //console.log(item)
+    var id = item._id
+    var text = item.text_content;
+    var username = item.username;
+    var date = item.date;
+    var fomatedTimeLeft = formatDate(date)
+    data.push({"_id":id, "text_content": text, "username": username, "time":formatedTimeLeft})
+  });
+  res.json(data)
 });
 
 function formatDate(date){
-  var formatedDate = 
-  console.log(date)
+  var currentDate = new Date();
+  var msDate = currentDate - date;
+  var limit = 1000*60*60*48;
+  var timeLeft = limit - msDate;
+  return formatedTimeLeft = msToTime(timeLeft);
 }
+
+
+function msToTime(msDate) {
+  var milliseconds = parseInt((msDate%1000)/100);
+  var seconds = parseInt((msDate/1000)%60);
+  var minutes = parseInt((msDate/(1000*60))%60);
+  var hours = parseInt((msDate/(1000*60*60))%48);
+
+  hours = (hours < 10) ? hours : hours;
+  minutes = (minutes < 10) ? minutes : minutes;
+ 
+  if (hours < 1){
+    return  minutes + 1 + " m remaining"
+  }else{
+    return hours + 1 + "h remaining "
+  }
+}
+
 
 
 //add post to database

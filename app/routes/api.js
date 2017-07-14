@@ -40,12 +40,10 @@ function getData(callback){
   });
 }
 
-
-
 router.get('/api',function(req, res){
-  getData(function(){
-    db.close();
-  });
+  // getData(function(){
+  //   db.close();
+  // });
 
   var data = []
   datapost.forEach(function(item){
@@ -85,14 +83,15 @@ function msToTime(msDate) {
 }
 
 //add post to database
-router.post('/api',function(req,res){
+router.post('/api',function(req, res){
+  console.log(req.body)
   var posts = db.collection('posts');
   var data = req.body;
   var post = data.text;
   var username = data.poster;
   posts.insert({
     'text_content':post,
-    'username':username,
+    //'username':username,
     'date': new Date()
   });
   db.close();

@@ -62,14 +62,52 @@ $('#PostTextArea').bind('input propertychange', () => {
   }
 });
 
+// $('#clinic-form').on('submit', function(e){
+//             e.preventDefault();
+//             var params = $('form').serializeJSON();
+//             $.ajax({
+//                 method: 'post',
+//                 url: '/user',
+//                 data: params,
+//                 datatype: 'json',
+//                 success: function(data){
+//                     $('tbody').append("<tr><td>"+data.id+"</td><td>"+data.name+"</td><td>"+data.phone+"</td><td>"+data.email+"</td><td><a href=\"/admin/reports/"+data.id+"\">reports</a></td><td><a href=\"/admin/calllogs/"+data.id+"\">calllogs</a></td></tr>")
+//                 },
+//                 error: function(data){
+//                     alert("Did not add");
+//                 }
+//             });
+//         });
 
-//Handles post submition
-$("form.submitPanel").submit(function(e) {
+
+$("form.submitPanel").on('submit', function(e){
   e.preventDefault();
-  $.post('api', {
-    text: $('#PostTextArea').val(),
-    poster: null
-  }, loadPosts);
-  $('#PostTextArea').val('');
-  $('#CharCount').text('');
+  var text = $('#PostTextArea').val()
+  var params = {"text_content": text}
+  console.log(params)
+  $.ajax({
+    method: 'post',
+    url: 'api',
+    data: params,
+    datatype: 'json',
+    success: function(data){
+      createPost(data);
+    },
+    error: function(){
+      alert("oops something went wrong")
+    }
+  });
 });
+
+
+
+// //Handles post submition
+// $("form.submitPanel").submit(function(e) {
+//   e.preventDefault();
+//   $ajax.post('api', {
+//     text: $('#PostTextArea').val(),
+//     poster: null
+//   }, loadPosts);
+//   $('#PostTextArea').val('');
+//   $('#CharCount').text('');
+// });

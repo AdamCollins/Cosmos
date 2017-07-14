@@ -28,15 +28,20 @@ MongoClient.connect(url, function(err, database){
 
 
 function getData(callback){
-  var posts = db.collection('posts');
-  posts.find({
-    "date":
-    {
-      $gte:(new Date((new Date()).getTime()-(48 * 60 * 60 * 1000)))
-    }
-  }).sort({ "date": -1 }).toArray(function(err, data){
-    datapost = data
-    callback
+  MongoClient.connect(url, function(err, db){
+
+    //load all the existing posts within the last 48 hours
+    var posts = db.collection('posts');
+    posts.find({
+      "date":
+      {
+        $gte:(new Date((new Date()).getTime()-(48 * 60 * 60 * 1000)))
+      }
+    }).sort({ "date": -1 }).toArray(function(err, data){
+      datapost = data
+      callback
+    });
+    db.close();
   });
 }
 
@@ -45,7 +50,6 @@ function getData(callback){
 router.get('/api',function(req, res){
   getData(function(){
     console.log('callback made');
-    db.close();
   });
 
   var data = []

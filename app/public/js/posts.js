@@ -1,8 +1,8 @@
 //Gets JSON posts
-$.ajax.getJSON('/api', loadPosts);
+$.getJSON('/api', loadPosts);
 
 function loadPosts(postData) {
-  $.ajax.each(postData, function(key, post) {
+  $.each(postData, function(key, post) {
     createPost(post);
     console.log(post)
 

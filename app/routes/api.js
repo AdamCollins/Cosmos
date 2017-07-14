@@ -94,7 +94,7 @@ router.post('/api',function(req, res){
   var username = (req.session.user)?req.session.user.username:null;
   posts.insert({
     'text_content':post,
-    //'username':username,
+    'username':username,
     'date': new Date()
   });
   db.close();

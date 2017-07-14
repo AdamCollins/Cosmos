@@ -4,11 +4,7 @@ $.getJSON('api', loadPosts);
 function loadPosts(postData) {
   $.each(postData, function(key, post) {
     createPost(post);
-<<<<<<< HEAD
-    console.log(post);
-=======
     console.log(post)
->>>>>>> c2da058e123acb08988db04f879b817c0edde89f
   });
   //Fades in posts
   $('div.post.hidden').hide().removeClass('hidden').fadeIn(800);
@@ -26,11 +22,8 @@ function createPost(post) {
     console.log(item);
   });
 
-<<<<<<< HEAD
+
   postDOM += '  <div class="post col s12 m6" post_id="'+post._id+'">';
-=======
-  postDOM += '  <div class="post col s12 m6" post_id="'+post.id+'">';
->>>>>>> c2da058e123acb08988db04f879b817c0edde89f
   postDOM += '    <span class="postDate">' + post.time+((post.username)?post.username:'')+'</span>';
   postDOM += '    <span class="post_id hidden">'+post._id+'</span>'; //TODO Add post_id
   postDOM += '    <p>' + post.text_content + '</p>';

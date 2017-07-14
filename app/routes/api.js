@@ -18,10 +18,8 @@ MongoClient.connect(url, function(err, database){
   if(err){
     console.log(err);
   }
-
   console.log('connected successfully to database'); 
   db = database;
-
   //load all the existing posts within the last 48 hours
   getData(function(){
     db.close();
@@ -49,10 +47,8 @@ router.get('/api',function(req, res){
     db.close();
   });
 
-  //console.log(datapost)
   var data = []
   datapost.forEach(function(item){
-    //console.log(item)
     var id = item._id
     var text = item.text_content;
     var username = item.username;
@@ -87,8 +83,6 @@ function msToTime(msDate) {
     return hours + 1 + "h remaining "
   }
 }
-
-
 
 //add post to database
 router.post('/api',function(req,res){

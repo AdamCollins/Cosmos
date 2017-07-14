@@ -18,7 +18,7 @@ MongoClient.connect(url, function(err, database){
   if(err){
     console.log(err);
   }
-  console.log('connected successfully to database'); 
+  console.log('connected successfully to database');
   db = database;
   //load all the existing posts within the last 48 hours
   getData(function(){

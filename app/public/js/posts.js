@@ -5,6 +5,7 @@ function loadPosts(postData) {
   $.each(postData, function(key, post) {
     createPost(post);
     console.log(post)
+
   });
   //Fades in posts
   $('div.post.hidden').hide().removeClass('hidden').fadeIn(800);

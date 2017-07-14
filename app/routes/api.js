@@ -41,9 +41,12 @@ function getData(callback){
 }
 
 router.get('/api',function(req, res){
-  // getData(function(){
-  //   db.close();
-  // });
+
+  getData(function(){
+    console.log('callback made');
+    db.close();
+  });
+
 
   var data = []
   datapost.forEach(function(item){
@@ -74,7 +77,7 @@ function msToTime(msDate) {
 
   hours = (hours < 10) ? hours : hours;
   minutes = (minutes < 10) ? minutes : minutes;
- 
+
   if (hours < 1){
     return  minutes + 1 + " m remaining"
   }else{
@@ -88,7 +91,7 @@ router.post('/api',function(req, res){
   var posts = db.collection('posts');
   var data = req.body;
   var post = data.text;
-  var username = data.poster;
+  var username = (req.session.user)?req.session.user.username:null;
   posts.insert({
     'text_content':post,
     //'username':username,
@@ -100,5 +103,3 @@ router.post('/api',function(req, res){
 
 
 module.exports = router;
-
-

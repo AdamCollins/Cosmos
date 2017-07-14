@@ -74,13 +74,23 @@ router.get('/registraion/availible/:username', (req, res) => {
 //TODO recheck if username unique
 function addUser(userdata, callback) {
   let hashed_password = bcrypt.hashSync(userdata.password, 10);
-  database.collection('users').insertOne({
-    "username": userdata.username,
-    "hashed_password": hashed_password,
-    "score": 0,
-    "create_date": new Date()
-  }, () => {
-    database.close();
+  console.log(userdata.username)
+  $.getJSON('/registraion/availible/'+userdata.username, (usernameData) => {
+    console.log('got json')
+    if (!usernameData.username_exists) {
+      // database.collection('users').insertOne({
+      //   "username": userdata.username,
+      //   "hashed_password": hashed_password,
+      //   "score": 0,
+      //   "create_date": new Date()
+      // }, () => {
+      //   database.close();
+      // });
+
+    }
+    else{
+      console.log('Registration failed')
+    }
   });
 }
 

@@ -23,10 +23,11 @@ router.use(session({
   saveUninitialized: true
 }));
 router.get('/',function(req, res){
+  console.log(req.session.user)
   if(req.session.user)
     res.render('index',req.session.user);
   else
-    res.render('index',{"username":"Log In"});
+    res.render('index',{"username":""});
 });
 
 router.use(bodyParser.json());
@@ -57,6 +58,7 @@ router.post('/login', (req, res) => {
       console.log(user);
       if (passwordMatchesHash(req.body.password, user.hashed_password)) {
         req.session.user = user;
+        req.session.save();
         console.log('logged ' + req.session.user.username + ' successfully!');
       }
     }

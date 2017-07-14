@@ -2,9 +2,8 @@
 $.getJSON('api', loadPosts);
 
 function loadPosts(postData) {
-  $.each(postData, function(key, item) {
-    console.log(item);
-    createPost(item.text_content, item.date, item.replies,item._id);
+  $.each(postData, function(key, post) {
+    createPost(post);
   });
   //Fades in posts
   $('div.post.hidden').hide().removeClass('hidden').fadeIn(800);
@@ -16,29 +15,30 @@ function loadPosts(postData) {
 
 
 
-function createPost(content, dt, replies, id) {
-  var post = '';
+function createPost(post) {
+  var postDOM = '';
   var repliesDOM = '';
-  $.each(replies,function(key,item){
+  $.each(post.replies,function(key,item){
     repliesDOM+=createReply(item);
     console.log(item);
   });
-  post += '  <div class="post col s12 m6" post_id="'+id+'">';
-  post += '    <span class="postDate">' + dt + '</span>';
-  post += '    <span class="post_id hidden"></span>'; //TODO Add post_id
-  post += '    <p>' + content + '</p>';
-  post += '    <div class="fixed-action-btn horizontal myButtonGroup">';
-  post += '        <a class="btn-floating btn-large"><i class="material-icons">label_outline</i></a>';
-  post += '        <ul>';
-  post += '            <li><a class="btn-floating"><i class="material-icons">star</i></a></li>';
-  post += '            <li><a class="btn-floating blue darken-1 OpenReplyWindowBtn"><i class="material-icons">chat_bubble_outline</i></a></li>';
-  post += '            <li><a class="btn-floating green testButton"><i class="material-icons">report_problem</i></a></li>';
-  post += '        </ul>';
-  post += '    </div>';
-  post += repliesDOM;
-  post += '</div>';
+
+  postDOM += '  <div class="post col s12 m6" post_id="'+post.id+'">';
+  postDOM += '    <span class="postDate">' + post.date+((post.username)?post.username:'')+'</span>';
+  postDOM += '    <span class="post_id hidden">'+post._id+'</span>'; //TODO Add post_id
+  postDOM += '    <p>' + post.text_content + '</p>';
+  postDOM += '    <div class="fixed-action-btn horizontal myButtonGroup">';
+  postDOM += '        <a class="btn-floating btn-large"><i class="material-icons">label_outline</i></a>';
+  postDOM += '        <ul>';
+  postDOM += '            <li><a class="btn-floating"><i class="material-icons">star</i></a></li>';
+  postDOM += '            <li><a class="btn-floating blue darken-1 OpenReplyWindowBtn"><i class="material-icons">chat_bubble_outline</i></a></li>';
+  postDOM += '            <li><a class="btn-floating green testButton"><i class="material-icons">report_problem</i></a></li>';
+  postDOM += '        </ul>';
+  postDOM += '    </div>';
+  postDOM += repliesDOM;
+  postDOM += '</div>';
   //adds
-  $('#PostsPanel').append(post);
+  $('#PostsPanel').append(postDOM);
 }
 
 
@@ -55,7 +55,7 @@ $('#PostTextArea').bind('input propertychange', () => {
   if (charCount > 0) {
     $('#CharCount').text('(' + charCount + '/500)');
     if (charCount >= 500)
-      $('#CharCount').css('color', 'red');
+      $('#CharCount').css('color', '#f34858');
     else
       $('#CharCount').css('color', '#539987');
   } else {

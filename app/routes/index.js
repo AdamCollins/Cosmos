@@ -58,7 +58,6 @@ router.post('/login', (req, res) => {
       if (passwordMatchesHash(req.body.password, user.hashed_password)) {
         req.session.user = user;
         console.log('logged ' + req.session.user.username + ' successfully!');
-        res.redirect(307,'/login');
       }
     }
   });

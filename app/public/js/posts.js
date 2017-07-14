@@ -1,10 +1,11 @@
 //Gets JSON posts
-$.getJSON('/api', loadPosts);
+$.ajax.getJSON('/api', loadPosts);
 
 function loadPosts(postData) {
-  $.each(postData, function(key, post) {
+  $.ajax.each(postData, function(key, post) {
     createPost(post);
-    console.log(post);
+    console.log(post)
+
   });
   //Fades in posts
   $('div.post.hidden').hide().removeClass('hidden').fadeIn(800);
@@ -15,12 +16,18 @@ function loadPosts(postData) {
 }
 
 function createPost(post) {
+  createPost(post, false)
+}
+
+function createPost(post, prepend){
+  console.log(post);
   var postDOM = '';
   var repliesDOM = '';
   $.each(post.replies,function(key,item){
     repliesDOM+=createReply(item);
     console.log(item);
   });
+
 
   postDOM += '  <div class="post col s12 m6" post_id="'+post._id+'">';
   postDOM += '    <span class="postDate">' + post.time+((post.username)?'<i class="fa fa-rocket fa-2x" aria-hidden="true"></i>'+post.username
@@ -38,7 +45,11 @@ function createPost(post) {
   postDOM += repliesDOM;
   postDOM += '</div>';
   //adds
-  $('#PostsPanel').append(postDOM);
+  if(prepend){
+    $('#PostsPanel').prepend(postDOM);
+  }else{
+    $('#PostsPanel').append(postDOM);
+  }
 }
 
 
@@ -64,13 +75,25 @@ $('#PostTextArea').bind('input propertychange', () => {
 });
 
 
-//Handles post submition
-$("form.submitPanel").submit(function(e) {
+
+$("form.submitPanel").on('submit', function(e){
   e.preventDefault();
-  $.post('api', {
-    text: $('#PostTextArea').val(),
-    poster: null
-  }, loadPosts);
+  var text = $('#PostTextArea').val();
+  var params = {"text_content": text}
   $('#PostTextArea').val('');
-  $('#CharCount').text('');
+  $('#CharCount').text('')
+  $.ajax({
+    method: 'post',
+    url: '/api',
+    data: params,
+    datatype: 'json',
+    success: function(data){
+      console.log('here')
+      console.log(data)
+      createPost(data, true);
+    },
+    error: function(){
+      alert('oops something went wrong')
+    }
+  });
 });

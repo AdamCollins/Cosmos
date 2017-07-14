@@ -11,7 +11,7 @@ app.set('views', 'app/views');
 app.use(express.static('app/public'));
 app.use(require('./routes/index'));
 app.use(require('./routes/api'));
-app.use(require('./routes/login'));
+//app.use(require('./routes/login'));
 app.use(session({
   secret: "asdfghjhrgtygf4etr23retfgcnvhmKJHJGHJKm",
   resave: false,

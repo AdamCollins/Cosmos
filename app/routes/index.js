@@ -22,6 +22,8 @@ router.use(session({
   resave: false,
   saveUninitialized: true
 }));
+
+
 router.get('/',function(req, res){
   console.log(req.session.user)
   if(req.session.user)

@@ -19,7 +19,7 @@ MongoClient.connect(url, function(err, database){
     console.log(err);
   }
 
-  console.log('connected successfully to database'); 
+  console.log('connected successfully to database');
   db = database;
 
   //load all the existing posts within the last 48 hours
@@ -46,6 +46,7 @@ function getData(callback){
 
 router.get('/api',function(req, res){
   getData(function(){
+    console.log('callback made');
     db.close();
   });
 
@@ -80,7 +81,7 @@ function msToTime(msDate) {
 
   hours = (hours < 10) ? hours : hours;
   minutes = (minutes < 10) ? minutes : minutes;
- 
+
   if (hours < 1){
     return  minutes + 1 + " m remaining"
   }else{
@@ -95,7 +96,7 @@ router.post('/api',function(req,res){
   var posts = db.collection('posts');
   var data = req.body;
   var post = data.text;
-  var username = data.poster;
+  var username = (req.session.user)?req.session.user.username:null;
   posts.insert({
     'text_content':post,
     'username':username,
@@ -107,5 +108,3 @@ router.post('/api',function(req,res){
 
 
 module.exports = router;
-
-

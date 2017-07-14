@@ -1,15 +1,21 @@
-$('#LoginBtn').click(function(e){
+$('#LoginBtn').click(function(e) {
   e.preventDefault();
   let username = $('#usernameTF').val();
   let password = $('#passwordTF').val();
-  if(username.length>0 && password.length>0){
-    $.post('login',{
-      'username':username,
-      'password':password
-    });
+
+  if (username.length > 0 && password.length > 0) {
+    if (inputsValid()) {
+      $.post('login', {
+        'username': username,
+        'password': password
+      });
+    }
   }
 });
 
+function inputsValid(){
+  return !($('#passwordTF').hasClass('invalid')) && !($('#passwordTF').hasClass('invalid'));
+}
 
 $('#RegisterBtn').click(function(e) {
   e.preventDefault();
@@ -57,7 +63,7 @@ function makeNeutral(item) {
   $(item).removeClass('invalid').removeClass('valid');
 }
 
-$('#usernameTF').blur(()=>{
+$('#passwordTF').blur(() => {
   isUsernameAvailable($('#usernameTF').val())
 });
 
@@ -66,7 +72,7 @@ function isUsernameAvailable(username) {
     valid = !usernameData.username_exists;
     if (valid)
       makeValid($('#usernameTF'));
-    else{
+    else {
       makeInvalid($('#usernameTF'));
       Materialize.toast('Username not availible', 2000);
     }

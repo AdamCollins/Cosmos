@@ -4,6 +4,7 @@ $.getJSON('api', loadPosts);
 function loadPosts(postData) {
   $.each(postData, function(key, post) {
     createPost(post);
+    console.log(post);
   });
   //Fades in posts
   $('div.post.hidden').hide().removeClass('hidden').fadeIn(800);
@@ -23,8 +24,8 @@ function createPost(post) {
     console.log(item);
   });
 
-  postDOM += '  <div class="post col s12 m6" post_id="'+post.id+'">';
-  postDOM += '    <span class="postDate">' + post.date+((post.username)?post.username:'')+'</span>';
+  postDOM += '  <div class="post col s12 m6" post_id="'+post._id+'">';
+  postDOM += '    <span class="postDate">' + post.time+((post.username)?post.username:'')+'</span>';
   postDOM += '    <span class="post_id hidden">'+post._id+'</span>'; //TODO Add post_id
   postDOM += '    <p>' + post.text_content + '</p>';
   postDOM += '    <div class="fixed-action-btn horizontal myButtonGroup">';

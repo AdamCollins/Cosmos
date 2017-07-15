@@ -4,7 +4,6 @@ $.getJSON('/api', loadPosts);
 function loadPosts(postData) {
   $.each(postData, function(key, post) {
     createPost(post);
-    console.log(post)
 
   });
   //Fades in posts
@@ -15,12 +14,7 @@ function loadPosts(postData) {
 
 }
 
-function createPost(post) {
-  createPost(post, false)
-}
-
 function createPost(post, prepend){
-  console.log(post);
   var postDOM = '';
   var repliesDOM = '';
   $.each(post.replies,function(key,item){
@@ -29,9 +23,10 @@ function createPost(post, prepend){
   });
 
 
-  postDOM += '  <div class="post col s12 m6" post_id="'+post._id+'">';
-  postDOM += '    <span class="postDate">' + post.time+((post.username)?'<i class="fa fa-rocket fa-2x" aria-hidden="true"></i>'+post.username
-:'')+'</span>';
+  postDOM += '  <div class="post col s12 m6 hidden" post_id="'+post._id+'">';
+  postDOM += '    <span class="postDate">' + post.time+'</span>';
+  postDOM += '    <span class="user">'+((post.username)?' <i class="fa fa-rocket fa-2x" aria-hidden="true"></i> '+post.username
+:'')+'</span>'
   postDOM += '    <span class="post_id hidden">'+post._id+'</span>'; //TODO Add post_id
   postDOM += '    <p>' + post.text_content + '</p>';
   postDOM += '    <div class="fixed-action-btn horizontal myButtonGroup">';
@@ -88,9 +83,8 @@ $("form.submitPanel").on('submit', function(e){
     data: params,
     datatype: 'json',
     success: function(data){
-      console.log('here')
-      console.log(data)
       createPost(data, true);
+      $('div.post.hidden').hide().removeClass('hidden').fadeIn(800);
     },
     error: function(){
       alert('oops something went wrong')

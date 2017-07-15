@@ -1,6 +1,7 @@
 $('#LoginBtn').click(login);
 
 function login() {
+  $('#RegProgress').css('visibility','visible');
   console.log('attempting login...');
   let username = $('#usernameTF').val();
   let password = $('#passwordTF').val();
@@ -33,6 +34,7 @@ function inputsValid() {
 
 $('#RegisterBtn').click(function(e) {
   e.preventDefault();
+  $('#RegProgress').css('visibility','visible');
   let username = $('#usernameTF').val();
   if (username.length < 0)
     makeInvalid($('#usernameTF'));

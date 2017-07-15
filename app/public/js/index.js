@@ -1,4 +1,5 @@
 //onLoad
+$('#RegProgress').css('visibility','hidden');
 $('div.post').hide().removeClass("hidden");
 $("#ReplyArea").hide().removeClass("hidden");
 $(".loginmenu.dropdown").hide().removeClass("hidden");

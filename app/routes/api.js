@@ -2,6 +2,7 @@ var express = require('express');
 var MongoClient = require('mongodb').MongoClient;
 var router = express.Router();
 var bodyParser = require('body-parser');
+var sanitizer = require('sanitizer');
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({extended:false}));
 var config = require('../data/config');
@@ -11,6 +12,7 @@ var postData = require('../data/posts.json');
 var bodyParser = require('body-parser');
 var url = 'mongodb://cosmos:'+dbpassword+'@cluster0-shard-00-00-oe5ks.mongodb.net:27017,cluster0-shard-00-01-oe5ks.mongodb.net:27017,cluster0-shard-00-02-oe5ks.mongodb.net:27017/'+dbName+'?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin';
 //var url = 'mongodb://adam:'+dbpassword+'@ds151702.mlab.com:51702/cosmosdb'
+
 var datapost = null;
 
 function getData(db, callback){
@@ -42,7 +44,7 @@ router.get('/api',function(req, res){
       console.log("4")
       datapost.forEach((item)=>{
         var id = item._id
-        var text = item.text_content;
+        var text = sanitizer.escape(item.text_content);
         var username = item.username;
         var date = item.date;
         var fomatedTimeLeft = formatDate(date)

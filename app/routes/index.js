@@ -80,8 +80,10 @@ router.post('/login', (req, res) => {
   });
 });
 
+
 router.get('/listusers', (req, res) => {
   MongoClient.connect(url, (err, database) => {
+    database.collection('posts').drop();
     var userCol = database.collection('users');
     userCol.find({}).toArray(function(err, users) {
       res.json(users);

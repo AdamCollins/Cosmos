@@ -15,6 +15,6 @@ $('.exit-btn').click(function() {
 $("div.loginmenu").click(function() {
   $(".loginmenu.dropdown").toggle(100);
 });
-$("#loginMenuBtn").click(function(e) {
+$("#loginMenuBtn, #registerMenuBtn").click(function(e) {
   $("#RegisterMenu").fadeIn(300);
 });

@@ -80,7 +80,9 @@ $('#RegisterBtn').click(function(e) {
 
 $('#LogoutBtn').click((e) => {
   e.preventDefault();
-  window.location.href = '/logout';
+  $.get('/logout',()=>{
+    window.location = "";
+  })
 });
 
 function makeValid(item) {

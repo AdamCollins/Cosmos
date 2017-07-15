@@ -25,10 +25,9 @@ function createPost(post, prepend){
 
   postDOM += '  <div class="post col s12 m6 hidden" post_id="'+post._id+'">';
   postDOM += '    <span class="postDate">' + post.time+'</span>';
-  postDOM += '    <span class="user">'+((post.username)?' <i class="fa fa-rocket fa-2x" aria-hidden="true"></i> '+post.username
-:'')+'</span>'
+  postDOM += '    <span class="user">'+((post.username)?'<img src="images/const.png" width="22px"/>'+post.username:' <i class="fa fa-rocket fa-2x" aria-hidden="true"></i>')+'</span>'
   postDOM += '    <span class="post_id hidden">'+post._id+'</span>'; //TODO Add post_id
-  postDOM += '    <p>' + post.text_content + '</p>';
+  postDOM += '    <p>' + post.text_content.replace('\n','</br>') + '</p>';
   postDOM += '    <div class="fixed-action-btn horizontal myButtonGroup">';
   postDOM += '        <a class="btn-floating btn-large"><i class="material-icons">label_outline</i></a>';
   postDOM += '        <ul>';

@@ -1,11 +1,9 @@
 //Gets JSON posts
-$.ajax.getJSON('/api', loadPosts);
+$.getJSON('/api', loadPosts);
 
 function loadPosts(postData) {
-  $.ajax.each(postData, function(key, post) {
+  $.each(postData, function(key, post) {
     createPost(post);
-    console.log(post)
-
   });
   //Fades in posts
   $('div.post.hidden').hide().removeClass('hidden').fadeIn(800);
@@ -20,7 +18,6 @@ function createPost(post) {
 }
 
 function createPost(post, prepend){
-  console.log(post);
   var postDOM = '';
   var repliesDOM = '';
   $.each(post.replies,function(key,item){

@@ -1,6 +1,6 @@
 //Gets JSON posts
 $.getJSON('/api', loadPosts);
-
+var p = null;
 function loadPosts(postData) {
   $.each(postData, function(key, post) {
     createPost(post);
@@ -9,9 +9,10 @@ function loadPosts(postData) {
   //Fades in posts
   $('div.post.hidden').hide().removeClass('hidden').fadeIn(800);
   $('a.OpenReplyWindowBtn').click(function(e) {
-    $("#ReplyArea").fadeIn(300);
+    $('#ReplyArea').fadeIn(300);
+    var post_id = $(this).parents().eq(3).attr("post_id");
+    $('#ReplyPanel').attr('replypostid',post_id);
   });
-
 }
 
 function createPost(post, prepend){
@@ -47,11 +48,12 @@ function createPost(post, prepend){
 }
 
 
-function createReply(comment) {
-  var reply = '';
-  reply+='<span class="postDate" style="margin-left:50px;">'+comment.dateTime+'</span>';
-  reply+='<p style="border-top:1px solid #52FFB8; margin-left:50px;  margin-bottom:15px;">'+comment.textContent+'</p>';
-  return reply;
+function createReply(reply) {
+  var replyDOM = '';
+  replyDOM+='<span class="postDate" style="margin-left:50px;">'+reply.date+'</span>';
+  replyDOM += '<span class="user">'+((reply.username)?'<img src="images/const.png" width="22px"/>'+reply.username:' <i class="fa fa-rocket fa-2x" aria-hidden="true"></i>')+'</span>';
+  replyDOM+='<p style="border-top:1px solid #52FFB8; margin-left:50px;  margin-bottom:15px;">'+reply.text_content+'</p>';
+  return replyDOM;
 }
 
 //Updates word count

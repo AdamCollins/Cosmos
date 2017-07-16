@@ -20,6 +20,7 @@ function login() {
           window.location = "";
         } else if(data.status == 401){
           Materialize.toast('Incorrect username or password 😭', 2000);
+          $('#RegProgress').css('visibility','hidden');
           makeInvalid($('#usernameTF'));
           makeInvalid($('#passwordTF'));
         }

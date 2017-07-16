@@ -16,98 +16,137 @@
 //   extended: false
 // }));
 //
-// MongoClient.connect(url, function(err, db) {
-//   if (err)
-//     console.log(err);
-//
-//   console.log('connected successfully to sever');
-//   database = db;
-//
+// router.post('/login', (req, res) => {
+//   MongoClient.connect(url, (err, database) => {
+//     var userCol = database.collection('users');
+//     console.log(1)
+//     console.log(req.body.username)
+//     userCol.findOne({
+//       "username": req.body.username
+//     }, function(err, user) {
+//       console.log(user)
+//       if (user) {
+//         console.log(req.body);
+//         console.log(user);
+//         console.log(3)
+//         if (passwordMatchesHash(req.body.password, user.hashed_password)) {
+//           req.session.user = user;
+//           req.session.save();
+//           console.log('logged ' + req.session.user.username + ' successfully!');
+//           res.json({
+//             "success": "Logged in Successfully",
+//             "status": 200
+//           });
+//         } else {
+//           res.json({
+//             "error": "Failed to authenticate",
+//             "status": 401
+//           });
+//         }
+//       } else {
+//         res.json({
+//           "error": "Failed to authenticate",
+//           "status": 401
+//         });
+//       }
+//     });
+//     database.close();
+//   });
 // });
-// 
-// // router.get('/logout', (req, res) => {
-// //   req.session.destroy();
-// //   res.send('Logout successfully');
+//
+//
+// // MongoClient.connect(url, function(err, db) {
+// //   if (err)
+// //     console.log(err);
+// //
+// //   console.log('connected successfully to sever');
+// //   database = db;
+// //
 // // });
-// // router.post('/login', (req, res) => {
-// //   var userCol = database.collection('users');
-// //   userCol.findOne({
-// //     "username": req.body.username
-// //   }, function(err, user) {
-// //     if (user) {
-// //       console.log(req.body);
-// //       console.log(user);
-// //       if (passwordMatchesHash(req.body.password, user.hashed_password)) {
-// //         req.session.user = user;
-// //         console.log('logged ' + user.username + ' successfully!');
-// //       }
-// //     }
-// //   });
-// // });
-//
-// // router.get('/listusers', (req, res) => {
-// //   var userCol = database.collection('users');
-// //   userCol.find({}).toArray(function(err, users) {
-// //     res.json(users);
-// //   });
-// // });
-//
-// // router.get('/registraion/availible/:username', (req, res) => {
-// //   var userCol = database.collection('users');
-// //   userCol.findOne({
-// //     "username": {
-// //       $regex: new RegExp("^" + req.params.username.toLowerCase(), "i")
-// //     }
-// //   }, function(err, docs) {
-// //     if (docs)
-// //       res.json({
-// //         "username_exists": true
-// //       });
-// //     else
-// //       res.json({
-// //         "username_exists": false
-// //       });
-// //   });
-// // });
-//
-//
-// // //TODO recheck if username unique
-// // function addUser(userdata, callback) {
-// //   let hashed_password = bcrypt.hashSync(userdata.password, 10);
-// //   console.log(userdata.username)
-// //   $.getJSON('/registraion/availible/'+userdata.username, (usernameData) => {
-// //     console.log('got json')
-// //     if (!usernameData.username_exists) {
-// //       // database.collection('users').insertOne({
-// //       //   "username": userdata.username,
-// //       //   "hashed_password": hashed_password,
-// //       //   "score": 0,
-// //       //   "create_date": new Date()
-// //       // }, () => {
-// //       //   database.close();
-// //       // });
-//
-// //     }
-// //     else{
-// //       console.log('Registration failed')
-// //     }
-// //   });
-// // }
-//
-//
-// // router.post('/register', (req, res) => {
-// //   console.log(req.body);
-// //   var userdata = req.body;
-// //   addUser(userdata);
-// // });
-//
-// // function passwordMatchesHash(plainTextPassword, hash) {
-// //   return bcrypt.compareSync(plainTextPassword, hash);
-// // }
-//
-//
-//
-//
-//
-//
-// // module.exports = router;
+// //
+// // // router.get('/logout', (req, res) => {
+// // //   req.session.destroy();
+// // //   res.send('Logout successfully');
+// // // });
+// // // router.post('/login', (req, res) => {
+// // //   var userCol = database.collection('users');
+// // //   userCol.findOne({
+// // //     "username": req.body.username
+// // //   }, function(err, user) {
+// // //     if (user) {
+// // //       console.log(req.body);
+// // //       console.log(user);
+// // //       if (passwordMatchesHash(req.body.password, user.hashed_password)) {
+// // //         req.session.user = user;
+// // //         console.log('logged ' + user.username + ' successfully!');
+// // //       }
+// // //     }
+// // //   });
+// // // });
+// //
+// // // router.get('/listusers', (req, res) => {
+// // //   var userCol = database.collection('users');
+// // //   userCol.find({}).toArray(function(err, users) {
+// // //     res.json(users);
+// // //   });
+// // // });
+// //
+// // // router.get('/registraion/availible/:username', (req, res) => {
+// // //   var userCol = database.collection('users');
+// // //   userCol.findOne({
+// // //     "username": {
+// // //       $regex: new RegExp("^" + req.params.username.toLowerCase(), "i")
+// // //     }
+// // //   }, function(err, docs) {
+// // //     if (docs)
+// // //       res.json({
+// // //         "username_exists": true
+// // //       });
+// // //     else
+// // //       res.json({
+// // //         "username_exists": false
+// // //       });
+// // //   });
+// // // });
+// //
+// //
+// // // //TODO recheck if username unique
+// // // function addUser(userdata, callback) {
+// // //   let hashed_password = bcrypt.hashSync(userdata.password, 10);
+// // //   console.log(userdata.username)
+// // //   $.getJSON('/registraion/availible/'+userdata.username, (usernameData) => {
+// // //     console.log('got json')
+// // //     if (!usernameData.username_exists) {
+// // //       // database.collection('users').insertOne({
+// // //       //   "username": userdata.username,
+// // //       //   "hashed_password": hashed_password,
+// // //       //   "score": 0,
+// // //       //   "create_date": new Date()
+// // //       // }, () => {
+// // //       //   database.close();
+// // //       // });
+// //
+// // //     }
+// // //     else{
+// // //       console.log('Registration failed')
+// // //     }
+// // //   });
+// // // }
+// //
+// //
+// // // router.post('/register', (req, res) => {
+// // //   console.log(req.body);
+// // //   var userdata = req.body;
+// // //   addUser(userdata);
+// // // });
+// //
+// // // function passwordMatchesHash(plainTextPassword, hash) {
+// // //   return bcrypt.compareSync(plainTextPassword, hash);
+// // // }
+// //
+// //
+// //
+// //
+// //
+// //
+// // // module.exports = router;

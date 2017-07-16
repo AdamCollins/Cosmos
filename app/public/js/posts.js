@@ -1,20 +1,18 @@
 //Gets JSON posts
 $.getJSON('/api', loadPosts);
 
+
 function loadPosts(postData) {
   $.each(postData, function(key, post) {
     createPost(post);
-  });
+});
   //Fades in posts
   $('div.post.hidden').hide().removeClass('hidden').fadeIn(800);
   $('a.OpenReplyWindowBtn').click(function(e) {
-    $("#ReplyArea").fadeIn(300);
+    $('#ReplyArea').fadeIn(300);
+    var post_id = $(this).parents().eq(3).attr("post_id");
+    $('#ReplyPanel').attr('replypostid',post_id);
   });
-
-}
-
-function createPost(post) {
-  createPost(post, false)
 }
 
 function createPost(post, prepend){
@@ -26,10 +24,11 @@ function createPost(post, prepend){
   });
 
 
-  postDOM += '  <div class="post col s12 m6" post_id="'+post._id+'">';
-  postDOM += '    <span class="postDate">' + post.time+((post.username)?post.username:'')+'</span>';
+  postDOM += '  <div class="post col s12 m6 hidden" post_id="'+post._id+'">';
+  postDOM += '    <span class="postDate">' + post.time+'</span>';
+  postDOM += '    <span class="user">'+((post.username)?'<img src="images/const.png" width="22px"/>'+post.username:' <i class="fa fa-rocket fa-2x" aria-hidden="true"></i>')+'</span>'
   postDOM += '    <span class="post_id hidden">'+post._id+'</span>'; //TODO Add post_id
-  postDOM += '    <p>' + post.text_content + '</p>';
+  postDOM += '    <p>' + post.text_content.replace('\n','</br>') + '</p>';
   postDOM += '    <div class="fixed-action-btn horizontal myButtonGroup">';
   postDOM += '        <a class="btn-floating btn-large"><i class="material-icons">label_outline</i></a>';
   postDOM += '        <ul>';
@@ -49,11 +48,12 @@ function createPost(post, prepend){
 }
 
 
-function createReply(comment) {
-  var reply = '';
-  reply+='<span class="postDate" style="margin-left:50px;">'+comment.dateTime+'</span>';
-  reply+='<p style="border-top:1px solid #52FFB8; margin-left:50px;  margin-bottom:15px;">'+comment.textContent+'</p>';
-  return reply;
+function createReply(reply) {
+  var replyDOM = '';
+  replyDOM+='<span class="postDate" style="margin-left:50px;">'+reply.date+'</span>';
+  replyDOM += '<span class="user">'+((reply.username)?'<img src="images/const.png" width="22px"/>'+reply.username:' <i class="fa fa-rocket fa-2x" aria-hidden="true"></i>')+'</span>';
+  replyDOM+='<p style="border-top:1px solid #52FFB8; margin-left:50px;  margin-bottom:15px;">'+reply.text_content+'</p>';
+  return replyDOM;
 }
 
 //Updates word count
@@ -84,16 +84,11 @@ $("form.submitPanel").on('submit', function(e){
     data: params,
     datatype: 'json',
     success: function(data){
-      console.log('here')
-      console.log(data)
       createPost(data, true);
+      $('div.post.hidden').hide().removeClass('hidden').fadeIn(800);
     },
     error: function(){
       alert('oops something went wrong')
     }
   });
 });
-
-
-
-

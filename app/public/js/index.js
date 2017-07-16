@@ -1,4 +1,5 @@
 //onLoad
+$('#RegProgress').css('visibility','hidden');
 $('div.post').hide().removeClass("hidden");
 $("#ReplyArea").hide().removeClass("hidden");
 $(".loginmenu.dropdown").hide().removeClass("hidden");
@@ -15,6 +16,6 @@ $('.exit-btn').click(function() {
 $("div.loginmenu").click(function() {
   $(".loginmenu.dropdown").toggle(100);
 });
-$("#loginMenuBtn").click(function(e) {
+$("#loginMenuBtn, #registerMenuBtn").click(function(e) {
   $("#RegisterMenu").fadeIn(300);
 });

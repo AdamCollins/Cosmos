@@ -1,39 +1,74 @@
-$('#LoginBtn').click(function(e) {
-  e.preventDefault();
+$('#LoginBtn').click(login);
+
+function login() {
+  $('#RegProgress').css('visibility','visible');
+  console.log('attempting login...');
   let username = $('#usernameTF').val();
   let password = $('#passwordTF').val();
 
   if (username.length > 0 && password.length > 0) {
-    if (inputsValid()) {
-      $.post('login', {
+    $.ajax({
+      method: 'post',
+      url: '/login',
+      data: {
         'username': username,
         'password': password
-      });
-    }
+      },
+      datatype: 'json',
+      success: function(data) {
+        if (data.status == 200) {
+          window.location = "";
+        } else if(data.status == 401){
+          Materialize.toast('Incorrect username or password 😭', 2000);
+          $('#RegProgress').css('visibility','hidden');
+          makeInvalid($('#usernameTF'));
+          makeInvalid($('#passwordTF'));
+        }
+      }
+    });
   }
-});
+}
 
-function inputsValid(){
+function inputsValid() {
   return !($('#passwordTF').hasClass('invalid')) && !($('#passwordTF').hasClass('invalid'));
 }
 
 $('#RegisterBtn').click(function(e) {
   e.preventDefault();
+  $('#RegProgress').css('visibility','visible');
   let username = $('#usernameTF').val();
-  isUsernameAvailable(username);
   if (username.length < 0)
     makeInvalid($('#usernameTF'));
   let password = $('#passwordTF').val();
   let passwordConfig = $('#passwordConfTF').val();
   if (password.length >= 6) {
     if (password === passwordConfig) {
-      $.post('register', {
-        'username': username,
-        'password': password
-      });
       makeValid($('#passwordTF'));
       makeValid($('#passwordConfTF'));
-      makeNeutral($('#usernameTF'));
+      $.getJSON('/registraion/availible/' + username, (usernameData) => {
+        valid = !usernameData.username_exists;
+        if (valid) {
+          makeValid($('#usernameTF'));
+          $.ajax({
+            method: 'post',
+            url: '/register',
+            data: {
+              'username': username,
+              'password': password
+            },
+            datatype: 'json',
+            success: function(data) {
+              login();
+            },
+            error: function() {
+              alert('oops something went wrong')
+            }
+          });
+        } else {
+          makeInvalid($('#usernameTF'));
+          Materialize.toast('Username not availible', 2000);
+        }
+      });
       //  register  //TODO recheck during post
     } else {
       Materialize.toast('Passwords do not match', 2000);
@@ -48,7 +83,9 @@ $('#RegisterBtn').click(function(e) {
 
 $('#LogoutBtn').click((e) => {
   e.preventDefault();
-  window.location.href = '/logout';
+  $.get('/logout',()=>{
+    window.location = "";
+  })
 });
 
 function makeValid(item) {
@@ -68,13 +105,5 @@ $('#passwordTF').blur(() => {
 });
 
 function isUsernameAvailable(username) {
-  $.getJSON('/registraion/availible/' + username, (usernameData) => {
-    valid = !usernameData.username_exists;
-    if (valid)
-      makeValid($('#usernameTF'));
-    else {
-      makeInvalid($('#usernameTF'));
-      Materialize.toast('Username not availible', 2000);
-    }
-  });
+
 }

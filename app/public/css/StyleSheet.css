@@ -235,6 +235,14 @@ div.reply {
   margin-right: 10px;
 }
 
+span.user{
+  color:#52FFB8;
+}
+
+span.user > i{
+  font-size: 1.5em;
+}
+
 a.exit-btn {
   float: right;
 }

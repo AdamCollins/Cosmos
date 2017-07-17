@@ -5,13 +5,41 @@ $.getJSON('/api', loadPosts);
 function loadPosts(postData) {
   $.each(postData, function(key, post) {
     createPost(post);
-});
+  });
   //Fades in posts
+  openReply();
+  upVote();
+}
+
+function openReply(){
   $('div.post.hidden').hide().removeClass('hidden').fadeIn(800);
-  $('a.OpenReplyWindowBtn').click(function(e) {
+  $('a.OpenReplyWindowBtn').on('click', ()=> {
     $('#ReplyArea').fadeIn(300);
     var post_id = $(this).parents().eq(3).attr("post_id");
     $('#ReplyPanel').attr('replypostid',post_id);
+  });
+}
+
+
+
+function upVote(){
+  $('a.starBtn').on('click', function(e) {
+    var postId = $(this).parents().eq(3).attr('post_id');
+    console.log(postId)
+    $.ajax({
+      method: 'post',
+      url: '/api/like',
+      data: {'post_id' : postId},
+      datatype: 'json',
+      success: ()=>{
+        console.log('yes')
+      },
+      error: (e)=> {
+        console.log(e.responseText);
+        openLoginMenu();
+      }
+
+    })
   });
 }
 
@@ -20,7 +48,6 @@ function createPost(post, prepend){
   var repliesDOM = '';
   $.each(post.replies,function(key,item){
     repliesDOM+=createReply(item);
-    console.log(item);
   });
 
 
@@ -32,7 +59,7 @@ function createPost(post, prepend){
   postDOM += '    <div class="fixed-action-btn horizontal myButtonGroup">';
   postDOM += '        <a class="btn-floating btn-large"><i class="material-icons">label_outline</i></a>';
   postDOM += '        <ul>';
-  postDOM += '            <li><a class="btn-floating"><i class="material-icons">star</i></a></li>';
+  postDOM += '            <li><a class="btn-floating starBtn"><i class="material-icons">star</i></a></li>';
   postDOM += '            <li><a class="btn-floating blue darken-1 OpenReplyWindowBtn"><i class="material-icons">chat_bubble_outline</i></a></li>';
   postDOM += '            <li><a class="btn-floating green testButton"><i class="material-icons">report_problem</i></a></li>';
   postDOM += '        </ul>';
@@ -75,7 +102,7 @@ $('#PostTextArea').bind('input propertychange', () => {
 $("form.submitPanel").on('submit', function(e){
   e.preventDefault();
   var text = $('#PostTextArea').val();
-  var params = {"text_content": text}
+  var params = {'text_content': text}
   $('#PostTextArea').val('');
   $('#CharCount').text('')
   $.ajax({
@@ -86,6 +113,8 @@ $("form.submitPanel").on('submit', function(e){
     success: function(data){
       createPost(data, true);
       $('div.post.hidden').hide().removeClass('hidden').fadeIn(800);
+      upVote();
+      openReply();
     },
     error: function(){
       alert('oops something went wrong')

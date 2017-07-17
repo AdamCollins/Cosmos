@@ -16,6 +16,10 @@ $('.exit-btn').click(function() {
 $("div.loginmenu").click(function() {
   $(".loginmenu.dropdown").toggle(100);
 });
-$("#loginMenuBtn, #registerMenuBtn").click(function(e) {
+
+
+$("#loginMenuBtn, #registerMenuBtn").click(openLoginMenu);
+
+function openLoginMenu(){
   $("#RegisterMenu").fadeIn(300);
-});
+}

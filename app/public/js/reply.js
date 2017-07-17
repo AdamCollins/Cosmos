@@ -7,9 +7,9 @@ $('#SubmitReply').on('click',()=>{
       url: '/api/reply',
       data: params,
       datatype: 'json',
-      success:
-        console.log('reply success'),
-      error:
-        console.log('reply failed')
+      success:(data)=>{
+        if(data.status==200)
+          window.location = "";
+      }
   });
 })

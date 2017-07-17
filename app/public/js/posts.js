@@ -20,8 +20,21 @@ function openReply(){
   });
 }
 
+function getLevel(score)
+{
+  if(score>10){
+    return 2;
+  }
+  return 1;
+}
 
-
+function getScore(username){
+   var value= $.ajax({
+      url: '/users/score/'+username,
+      async: false
+   }).responseText;
+   return value;
+}
 function upVote(){
   $('a.starBtn').on('click', function(e) {
     var postId = $(this).parents().eq(3).attr('post_id');
@@ -46,6 +59,17 @@ function upVote(){
 function createPost(post, prepend){
   var postDOM = '';
   var repliesDOM = '';
+  var score;
+  if(post.username){
+    //sync call
+    //console.log('poster\'s score:'+getScore(post.username));
+    //async call
+    // $.getJSON('/users/score/'+post.username,(data)=>{
+    //    score = data.score;
+    //  });
+   }
+
+  //var scoreLevel = getLevel(post)
   $.each(post.replies,function(key,item){
     repliesDOM+=createReply(item);
   });
@@ -53,8 +77,7 @@ function createPost(post, prepend){
 
   postDOM += '  <div class="post col s12 m6 hidden" post_id="'+post._id+'">';
   postDOM += '    <span class="postDate">' + post.time+'</span>';
-  postDOM += '    <span class="user">'+((post.username)?'<img src="images/const.png" width="22px"/>'+post.username:' <i class="fa fa-rocket fa-2x" aria-hidden="true"></i>')+'</span>'
-  postDOM += '    <span class="post_id hidden">'+post._id+'</span>'; //TODO Add post_id
+  postDOM += '    <span class="user">'+((post.username)?'<img src="images/'+getLevel(0)+'.png" width="32px"/>'+post.username:' <i class="fa fa-rocket fa-2x" aria-hidden="true"></i>')+'</span>'
   postDOM += '    <p>' + post.text_content.replace('\n','</br>') + '</p>';
   postDOM += '    <div class="fixed-action-btn horizontal myButtonGroup">';
   postDOM += '        <a class="btn-floating btn-large"><i class="material-icons">label_outline</i></a>';
@@ -77,10 +100,14 @@ function createPost(post, prepend){
 
 function createReply(reply) {
   var replyDOM = '';
-  replyDOM+='<span class="postDate" style="margin-left:50px;">'+reply.date+'</span>';
-  replyDOM += '<span class="user">'+((reply.username)?'<img src="images/const.png" width="22px"/>'+reply.username:' <i class="fa fa-rocket fa-2x" aria-hidden="true"></i>')+'</span>';
+  replyDOM+='<span class="postDate" style="margin-left:50px;">'+reply.time+'</span>';
+  replyDOM += '<span class="user">'+((reply.username)?'<img src="images/'+getLevel(0)+'.png" width="32px" style="margin-left:7px; margin-right:3px"/>'+reply.username:' <i class="fa fa-rocket fa-2x" aria-hidden="true"></i>')+'</span>';
   replyDOM+='<p style="border-top:1px solid #52FFB8; margin-left:50px;  margin-bottom:15px;">'+reply.text_content+'</p>';
   return replyDOM;
+}
+
+function addReply(replyDOM, postId){
+
 }
 
 //Updates word count

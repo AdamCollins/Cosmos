@@ -31,6 +31,11 @@ function getData(db, callback) {
     callback();
   });
 }
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> 30a73a8b0f2a905326e5274e17d9708776662b9a
 router.get('/api', function(req, res) {
   MongoClient.connect(url, (err, db) => {
     if (err) {
@@ -158,6 +163,30 @@ router.post('/api/reply', function(req, res) {
   })
 });
 
+router.post('/api/like', (req, res) => {
+  MongoClient.connect(url, (err,db) => {
+    if(!req.session.user){
+      res.status(401).send('please login')
+    }else{
+      var userId = req.session.user._id
+      var postId = req.body.post_id
+      var posts = db.collection('posts')
+      var userIds = db.collection('users')
+      if (userIds.find({'_id': new ObjectId(userId)})){
+        posts.update({"_id": new ObjectId(postId)},
+        {
+          '$push': {
+          "likes": userId
+          }
+        });
+        res.status(200).send('saved');
+      }else{
+        res.status(401).send('duplicated');
+      }            
+    }
+    db.close();
+  })
+})
 
 
 module.exports = router;

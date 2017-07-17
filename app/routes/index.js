@@ -91,6 +91,30 @@ router.get('/listusers', (req, res) => {
   });
 });
 
+router.get('/users/score/:username', (req, res) => {
+  MongoClient.connect(url, (err, database) => {
+    var userCol = database.collection('users');
+    var query = {
+      "username": {
+        $regex: new RegExp("^" + req.params.username.toLowerCase(), "i")
+      }
+    }
+    userCol.findOne(query, (err, user) => {
+      console.log(user)
+      if (user) {
+        res.json({
+          "score": user.score
+        })
+      } else {
+        res.json({
+          "score": null
+        })
+      }
+    });
+    database.close();
+  })
+})
+
 router.get('/registraion/availible/:username', (req, res) => {
   MongoClient.connect(url, (err, database) => {
     var userCol = database.collection('users');

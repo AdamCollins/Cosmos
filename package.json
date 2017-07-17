@@ -18,6 +18,7 @@
     "express-session": "^1.15.3",
     "jquery-serializejson": "^2.8.1",
     "mongo": "^0.1.0",
+    "node-onesignal": "^0.3.1",
     "nodemon": "^1.11.0",
     "reload": "^1.1.7",
     "sanitizer": "^0.1.3"

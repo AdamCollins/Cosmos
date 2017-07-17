@@ -1,22 +1,21 @@
+var config = require('../data/config');
 var express = require('express');
 var MongoClient = require('mongodb').MongoClient;
 var ObjectId = require('mongodb').ObjectID;
 var router = express.Router();
 var bodyParser = require('body-parser');
 var sanitizer = require('sanitizer');
-router.use(bodyParser.json());
-router.use(bodyParser.urlencoded({
-  extended: false
-}));
-var config = require('../data/config');
 var dbName = "cosmosdb";
 var dbpassword = config.password;
 var postData = require('../data/posts.json');
 var bodyParser = require('body-parser');
 var url = 'mongodb://cosmos:' + dbpassword + '@cluster0-shard-00-00-oe5ks.mongodb.net:27017,cluster0-shard-00-01-oe5ks.mongodb.net:27017,cluster0-shard-00-02-oe5ks.mongodb.net:27017/' + dbName + '?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin';
 //var url = 'mongodb://adam:'+dbpassword+'@ds151702.mlab.com:51702/cosmosdb'
-
 var datapost = null;
+router.use(bodyParser.json());
+router.use(bodyParser.urlencoded({
+  extended: false
+}));
 
 function getData(db, callback) {
   var posts = db.collection('posts');
@@ -32,11 +31,6 @@ function getData(db, callback) {
     callback();
   });
 }
-
-
-
-
-
 router.get('/api', function(req, res) {
   MongoClient.connect(url, (err, db) => {
     if (err) {
@@ -52,14 +46,24 @@ router.get('/api', function(req, res) {
         var text = item.text_content;
         var username = item.username;
         var date = item.date;
-        var fomatedTimeLeft = formatDate(date)
-        var replies = item.replies;
+        var fomatedTimeLeft = formatDate(date);
+        var replies = []
+        if (item.replies)
+          item.replies.forEach((reply) => {
+            var minutes = Math.floor((new Date() - new Date(reply.date))/(60 * 1000))
+            replies.push({
+              "text_content": reply.text_content,
+              "username": reply.username,
+              "time": minutes < 120 ? minutes + 'm ago' : Math.floor(minutes / 60) + 'h ago'
+            })
+          });
+
         data.push({
           "_id": id,
           "text_content": text,
           "username": username,
           "time": formatedTimeLeft,
-          "replies":replies
+          "replies": replies
         })
       });
       res.json(data)
@@ -100,7 +104,6 @@ router.post('/api', function(req, res) {
       console.log(err);
     }
     console.log('connected successfully to database');
-
     console.log(req.body)
     var posts = db.collection('posts');
     var data = req.body;
@@ -113,12 +116,14 @@ router.post('/api', function(req, res) {
       'replies': []
     });
     db.close();
-
     res.json({
       "text_content": text,
       "username": username,
       "time": "48h remaining"
     });
+    if (username) {
+      console.log('sending notification...')
+    }
   })
 });
 
@@ -138,13 +143,18 @@ router.post('/api/reply', function(req, res) {
       'username': username,
       'date': new Date()
     }
-    posts.update({'_id':new ObjectId(replyPostId)},
-    {
+    posts.update({
+      '_id': new ObjectId(replyPostId)
+    }, {
       '$push': {
         "replies": newReply
       }
-    });
+    })
     db.close();
+    res.json({
+      "status": 200,
+      "reply": newReply
+    })
   })
 });
 

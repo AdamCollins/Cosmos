@@ -177,22 +177,17 @@ router.post('/api/like', (req, res) => {
       var postId = req.body.post_id
       var posts = db.collection('posts')
       var userIds = db.collection('users')
-      console.log('post find:')
-      console.log(posts.findOne({
-          '_id': new ObjectId(userId)
-        }))
-      if (userIds.find({
-          '_id': new ObjectId(userId)
-        })){
-        posts.update({
-          "_id": new ObjectId(postId)
-        }, {
+      if (!userIds.find({'_id': new ObjectId(userId)})){
+        posts.update({"_id": new ObjectId(postId)},
+        {
           '$push': {
             "likes": userId
           }
         });
         res.status(200).send('saved');
-      } else {
+        console.log('fuck')
+      }else{
+        console.log('here')
         res.status(401).send('duplicated');
       }
     }

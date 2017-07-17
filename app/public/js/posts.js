@@ -11,88 +11,99 @@ function loadPosts(postData) {
   upVote();
 }
 
-function openReply(){
+function openReply() {
   $('div.post.hidden').hide().removeClass('hidden').fadeIn(800);
-  $('a.OpenReplyWindowBtn').on('click', ()=> {
+  $('a.OpenReplyWindowBtn').on('click', () => {
     $('#ReplyArea').fadeIn(300);
     var post_id = $(this).parents().eq(3).attr("post_id");
-    $('#ReplyPanel').attr('replypostid',post_id);
+    $('#ReplyPanel').attr('replypostid', post_id);
   });
 }
 
-function getLevel(score)
-{
-  if(score>10){
+function getLevel(score) {
+  if (score > 10) {
     return 2;
   }
   return 1;
 }
 
-function getScore(username){
-   var value= $.ajax({
-      url: '/users/score/'+username,
-      async: false
-   }).responseText;
-   return value;
+function getScore(username) {
+  var value = $.ajax({
+    url: '/users/score/' + username,
+    async: false
+  }).responseText;
+  return value;
 }
-function upVote(){
-  $('a.starBtn').on('click', function(e) {
-    var postId = $(this).parents().eq(3).attr('post_id');
-    console.log(postId)
-    $.ajax({
-      method: 'post',
-      url: '/api/like',
-      data: {'post_id' : postId},
-      datatype: 'json',
-      success: ()=>{
-        console.log('yes')
-      },
-      error: (e)=> {
-        console.log(e.responseText);
-        openLoginMenu();
-      }
 
-    })
+function upVote() {
+  $('a.starBtn').on('click', function(e) {
+    var postId = $(this).parents().eq(1).attr('post_id');
+    var stars = $(this).attr('post_id',postId)
+    var starCount = stars.text();
+    if(!starCount)
+      stars.text('ADDED 1 HOUR');
+    else{
+      stars.text('ADDED ' + stars.text().match(/\d+/)[0]+' HOURS')
+    }
+    console.log(postId)
+    // $.ajax({
+    //   method: 'post',
+    //   url: '/api/like',
+    //   data: {
+    //     'post_id': postId
+    //   },
+    //   datatype: 'json',
+    //   success: () => {
+    //     console.log('yes')
+    //     incrementPostScore(postId, target);
+    //   },
+    //   error: (e) => {
+    //     console.log(e.responseText);
+    //     openLoginMenu();
+    //   }
+    //
+    // });
   });
 }
 
-function createPost(post, prepend){
+function createPost(post, prepend) {
   var postDOM = '';
   var repliesDOM = '';
   var score;
-  if(post.username){
+  if (post.username) {
     //sync call
     //console.log('poster\'s score:'+getScore(post.username));
     //async call
     // $.getJSON('/users/score/'+post.username,(data)=>{
     //    score = data.score;
     //  });
-   }
+  }
 
   //var scoreLevel = getLevel(post)
-  $.each(post.replies,function(key,item){
-    repliesDOM+=createReply(item);
+  $.each(post.replies, function(key, item) {
+    repliesDOM += createReply(item);
   });
 
 
-  postDOM += '  <div class="post col s12 m6 hidden" post_id="'+post._id+'">';
-  postDOM += '    <span class="postDate">' + post.time+'</span>';
-  postDOM += '    <span class="user">'+((post.username)?'<img src="images/'+getLevel(0)+'.png" width="32px"/>'+post.username:' <i class="fa fa-rocket fa-2x" aria-hidden="true"></i>')+'</span>'
-  postDOM += '    <p>' + post.text_content.replace('\n','</br>') + '</p>';
+  postDOM += '  <div class="post col s12 m6 hidden" post_id="' + post._id + '">';
+  postDOM += '    <span class="post postDate">' + post.time + '</span>';
+  postDOM += '    <div class="user post">' + ((post.username) ? '<img src="images/' + getLevel(0) + '.png" width="32px"/><span class="username">'+post.username+'</span>' : ' <i class="fa fa-rocket fa-2x" aria-hidden="true"></i><span class="username"><i>Unknown Cosmonaut</i></span>') + '</div>'
+  postDOM += '    <p>' + post.text_content.replace('\n', '</br>') + '</p>';
   postDOM += '    <div class="fixed-action-btn horizontal myButtonGroup">';
-  postDOM += '        <a class="btn-floating btn-large"><i class="material-icons">label_outline</i></a>';
-  postDOM += '        <ul>';
-  postDOM += '            <li><a class="btn-floating starBtn"><i class="material-icons">star</i></a></li>';
-  postDOM += '            <li><a class="btn-floating blue darken-1 OpenReplyWindowBtn"><i class="material-icons">chat_bubble_outline</i></a></li>';
-  postDOM += '            <li><a class="btn-floating green testButton"><i class="material-icons">report_problem</i></a></li>';
-  postDOM += '        </ul>';
+  if(post.likes>0)
+    postDOM += '    <span class="stars">ADDED '+post.likes+' HOUR'+((post.likes!=1)?'S':'')+'</span>';
+  else
+    postDOM += '    <span class="stars"></span>';
+  postDOM += '        <a class="btn-floating btn-large waves-effect green waves-light"><i class="material-icons">report_problem</i></a>';
+  postDOM += '        <a class="btn-floating btn-large waves-effect blue darken-1 OpenReplyWindowBtn waves-light"><i class="material-icons">chat_bubble_outline</i></a>';
+  postDOM += '        <a class="btn-floating btn-large waves-effect starBtn waves-light"><i class="material-icons">star</i></a>';
   postDOM += '    </div>';
   postDOM += repliesDOM;
   postDOM += '</div>';
   //adds
-  if(prepend){
+  if (prepend) {
     $('#PostsPanel').prepend(postDOM);
-  }else{
+  } else {
     $('#PostsPanel').append(postDOM);
   }
 }
@@ -100,13 +111,13 @@ function createPost(post, prepend){
 
 function createReply(reply) {
   var replyDOM = '';
-  replyDOM+='<span class="postDate" style="margin-left:50px;">'+reply.time+'</span>';
-  replyDOM += '<span class="user">'+((reply.username)?'<img src="images/'+getLevel(0)+'.png" width="32px" style="margin-left:7px; margin-right:3px"/>'+reply.username:' <i class="fa fa-rocket fa-2x" aria-hidden="true"></i>')+'</span>';
-  replyDOM+='<p style="border-top:1px solid #52FFB8; margin-left:50px;  margin-bottom:15px;">'+reply.text_content+'</p>';
+  replyDOM += '<span class="user reply">' + ((reply.username) ? '<img src="images/' + getLevel(0) + '.png" width="32px" style="margin-left:-5px; margin-right:3px"/>' + reply.username : ' <i class="fa fa-rocket fa-2x" aria-hidden="true"></i><span class="username"><i>Unknown Cosmonaut</i></span>') + '</span>';
+  replyDOM += '<span class="reply postDate" style="margin-left:50px;">' + reply.time + '</span>';
+  replyDOM += '<p style="border-top:1px solid #52FFB8; margin-left:50px;  margin-bottom:15px;">' + reply.text_content + '</p>';
   return replyDOM;
 }
 
-function addReply(replyDOM, postId){
+function addReply(replyDOM, postId) {
 
 }
 
@@ -126,10 +137,12 @@ $('#PostTextArea').bind('input propertychange', () => {
 
 
 
-$("form.submitPanel").on('submit', function(e){
+$("form.submitPanel").on('submit', function(e) {
   e.preventDefault();
   var text = $('#PostTextArea').val();
-  var params = {'text_content': text}
+  var params = {
+    'text_content': text
+  }
   $('#PostTextArea').val('');
   $('#CharCount').text('')
   $.ajax({
@@ -137,13 +150,13 @@ $("form.submitPanel").on('submit', function(e){
     url: '/api',
     data: params,
     datatype: 'json',
-    success: function(data){
+    success: function(data) {
       createPost(data, true);
       $('div.post.hidden').hide().removeClass('hidden').fadeIn(800);
       upVote();
       openReply();
     },
-    error: function(){
+    error: function() {
       alert('oops something went wrong')
     }
   });

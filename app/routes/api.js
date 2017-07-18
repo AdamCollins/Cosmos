@@ -17,11 +17,11 @@ router.use(bodyParser.urlencoded({
   extended: false
 }));
 
-// require the module
-const OneSignalClient = require('node-onesignal').default;
+// // require the module
+// const OneSignalClient = require('node-onesignal').default;
 
-// create a new clinet
-const client = new OneSignalClient(config.oneSignalAppID, config.oneSignalRestAPIKey);
+// // // create a new clinet
+// const client = new OneSignalClient(config.oneSignalAppID, config.oneSignalRestAPIKey);
 
 function getData(db, callback) {
   var posts = db.collection('posts');
@@ -54,6 +54,9 @@ router.get('/api', function(req, res) {
         var date = item.date;
         var fomatedTimeLeft = formatDate(date);
         var replies = []
+      
+        var currentUserId = (req.session.user) ? req.session.user._id: null;
+        var currentUserStarPost = item.likes.includes(currentUserId)? 1:0
         if (item.replies)
           item.replies.forEach((reply) => {
             var minutes = Math.floor((new Date() - new Date(reply.date)) / (60 * 1000))
@@ -70,7 +73,7 @@ router.get('/api', function(req, res) {
           "username": username,
           "time": formatedTimeLeft,
           "replies": replies,
-          "likes": (item.likes)?item.likes.length:null
+          "likes": currentUserStarPost
         })
       });
       res.json(data)
@@ -124,7 +127,8 @@ router.post('/api', function(req, res) {
       'text_content': text,
       'username': username,
       'date': new Date(),
-      'replies': []
+      'replies': [],
+      'likes':[]
     });
     db.close();
     res.json({
@@ -177,18 +181,14 @@ router.post('/api/like', (req, res) => {
       var userId = req.session.user._id
       var postId = req.body.post_id
       var posts = db.collection('posts')
-      var userIds = db.collection('users')
-      if (!userIds.find({'_id': new ObjectId(userId)})){
+      var users = db.collection('users')
         posts.update({"_id": new ObjectId(postId)},
         {
-          '$push': {
+          $addToSet: {
             "likes": userId
           }
         });
-        res.status(200).send('saved');
-      }else{
-        res.status(401).send('duplicated');
-      }
+      res.status(200).send('saved');
     }
     db.close();
   })

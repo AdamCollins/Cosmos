@@ -23,7 +23,7 @@ router.use(session({
 
 
 router.get('/', function(req, res) {
-  console.log(req.session.user)
+  //console.log(req.session.user)
   if (req.session.user)
     res.render('index', req.session.user);
   else
@@ -45,20 +45,20 @@ router.get('/logout', (req, res) => {
 router.post('/login', (req, res) => {
   MongoClient.connect(url, (err, database) => {
     var userCol = database.collection('users');
-    console.log(1)
-    console.log(req.body.username)
+    //console.log(1)
+    //console.log(req.body.username)
     userCol.findOne({
       "username": req.body.username
     }, function(err, user) {
-      console.log(user)
+      //console.log(user)
       if (user) {
-        console.log(req.body);
-        console.log(user);
-        console.log(3)
+       // console.log(req.body);
+        //console.log(user);
+        //console.log(3)
         if (passwordMatchesHash(req.body.password, user.hashed_password)) {
           req.session.user = user;
           req.session.save();
-          console.log('logged ' + req.session.user.username + ' successfully!');
+          //console.log('logged ' + req.session.user.username + ' successfully!');
           res.json({
             "success": "Logged in Successfully",
             "status": 200
@@ -100,7 +100,7 @@ router.get('/users/score/:username', (req, res) => {
       }
     }
     userCol.findOne(query, (err, user) => {
-      console.log(user)
+      //console.log(user)
       if (user) {
         res.json({
           "score": user.score
@@ -154,7 +154,7 @@ function addUser(userdata, callback) {
 
 
 router.post('/register', (req, res) => {
-  console.log(req.body);
+  //console.log(req.body);
   var userdata = req.body;
   addUser(userdata);
   res.json({

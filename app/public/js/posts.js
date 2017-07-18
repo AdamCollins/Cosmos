@@ -20,7 +20,6 @@ function openReply() {
   });
 }
 
-
 function getLevel(score) {
   if (score > 10) {
     return 2;
@@ -38,31 +37,32 @@ function getScore(username) {
 
 function upVote() {
   $('a.starBtn').on('click', function(e) {
+    $(this).find('#colorStar').css('color', 'blue');
     var postId = $(this).parents().eq(1).attr('post_id');
     $.ajax({
       method: 'post',
       url: '/api/like',
-      data: {'post_id' : postId},
-      datatype: 'json',
-      success: ()=>{
-        console.log('yes')
+      data: {
+        'post_id': postId
       },
-      error: (e)=> {
-        if(e.responseText === 'saved'){
-          console.log(e.responseText);
+      datatype: 'json',
+      success: (textStatus) => {
+        console.log(textStatus)
+      },
+      error: (xhr, textStatus) => {
+        if(xhr.status){
           openLoginMenu();
         }
       }
     });
-  });  
+  });
 }
 
 function createPost(post, prepend) {
   var postDOM = '';
   var repliesDOM = '';
-  $.each(post.replies,function(key,item){
-    repliesDOM+=createReply(item);
   var score;
+  console.log(post.likes)
   if (post.username) {
     //sync call
     //console.log('poster\'s score:'+getScore(post.username));
@@ -75,8 +75,10 @@ function createPost(post, prepend) {
   //var scoreLevel = getLevel(post)
   $.each(post.replies, function(key, item) {
     repliesDOM += createReply(item);
+  });
   var usernameDOM =  '<img src="images/' + getLevel(0) + '.png" width="32px"/><span class="username">'+post.username+'</span>';
   var anonUserDOM = ' <i class="fa fa-rocket fa-2x" aria-hidden="true"></i><span class="username"><i>Unknown Cosmonaut</i></span>';
+
   postDOM += '  <div class="post col s12 m6 hidden z-depth-2" post_id="' + post._id + '">';
   postDOM += '    <span class="post postDate">' + post.time + '</span>';
   postDOM += '    <div class="user post">' + ((post.username)?usernameDOM:anonUserDOM) + '</div>'
@@ -88,7 +90,7 @@ function createPost(post, prepend) {
     postDOM += '    <span class="stars"></span>';
   postDOM += '        <a class="btn-floating btn-large waves-effect green waves-light hoverable"><i class="material-icons">report_problem</i></a>';
   postDOM += '        <a class="btn-floating btn-large waves-effect blue darken-1 hoverable OpenReplyWindowBtn waves-light"><i class="material-icons">chat_bubble_outline</i></a>';
-  postDOM += '        <a class="btn-floating btn-large waves-effect starBtn waves-light hoverable"><i class="material-icons">star</i></a>';
+  postDOM += '        <a class="btn-floating btn-large waves-effect starBtn waves-light hoverable"><i id="colorStar" class="material-icons">star</i></a>';
   postDOM += '    </div>';
   postDOM += repliesDOM;
   postDOM += '</div>';
@@ -97,6 +99,10 @@ function createPost(post, prepend) {
     $('#PostsPanel').prepend(postDOM);
   } else {
     $('#PostsPanel').append(postDOM);
+  }
+
+  if (post.likes == 1){
+    $('a.starBtn').find('#colorStar').css('color', 'blue');
   }
 }
 
@@ -112,6 +118,7 @@ function createReply(reply) {
 function addReply(replyDOM, postId) {
 
 }
+
 //Updates word count
 $('#PostTextArea').bind('input propertychange', () => {
   let charCount = $('#PostTextArea').val().length;

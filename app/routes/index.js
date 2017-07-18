@@ -23,7 +23,7 @@ router.use(session({
 
 
 router.get('/', function(req, res) {
-  console.log(req.session.user)
+  //console.log(req.session.user)
   if (req.session.user)
     res.render('index', req.session.user);
   else
@@ -36,11 +36,5 @@ router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({
   extended: false
 }));
-
-
-// router.get('/logout', (req, res) => {
-//   req.session.destroy();
-//   res.send('Logout successfully');
-// });
 
 module.exports = router;

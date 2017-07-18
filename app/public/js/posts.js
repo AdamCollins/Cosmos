@@ -37,6 +37,7 @@ function getScore(username) {
 
 function upVote() {
   $('a.starBtn').on('click', function(e) {
+    $(this).find('#colorStar').css('color', 'blue');
     var postId = $(this).parents().eq(1).attr('post_id');
     $.ajax({
       method: 'post',
@@ -45,6 +46,7 @@ function upVote() {
         'post_id': postId
       },
       datatype: 'json',
+<<<<<<< HEAD
       success: () => {
         console.log('yes')
         incrementPostScore(postId, target);
@@ -54,6 +56,16 @@ function upVote() {
         openLoginMenu();
       }
 
+=======
+      success: (textStatus) => {
+        console.log(textStatus)
+      },
+      error: (xhr, textStatus) => {
+        if(xhr.status){
+          openLoginMenu();
+        }
+      }
+>>>>>>> 1571fb6f5d0f4a08e7fbd87cde3c616ed8c7abfb
     });
   });
 }
@@ -62,6 +74,7 @@ function createPost(post, prepend) {
   var postDOM = '';
   var repliesDOM = '';
   var score;
+  console.log(post.likes)
   if (post.username) {
     //sync call
     //console.log('poster\'s score:'+getScore(post.username));
@@ -89,7 +102,7 @@ function createPost(post, prepend) {
     postDOM += '    <span class="stars"></span>';
   postDOM += '        <a class="btn-floating btn-large waves-effect green waves-light hoverable"><i class="material-icons">report_problem</i></a>';
   postDOM += '        <a class="btn-floating btn-large waves-effect blue darken-1 hoverable OpenReplyWindowBtn waves-light"><i class="material-icons">chat_bubble_outline</i></a>';
-  postDOM += '        <a class="btn-floating btn-large waves-effect starBtn waves-light hoverable"><i class="material-icons">star</i></a>';
+  postDOM += '        <a class="btn-floating btn-large waves-effect starBtn waves-light hoverable"><i id="colorStar" class="material-icons">star</i></a>';
   postDOM += '    </div>';
   postDOM += repliesDOM;
   postDOM += '</div>';
@@ -98,6 +111,10 @@ function createPost(post, prepend) {
     $('#PostsPanel').prepend(postDOM);
   } else {
     $('#PostsPanel').append(postDOM);
+  }
+
+  if (post.likes == 1){
+    $('a.starBtn').find('#colorStar').css('color', 'blue');
   }
 }
 

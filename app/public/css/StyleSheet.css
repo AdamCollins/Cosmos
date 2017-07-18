@@ -81,6 +81,7 @@ div.post>p {
   color: #52FFB8;
   font-size: 16px;
   font-family: 'Lato', sans-serif;
+  margin-left: 5px;
 }
 
 div.post.col.m6 {
@@ -94,6 +95,9 @@ div.post {
 span.postDate {
   font-size: 12px;
   color: #d4d4d4;
+}
+span.postDate.post {
+  float:right;
 }
 
 #SubmitPanel {
@@ -167,6 +171,11 @@ a.btn-floating.btn-large {
   height: 40px;
   width: 40px;
   top: 5px;
+  margin: 5px 5px 5px 5px;
+  float: right;
+}
+
+span.post.user{
 }
 
 a.btn-floating.btn-large>i {
@@ -179,8 +188,9 @@ a.btn-floating.btn-large>i {
 div.myButtonGroup {
   border-top: solid 1px #52FFB8;
   margin-top: 25px;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
   z-index: 0;
+  height: 40px;
 }
 
 .myButtonGroup>ul {
@@ -235,13 +245,26 @@ div.reply {
   margin-right: 10px;
 }
 
-span.user{
+span.username{
+  color:#d4d4d4;
+  font-weight: bolder;
+}
+div.user.post{
+  background: none;
+  margin-top: 0px;
+}
+div.user.post, span.stars{
   color:#52FFB8;
 }
 
-span.user > i{
-  font-size: 1.5em;
+span.stars{
+  font-weight: bold;
 }
+.user.reply{
+  color:#52FFB8;
+  margin-left: 22px;
+}
+
 
 a.exit-btn {
   float: right;

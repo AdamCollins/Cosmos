@@ -17,6 +17,12 @@ router.use(bodyParser.urlencoded({
   extended: false
 }));
 
+// require the module
+const OneSignalClient = require('node-onesignal').default;
+
+// create a new clinet
+const client = new OneSignalClient(config.oneSignalAppID, config.oneSignalRestAPIKey);
+
 function getData(db, callback) {
   var posts = db.collection('posts');
   posts.find({
@@ -41,7 +47,6 @@ router.get('/api', function(req, res) {
 
     getData(db, () => {
       var data = []
-      console.log("4")
       datapost.forEach((item) => {
         var id = item._id
         var text = item.text_content;
@@ -51,7 +56,7 @@ router.get('/api', function(req, res) {
         var replies = []
         if (item.replies)
           item.replies.forEach((reply) => {
-            var minutes = Math.floor((new Date() - new Date(reply.date))/(60 * 1000))
+            var minutes = Math.floor((new Date() - new Date(reply.date)) / (60 * 1000))
             replies.push({
               "text_content": reply.text_content,
               "username": reply.username,
@@ -64,7 +69,8 @@ router.get('/api', function(req, res) {
           "text_content": text,
           "username": username,
           "time": formatedTimeLeft,
-          "replies": replies
+          "replies": replies,
+          "likes": (item.likes)?item.likes.length:null
         })
       });
       res.json(data)
@@ -100,6 +106,10 @@ function msToTime(msDate) {
 
 //add post to database
 router.post('/api', function(req, res) {
+//   // send a notification
+// client.sendNotification('test notification', {
+//     included_segments: 'all'
+// });
   MongoClient.connect(url, (err, db) => {
     if (err) {
       console.log(err);
@@ -160,10 +170,10 @@ router.post('/api/reply', function(req, res) {
 });
 
 router.post('/api/like', (req, res) => {
-  MongoClient.connect(url, (err,db) => {
-    if(!req.session.user){
+  MongoClient.connect(url, (err, db) => {
+    if (!req.session.user) {
       res.status(401).send('please login')
-    }else{
+    } else {
       var userId = req.session.user._id
       var postId = req.body.post_id
       var posts = db.collection('posts')
@@ -172,13 +182,13 @@ router.post('/api/like', (req, res) => {
         posts.update({"_id": new ObjectId(postId)},
         {
           '$push': {
-          "likes": userId
+            "likes": userId
           }
         });
         res.status(200).send('saved');
       }else{
         res.status(401).send('duplicated');
-      }            
+      }
     }
     db.close();
   })

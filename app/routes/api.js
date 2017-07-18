@@ -31,11 +31,7 @@ function getData(db, callback) {
     callback();
   });
 }
-<<<<<<< HEAD
-=======
 
-
->>>>>>> 30a73a8b0f2a905326e5274e17d9708776662b9a
 router.get('/api', function(req, res) {
   MongoClient.connect(url, (err, db) => {
     if (err) {
@@ -180,9 +176,7 @@ router.post('/api/like', (req, res) => {
           }
         });
         res.status(200).send('saved');
-        console.log('fuck')
       }else{
-        console.log('here')
         res.status(401).send('duplicated');
       }            
     }

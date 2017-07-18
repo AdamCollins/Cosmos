@@ -38,32 +38,23 @@ function getScore(username) {
 function upVote() {
   $('a.starBtn').on('click', function(e) {
     var postId = $(this).parents().eq(1).attr('post_id');
-    var stars = $('[post_id="'+postId+'"]')
-    var starCount = stars.text();
-    console.log(starCount)
-    if(!starCount)
-      stars.text('ADDED 1 HOUR');
-    else{
-      stars.text('ADDED ' + stars.text().match(/\d+/)[0]+' HOURS')
-    }
-    console.log(postId)
-    // $.ajax({
-    //   method: 'post',
-    //   url: '/api/like',
-    //   data: {
-    //     'post_id': postId
-    //   },
-    //   datatype: 'json',
-    //   success: () => {
-    //     console.log('yes')
-    //     incrementPostScore(postId, target);
-    //   },
-    //   error: (e) => {
-    //     console.log(e.responseText);
-    //     openLoginMenu();
-    //   }
-    //
-    // });
+    $.ajax({
+      method: 'post',
+      url: '/api/like',
+      data: {
+        'post_id': postId
+      },
+      datatype: 'json',
+      success: () => {
+        console.log('yes')
+        incrementPostScore(postId, target);
+      },
+      error: (e) => {
+        console.log(e.responseText);
+        openLoginMenu();
+      }
+
+    });
   });
 }
 

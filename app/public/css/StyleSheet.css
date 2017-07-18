@@ -329,6 +329,11 @@ i.exit-btn {
   h1 {
     padding-bottom: 20px;
   }
+
+  div.register-page > h4{
+    margin-top: -32px;
+    margin-bottom: -12px;
+  }
 }
 
 @media only screen and (min-width: 601px) {

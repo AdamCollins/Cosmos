@@ -38,8 +38,9 @@ function getScore(username) {
 function upVote() {
   $('a.starBtn').on('click', function(e) {
     var postId = $(this).parents().eq(1).attr('post_id');
-    var stars = $(this).attr('post_id',postId)
+    var stars = $('[post_id="'+postId+'"]')
     var starCount = stars.text();
+    console.log(starCount)
     if(!starCount)
       stars.text('ADDED 1 HOUR');
     else{
@@ -83,20 +84,21 @@ function createPost(post, prepend) {
   $.each(post.replies, function(key, item) {
     repliesDOM += createReply(item);
   });
+  var usernameDOM =  '<img src="images/' + getLevel(0) + '.png" width="32px"/><span class="username">'+post.username+'</span>';
+  var anonUserDOM = ' <i class="fa fa-rocket fa-2x" aria-hidden="true"></i><span class="username"><i>Unknown Cosmonaut</i></span>';
 
-
-  postDOM += '  <div class="post col s12 m6 hidden" post_id="' + post._id + '">';
+  postDOM += '  <div class="post col s12 m6 hidden z-depth-2" post_id="' + post._id + '">';
   postDOM += '    <span class="post postDate">' + post.time + '</span>';
-  postDOM += '    <div class="user post">' + ((post.username) ? '<img src="images/' + getLevel(0) + '.png" width="32px"/><span class="username">'+post.username+'</span>' : ' <i class="fa fa-rocket fa-2x" aria-hidden="true"></i><span class="username"><i>Unknown Cosmonaut</i></span>') + '</div>'
+  postDOM += '    <div class="user post">' + ((post.username)?usernameDOM:anonUserDOM) + '</div>'
   postDOM += '    <p>' + post.text_content.replace('\n', '</br>') + '</p>';
   postDOM += '    <div class="fixed-action-btn horizontal myButtonGroup">';
   if(post.likes>0)
     postDOM += '    <span class="stars">ADDED '+post.likes+' HOUR'+((post.likes!=1)?'S':'')+'</span>';
   else
     postDOM += '    <span class="stars"></span>';
-  postDOM += '        <a class="btn-floating btn-large waves-effect green waves-light"><i class="material-icons">report_problem</i></a>';
-  postDOM += '        <a class="btn-floating btn-large waves-effect blue darken-1 OpenReplyWindowBtn waves-light"><i class="material-icons">chat_bubble_outline</i></a>';
-  postDOM += '        <a class="btn-floating btn-large waves-effect starBtn waves-light"><i class="material-icons">star</i></a>';
+  postDOM += '        <a class="btn-floating btn-large waves-effect green waves-light hoverable"><i class="material-icons">report_problem</i></a>';
+  postDOM += '        <a class="btn-floating btn-large waves-effect blue darken-1 hoverable OpenReplyWindowBtn waves-light"><i class="material-icons">chat_bubble_outline</i></a>';
+  postDOM += '        <a class="btn-floating btn-large waves-effect starBtn waves-light hoverable"><i class="material-icons">star</i></a>';
   postDOM += '    </div>';
   postDOM += repliesDOM;
   postDOM += '</div>';

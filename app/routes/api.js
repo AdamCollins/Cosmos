@@ -183,15 +183,26 @@ router.post('/api/like', (req, res) => {
     } else {
       var userId = req.session.user._id
       var postId = req.body.post_id
+      var starStatus = req.body.starStatus
       var posts = db.collection('posts')
       var users = db.collection('users')
+      if (starStatus == 1){
         posts.update({"_id": new ObjectId(postId)},
         {
           $addToSet: {
             "likes": userId
           }
         });
-      res.status(200).send('saved');
+        
+      }else{
+        posts.update(
+          { "_id" : new ObjectId(postId) },
+          { $pull: { 
+            "likes":userId }
+          }
+        );
+      }
+      res.status(200).send('updated!');
     }
     db.close();
   })

@@ -39,21 +39,30 @@ function getScore(username) {
 function upVote() {
   $('a.starBtn').on('click', function(e) {
     var postId = $(this).parents().eq(1).attr('post_id');
+    if ($(this).children('i').is('.unColoredStar')){
+      var starStatus = 1
+      $(this).find(".unColoredStar").css('color', '#52FFB8').removeClass("unColoredStar").addClass('coloredStar');
+    }else if ($(this).children('i').is('.coloredStar')){
+      $(this).find(".coloredStar").css('color', 'white').removeClass("coloredStar").addClass('unColoredStar');
+      var starStatus = 0
+    }
+    console.log(starStatus)
     $.ajax({
       method: 'post',
       url: '/api/like',
       data: {
-        'post_id': postId
+        'post_id': postId,
+        'starStatus': starStatus
       },
       datatype: 'json',
       success: (textStatus) => {
         console.log(textStatus)
-         $('a.starBtn').find('#colorStar').css('color', 'blue');
       },
       error: (xhr, textStatus) => {
-        if (xhr.status) {
+        //if (xhr.status == 401) {
+        $(this).find("i.coloredStar").css('color', 'white')
           openLoginMenu();
-        }
+        //}
       }
     });
   });
@@ -103,7 +112,7 @@ function createPost(post, prepend) {
     $('#PostsPanel').append(postDOM);
   }
 
-  $('.coloredStar').css('color', 'blue');
+  $('.coloredStar').css('color', '#52FFB8');
 }
 
 

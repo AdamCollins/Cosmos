@@ -3,7 +3,6 @@ var reload = require('reload');
 var app = express();
 var postData = require('./data/posts.json');
 var session = require('express-session');
-
 app.set('port',3000);
 app.set('view engine', 'ejs');
 app.set('views', 'app/views');
@@ -12,7 +11,8 @@ app.use(express.static('app/public'));
 app.use(require('./routes/index'));
 app.use(require('./routes/api'));
 app.use(require('./routes/login'));
-app.use(require('./routes/notifications'));
+// app.use(require('./modules/notifications'));
+// app.use(require('./routes/notifications'));
 app.use(session({
   secret: "asdfghjhrgtygf4etr23retfgcnvhmKJHJGHJKm",
   resave: false,

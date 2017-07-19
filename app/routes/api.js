@@ -3,6 +3,7 @@ var express = require('express');
 var MongoClient = require('mongodb').MongoClient;
 var ObjectId = require('mongodb').ObjectID;
 var router = express.Router();
+var notifier = require('../modules/notifier');
 var bodyParser = require('body-parser');
 var sanitizer = require('sanitizer');
 var dbName = "cosmosdb";
@@ -54,7 +55,7 @@ router.get('/api', function(req, res) {
         var date = item.date;
         var fomatedTimeLeft = formatDate(date);
         var replies = []
-      
+
         var currentUserId = (req.session.user) ? req.session.user._id: null;
         var currentUserStarPost = item.likes.includes(currentUserId)? 1:0
         if (item.replies)
@@ -141,6 +142,7 @@ router.post('/api', function(req, res) {
     db.close();
     if (username) {
       console.log('sending notification...')
+      notifier.sendNotification('<h2>'+username +' just made a new Post!</h2>'+text)
     }
   })
 });

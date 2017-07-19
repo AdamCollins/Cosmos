@@ -351,3 +351,7 @@ i.exit-btn {
     float: right;
   }
 }
+
+.coloredStar {
+  color: blue;
+}

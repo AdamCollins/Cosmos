@@ -1,8 +1,9 @@
-exports.sendNotification = function(device, message) {
+module.exports.sendNotification = function(message) {
   var config = require('../data/config');
+	console.log(config.oneSignalRestAPIKey)
   var request = require('request');
-  var restKey = config.oneSignalAppID;
-  var appID = '9f7861b3-e1cc-4fab-85db-8dcbf09fbaab';
+  var restKey = config.oneSignalRestAPIKey+'';
+  var appID = config.oneSignalAppID;
   request({
       method: 'POST',
       uri: 'https://onesignal.com/api/v1/notifications',
@@ -16,7 +17,7 @@ exports.sendNotification = function(device, message) {
         'contents': {
           en: message
         },
-        'include_player_ids': Array.isArray(device) ? device : [device]
+        included_segments: ["All"]
       }
     },
     function(error, response, body) {

@@ -3,7 +3,8 @@ var reload = require('reload');
 var app = express();
 var postData = require('./data/posts.json');
 var session = require('express-session');
-app.set('port',3000);
+var port = process.env.PORT || 3000;
+app.set('port',port);
 app.set('view engine', 'ejs');
 app.set('views', 'app/views');
 

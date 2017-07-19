@@ -1,7 +1,7 @@
 $('#LoginBtn').click(login);
 
 function login() {
-  $('#RegProgress').css('visibility','visible');
+  $('#RegProgress').css('visibility', 'visible');
   console.log('attempting login...');
   let username = $('#usernameTF').val();
   let password = $('#passwordTF').val();
@@ -16,29 +16,62 @@ function login() {
       },
       datatype: 'json',
       success: function(data) {
-        if (data.status == 200) {
-          window.location = "";
-        } else if(data.status == 401){
-          Materialize.toast('Incorrect username or password 😭', 2000);
-          $('#RegProgress').css('visibility','hidden');
-          makeInvalid($('#usernameTF'));
-          makeInvalid($('#passwordTF'));
+        window.location = "";
+      },
+      error: function(data) {
+        let status = data.status;
+        switch (status) {
+          case 401:
+            invalidLogin();
+            break;
+          case 403:
+            accountUnverified();
+            break;
+          default:
+            console.log(data);
+
         }
       }
     });
   }
 }
 
+function invalidLogin(){
+  Materialize.toast('Incorrect username or password 😭', 2000);
+  $('#RegProgress').css('visibility', 'hidden');
+  makeInvalid($('#usernameTF'));
+  makeInvalid($('#passwordTF'));
+}
+
+function accountUnverified(){
+  Materialize.toast('Please verify your account 📧', 2000);
+  $('#RegProgress').css('visibility', 'hidden');
+}
+
 function inputsValid() {
   return !($('#passwordTF').hasClass('invalid')) && !($('#passwordTF').hasClass('invalid'));
 }
 
+
 $('#RegisterBtn').click(function(e) {
   e.preventDefault();
-  $('#RegProgress').css('visibility','visible');
+
+  $('#RegProgress').css('visibility', 'visible');
   let username = $('#usernameTF').val();
-  if (username.length < 0)
+  let email = $('#emailTF').val();
+  if (username.length < 1)
     makeInvalid($('#usernameTF'));
+
+  if(!email.match(/[A-z0-9]+@+[A-z0-9]+.+[A-z]/g)){
+    Materialize.toast('Invalid email',2000);
+    $('#RegProgress').css('visibility', 'hidden');
+    makeInvalid($('#emailTF'));
+    return;
+  }
+  else{
+    makeValid($('#emailTF'));
+  }
+
   let password = $('#passwordTF').val();
   let passwordConfig = $('#passwordConfTF').val();
   if (password.length >= 6) {
@@ -54,11 +87,12 @@ $('#RegisterBtn').click(function(e) {
             url: '/register',
             data: {
               'username': username,
-              'password': password
+              'password': password,
+              'email':email
             },
             datatype: 'json',
             success: function(data) {
-              login();
+              accountUnverified();
             },
             error: function() {
               alert('oops something went wrong')
@@ -67,6 +101,7 @@ $('#RegisterBtn').click(function(e) {
         } else {
           makeInvalid($('#usernameTF'));
           Materialize.toast('Username not availible', 2000);
+          $('#RegProgress').css('visibility', 'hidden');
         }
       });
       //  register  //TODO recheck during post
@@ -83,7 +118,7 @@ $('#RegisterBtn').click(function(e) {
 
 $('#LogoutBtn').click((e) => {
   e.preventDefault();
-  $.get('/logout',()=>{
+  $.get('/logout', () => {
     window.location = "";
   })
 });

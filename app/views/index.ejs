@@ -26,12 +26,13 @@
     var OneSignal = window.OneSignal || [];
     OneSignal.push(["init", {
       appId: "9f7861b3-e1cc-4fab-85db-8dcbf09fbaab",
-      autoRegister: true, /* Set to true to automatically prompt visitors */
+      autoRegister: true,
+      /* Set to true to automatically prompt visitors */
       httpPermissionRequest: {
         enable: true
       },
       notifyButton: {
-          enable: true /* Set to false to hide */
+        enable: true /* Set to false to hide */
       }
     }]);
   </script> -->
@@ -57,7 +58,7 @@
       <ul class="loginmenu dropdown hidden">
         <li><a href="javascript:void(0);" id='loginMenuBtn'>Login</a></li>
         <li><a href="javascript:void(0);" id='registerMenuBtn'>Register</a></li>
-        <li <%=(username)?'':'hidden="hidden"'%>><a href="javascript:void(0);" id="LogoutBtn">Logout</a></li>
+        <li <%=(username)? '': 'hidden="hidden"'%>><a href="javascript:void(0);" id="LogoutBtn">Logout</a></li>
 
       </ul>
     </div>
@@ -108,19 +109,26 @@
         </div>
         <div class="row register-page">
           <h4 class="col s12">Login/Register</h4>
-          <div class="input-field col s12 m6">
-            <input ID="usernameTF" type="email" maxlength="12" autocomplete="off"></input>
-            <label for="usernameTF">Username</label>
+          <div class="col s12" id="LoginContainer" style="position:relative">
+            <div class="input-field col s12 m6">
+              <input ID="usernameTF" type="email" maxlength="12" autocomplete="off"></input>
+              <label for="usernameTF">Username</label>
+            </div>
+            <div class="input-field col s12 m6">
+              <input ID="passwordTF" type="password" class="validate" autocomplete="off" maxlength="40"></input>
+              <label for="password">Password</label>
+            </div>
           </div>
-
-          <div class="input-field col s12 m6">
-            <input ID="passwordTF" type="password" class="validate" autocomplete="off" maxlength="40"></input>
-            <label for="password">Password</label>
-          </div>
+            <div class="col s12" id="RegisterContainer" style="position:relative">
           <div class="input-field col s12 m6">
             <input ID="passwordConfTF" type="password" autocomplete="off" maxlength="40"></input>
             <label for="passwordconf">Confirm Password</label>
           </div>
+          <div class="input-field col s12 m6">
+            <input ID="emailTF" type="email" autocomplete="off" maxlength="40"></input>
+            <label for="emailTF">Email</label>
+          </div>
+        </div>
           <div class="col m6"></div>
         </div>
         <row>
@@ -146,7 +154,7 @@
   </div>
 </body>
 <!--MyJavascript-->
-<script type= "text/javascript" src="js/register.js"></script>
+<script type="text/javascript" src="js/register.js"></script>
 <script type="text/javascript" src="js/index.js"></script>
 <script type="text/javascript" src="js/posts.js"></script>
 <script type="text/javascript" src="js/reply.js"></script>

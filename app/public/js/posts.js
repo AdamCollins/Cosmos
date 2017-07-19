@@ -13,9 +13,10 @@ function loadPosts(postData) {
 
 function openReply() {
   $('div.post.hidden').hide().removeClass('hidden').fadeIn(800);
-  $('a.OpenReplyWindowBtn').on('click', () => {
+  $('a.OpenReplyWindowBtn').click((e) => {
     $('#ReplyArea').fadeIn(300);
-    var post_id = $(this).parents().eq(3).attr("post_id");
+    var post_id = $(e.target).parents().eq(2).attr("post_id");
+    console.log(post_id)
     $('#ReplyPanel').attr('replypostid', post_id);
   });
 }
@@ -50,7 +51,7 @@ function upVote() {
          $('a.starBtn').find('#colorStar').css('color', 'blue');
       },
       error: (xhr, textStatus) => {
-        if(xhr.status){
+        if (xhr.status) {
           openLoginMenu();
         }
       }
@@ -75,16 +76,16 @@ function createPost(post, prepend) {
   $.each(post.replies, function(key, item) {
     repliesDOM += createReply(item);
   });
-  var usernameDOM =  '<img src="images/' + getLevel(0) + '.png" width="32px"/><span class="username">'+post.username+'</span>';
+  var usernameDOM = '<img src="images/' + getLevel(0) + '.png" width="32px"/><span class="username">' + post.username + '</span>';
   var anonUserDOM = ' <i class="fa fa-rocket fa-2x" aria-hidden="true"></i><span class="username"><i>Unknown Cosmonaut</i></span>';
 
   postDOM += '  <div class="post col s12 m6 hidden z-depth-2" post_id="' + post._id + '">';
   postDOM += '    <span class="post postDate">' + post.time + '</span>';
-  postDOM += '    <div class="user post">' + ((post.username)?usernameDOM:anonUserDOM) + '</div>'
+  postDOM += '    <div class="user post">' + ((post.username) ? usernameDOM : anonUserDOM) + '</div>'
   postDOM += '    <p>' + post.text_content.replace('\n', '</br>') + '</p>';
   postDOM += '    <div class="fixed-action-btn horizontal myButtonGroup">';
-  if(post.likes>0)
-    postDOM += '    <span class="stars">ADDED '+post.likes+' HOUR'+((post.likes!=1)?'S':'')+'</span>';
+  if (post.likes > 0)
+    postDOM += '    <span class="stars">ADDED ' + post.likes + ' HOUR' + ((post.likes != 1) ? 'S' : '') + '</span>';
   else
     postDOM += '    <span class="stars"></span>';
   postDOM += '        <a class="btn-floating btn-large waves-effect green waves-light hoverable"><i class="material-icons">report_problem</i></a>';
@@ -99,8 +100,8 @@ function createPost(post, prepend) {
   } else {
     $('#PostsPanel').append(postDOM);
   }
-  console.log(post.likes)
-  if (post.likes == 1){
+
+  if (post.likes == 1) {
     $('a.starBtn').find('#colorStar').css('color', 'blue');
   }
 }

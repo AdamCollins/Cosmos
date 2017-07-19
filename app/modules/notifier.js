@@ -1,0 +1,32 @@
+module.exports.sendNotification = function(message) {
+  var config = require('../data/config');
+	console.log(config.oneSignalRestAPIKey)
+  var request = require('request');
+  var restKey = config.oneSignalRestAPIKey+'';
+  var appID = config.oneSignalAppID;
+  request({
+      method: 'POST',
+      uri: 'https://onesignal.com/api/v1/notifications',
+      headers: {
+        "authorization": "Basic " + restKey,
+        "content-type": "application/json"
+      },
+      json: true,
+      body: {
+        'app_id': appID,
+        'contents': {
+          en: message
+        },
+        included_segments: ["All"]
+      }
+    },
+    function(error, response, body) {
+      if (!body.errors) {
+        console.log(body);
+      } else {
+        console.error('Error:', body.errors);
+      }
+
+    }
+  );
+}

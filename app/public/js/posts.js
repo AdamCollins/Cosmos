@@ -37,7 +37,6 @@ function getScore(username) {
 
 function upVote() {
   $('a.starBtn').on('click', function(e) {
-    $(this).find('#colorStar').css('color', 'blue');
     var postId = $(this).parents().eq(1).attr('post_id');
     $.ajax({
       method: 'post',
@@ -48,6 +47,7 @@ function upVote() {
       datatype: 'json',
       success: (textStatus) => {
         console.log(textStatus)
+         $('a.starBtn').find('#colorStar').css('color', 'blue');
       },
       error: (xhr, textStatus) => {
         if(xhr.status){
@@ -62,7 +62,6 @@ function createPost(post, prepend) {
   var postDOM = '';
   var repliesDOM = '';
   var score;
-  console.log(post.likes)
   if (post.username) {
     //sync call
     //console.log('poster\'s score:'+getScore(post.username));
@@ -100,7 +99,7 @@ function createPost(post, prepend) {
   } else {
     $('#PostsPanel').append(postDOM);
   }
-
+  console.log(post.likes)
   if (post.likes == 1){
     $('a.starBtn').find('#colorStar').css('color', 'blue');
   }

@@ -118,7 +118,6 @@ router.post('/api', function(req, res) {
       console.log(err);
     }
     console.log('connected successfully to database');
-    console.log(req.body)
     var posts = db.collection('posts');
     var data = req.body;
     var text = sanitizer.escape(data.text_content);
@@ -129,13 +128,17 @@ router.post('/api', function(req, res) {
       'date': new Date(),
       'replies': [],
       'likes':[]
-    });
-    db.close();
-    res.json({
+    }, (err, post)=>{
+      console.log(post.insertedIds[0])
+      //console.log(post[0]._id)
+      res.json({
       "text_content": text,
       "username": username,
-      "time": "48h remaining"
+      "time": "48h remaining",
+      "_id": post.insertedIds[0]
+      });
     });
+    db.close();
     if (username) {
       console.log('sending notification...')
     }

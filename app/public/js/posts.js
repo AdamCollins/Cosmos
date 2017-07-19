@@ -78,7 +78,8 @@ function createPost(post, prepend) {
   });
   var usernameDOM = '<img src="images/' + getLevel(0) + '.png" width="32px"/><span class="username">' + post.username + '</span>';
   var anonUserDOM = ' <i class="fa fa-rocket fa-2x" aria-hidden="true"></i><span class="username"><i>Unknown Cosmonaut</i></span>';
-
+  
+  var colorStar = (post.likes == 1)? "coloredStar" : "unColoredStar";
   postDOM += '  <div class="post col s12 m6 hidden z-depth-2" post_id="' + post._id + '">';
   postDOM += '    <span class="post postDate">' + post.time + '</span>';
   postDOM += '    <div class="user post">' + ((post.username) ? usernameDOM : anonUserDOM) + '</div>'
@@ -90,10 +91,11 @@ function createPost(post, prepend) {
     postDOM += '    <span class="stars"></span>';
   postDOM += '        <a class="btn-floating btn-large waves-effect green waves-light hoverable"><i class="material-icons">report_problem</i></a>';
   postDOM += '        <a class="btn-floating btn-large waves-effect blue darken-1 hoverable OpenReplyWindowBtn waves-light"><i class="material-icons">chat_bubble_outline</i></a>';
-  postDOM += '        <a class="btn-floating btn-large waves-effect starBtn waves-light hoverable"><i id="colorStar" class="material-icons">star</i></a>';
+  postDOM += '        <a class="btn-floating btn-large waves-effect starBtn waves-light hoverable"><i class="material-icons '+colorStar+'">star</i></a>';
   postDOM += '    </div>';
   postDOM += repliesDOM;
   postDOM += '</div>';
+  
   //adds
   if (prepend) {
     $('#PostsPanel').prepend(postDOM);
@@ -101,9 +103,7 @@ function createPost(post, prepend) {
     $('#PostsPanel').append(postDOM);
   }
 
-  if (post.likes == 1) {
-    $('a.starBtn').find('#colorStar').css('color', 'blue');
-  }
+  $('.coloredStar').css('color', 'blue');
 }
 
 
@@ -148,8 +148,8 @@ $("form.submitPanel").on('submit', function(e) {
     url: '/api',
     data: params,
     datatype: 'json',
-    success: function(data) {
-      createPost(data, true);
+    success: function(post) {
+      createPost(post, true);
       $('div.post.hidden').hide().removeClass('hidden').fadeIn(800);
       upVote();
       openReply();

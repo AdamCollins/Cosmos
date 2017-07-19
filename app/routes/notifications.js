@@ -4,8 +4,8 @@ var router = express.Router();
 var config = require('../data/config');
 var request = require('request');
 var sendMessage = function(device, message){
-	var restKey = config.oneSignalAppID;
-	var appID = '9f7861b3-e1cc-4fab-85db-8dcbf09fbaab';
+var restKey = config.oneSignalAppID;
+var appID = '9f7861b3-e1cc-4fab-85db-8dcbf09fbaab';
 	request(
 		{
 			method:'POST',

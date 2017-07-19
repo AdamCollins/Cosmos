@@ -16,7 +16,7 @@ function openReply() {
   $('a.OpenReplyWindowBtn').click((e) => {
     $('#ReplyArea').fadeIn(300);
     var post_id = $(e.target).parents().eq(2).attr("post_id");
-    console.log(post_id)
+    console.log(post_id);
     $('#ReplyPanel').attr('replypostid', post_id);
   });
 }

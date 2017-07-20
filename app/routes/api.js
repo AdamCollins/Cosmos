@@ -171,8 +171,8 @@ router.post('/api/reply', function(req, res) {
         "replies": newReply
       }
     },(err, data)=>{
-      if(data.OneSignalUserId)
-        notifier.sendNotification('Yo, someone replied to your post: '+text,data.OneSignalUserId);
+      if(data.value.OneSignalUserId)
+        notifier.sendNotification('Yo, someone replied to your post: '+text,data.value.OneSignalUserId);
     })
     db.close();
     res.json({

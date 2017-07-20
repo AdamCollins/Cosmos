@@ -17,7 +17,7 @@ module.exports.sendNotification = function(message, userId) {
         'contents': {
           en: message
         },
-        included_segments: [userId]
+        'include_player_ids': userId
       }
     },
     function(error, response, body) {

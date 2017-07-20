@@ -352,6 +352,18 @@ i.exit-btn {
   }
 }
 
+div.reply-container{
+  color:#52FFB8;
+}
+div.reply-container > p {
+  margin-top: 0px;
+}
+
+span.reply.postDate{
+  color:#d1d1d1;
+  float: right;
+}
+
 .coloredStar {
   color: blue;
 }

@@ -87,7 +87,7 @@ function createPost(post, prepend) {
   });
   var usernameDOM = '<img src="images/' + getLevel(0) + '.png" width="32px"/><span class="username">' + post.username + '</span>';
   var anonUserDOM = ' <i class="fa fa-rocket fa-2x" aria-hidden="true"></i><span class="username"><i>Unknown Cosmonaut</i></span>';
-  
+
   var colorStar = (post.likes == 1)? "coloredStar" : "unColoredStar";
   postDOM += '  <div class="post col s12 m6 hidden z-depth-2" post_id="' + post._id + '">';
   postDOM += '    <span class="post postDate">' + post.time + '</span>';
@@ -102,9 +102,11 @@ function createPost(post, prepend) {
   postDOM += '        <a class="btn-floating btn-large waves-effect blue darken-1 hoverable OpenReplyWindowBtn waves-light"><i class="material-icons">chat_bubble_outline</i></a>';
   postDOM += '        <a class="btn-floating btn-large waves-effect starBtn waves-light hoverable"><i class="material-icons '+colorStar+'">star</i></a>';
   postDOM += '    </div>';
+  postDOM += ' <div class="reply-container">';
   postDOM += repliesDOM;
+  postDOM += '  </div>';
   postDOM += '</div>';
-  
+
   //adds
   if (prepend) {
     $('#PostsPanel').prepend(postDOM);
@@ -125,7 +127,8 @@ function createReply(reply) {
 }
 
 function addReply(replyDOM, postId) {
-
+  console.log($('[post_id="'+postId+'"]'))
+  $('[post_id="'+postId+'"]').append(replyDOM);
 }
 
 //Updates word count

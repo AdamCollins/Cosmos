@@ -130,7 +130,7 @@ router.post('/api', function(req, res) {
       'date': new Date(),
       'replies': [],
       'likes':[],
-      'OneSignalUserId':data.OneSignalUserId;
+      'OneSignalUserId':data.OneSignalUserId,
     }, (err, post)=>{
       console.log(post.insertedIds[0])
       //console.log(post[0]._id)

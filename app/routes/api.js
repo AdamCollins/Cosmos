@@ -54,7 +54,7 @@ router.get('/api', function(req, res) {
         var username = item.username;
         var date = item.date;
         var fomatedTimeLeft = formatDate(date);
-        var replies = []
+        var replies = [];
 
         var currentUserId = (req.session.user) ? req.session.user._id: null;
         var currentUserStarPost = item.likes.includes(currentUserId)? 1:0
@@ -74,7 +74,8 @@ router.get('/api', function(req, res) {
           "username": username,
           "time": formatedTimeLeft,
           "replies": replies,
-          "likes": currentUserStarPost
+          "likes": currentUserStarPost,
+          'OneSignalUserId':item.OneSignalUserId
         })
       });
       res.json(data)
@@ -128,7 +129,8 @@ router.post('/api', function(req, res) {
       'username': username,
       'date': new Date(),
       'replies': [],
-      'likes':[]
+      'likes':[],
+      'OneSignalUserId':data.OneSignalUserId;
     }, (err, post)=>{
       console.log(post.insertedIds[0])
       //console.log(post[0]._id)
@@ -195,11 +197,11 @@ router.post('/api/like', (req, res) => {
             "likes": userId
           }
         });
-        
+
       }else{
         posts.update(
           { "_id" : new ObjectId(postId) },
-          { $pull: { 
+          { $pull: {
             "likes":userId }
           }
         );

@@ -1,4 +1,4 @@
-module.exports.sendNotification = function(message) {
+module.exports.sendNotification = function(message, userId) {
   var config = require('../data/config');
 	console.log(config.oneSignalRestAPIKey)
   var request = require('request');
@@ -17,7 +17,7 @@ module.exports.sendNotification = function(message) {
         'contents': {
           en: message
         },
-        included_segments: ["All"]
+        included_segments: [userId]
       }
     },
     function(error, response, body) {

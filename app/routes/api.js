@@ -67,7 +67,6 @@ router.get('/api', function(req, res) {
               "time": minutes < 120 ? minutes + 'm ago' : Math.floor(minutes / 60) + 'h ago'
             })
           });
-
         data.push({
           "_id": id,
           "text_content": text,
@@ -165,12 +164,15 @@ router.post('/api/reply', function(req, res) {
       'username': username,
       'date': new Date()
     }
-    posts.update({
+    posts.findOneAndUpdate({
       '_id': new ObjectId(replyPostId)
     }, {
       '$push': {
         "replies": newReply
       }
+    },(err, data)=>{
+      if(OneSignalUserId)
+        notifier.sendNotification('Yo, someone replied to your post: '+text,OneSignalUserId);
     })
     db.close();
     res.json({

@@ -35,6 +35,7 @@ div.loginmenu {
   padding: 0px;
   margin-left: 0px;
   margin-right: 0px;
+  z-index: 5;
 }
 
 ul.loginmenu.dropdown {

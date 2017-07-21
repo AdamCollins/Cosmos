@@ -57,6 +57,8 @@ function upVote() {
       datatype: 'json',
       success: (textStatus) => {
         console.log(textStatus)
+        $(this).parents().find('span.stars').append('ADDED '+'')
+        //ADDED ' + post.likes + ' HOUR' + ((post.likes != 1) ? 'S' : '') + '
       },
       error: (xhr, textStatus) => {
         //if (xhr.status == 401) {
@@ -124,9 +126,6 @@ function createReply(reply) {
   return replyDOM;
 }
 
-function addReply(replyDOM, postId) {
-
-}
 
 //Updates word count
 $('#PostTextArea').bind('input propertychange', () => {

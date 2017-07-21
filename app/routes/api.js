@@ -130,8 +130,6 @@ router.post('/api', function(req, res) {
       'replies': [],
       'likes':[]
     }, (err, post)=>{
-      console.log(post.insertedIds[0])
-      //console.log(post[0]._id)
       res.json({
       "text_content": text,
       "username": username,
@@ -189,13 +187,15 @@ router.post('/api/like', (req, res) => {
       var posts = db.collection('posts')
       var users = db.collection('users')
       if (starStatus == 1){
-        posts.update({"_id": new ObjectId(postId)},
+        posts.findOneAndUpdate({"_id": new ObjectId(postId)},
         {
           $addToSet: {
             "likes": userId
           }
-        });
-        
+        }, (err, data)=>{
+           console.log(data.value)
+           res.status(200).send('liked!');
+        });        
       }else{
         posts.update(
           { "_id" : new ObjectId(postId) },
@@ -203,8 +203,8 @@ router.post('/api/like', (req, res) => {
             "likes":userId }
           }
         );
+        res.status(200).send('unliked!');
       }
-      res.status(200).send('updated!');
     }
     db.close();
   })

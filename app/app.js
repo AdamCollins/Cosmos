@@ -28,7 +28,7 @@ app.use(session({
 }));
 
 var port = app.get('port')
-var server = var server = https.createServer(httpsOptions, app).listen(443, function(){
+var server = https.createServer(httpsOptions, app).listen(443, function(){
   console.log('listening securely on port 443');
 });
 

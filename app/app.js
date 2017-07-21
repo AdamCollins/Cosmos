@@ -7,9 +7,9 @@ var postData = require('./data/posts.json');
 var session = require('express-session');
 var port = process.env.PORT || 3000;
 var httpsOptions = {
-  ca: fs.readFileSync("./ssl/bundle.cert"),
-  key: fs.readFileSync("./ssl/key.pem"),
-  cert: fs.readFileSync("./ssl/cert.pem")
+  ca: fs.readFileSync("./ssl/bundle.crt"),
+  key: fs.readFileSync("./ssl/gocosmos.key"),
+  cert: fs.readFileSync("./ssl/gocosmos.crt")
 };
 app.set('port',port);
 app.set('view engine', 'ejs');

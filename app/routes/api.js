@@ -57,7 +57,8 @@ router.get('/api', function(req, res) {
         var replies = [];
 
         var currentUserId = (req.session.user) ? req.session.user._id: null;
-        var currentUserStarPost = item.likes.includes(currentUserId)? 1:0
+        var currentUserStarPost = item.likes.includes(currentUserId)? 1:0;
+        var numOfStars = item.likes.length;
         if (item.replies)
           item.replies.forEach((reply) => {
             var minutes = Math.floor((new Date() - new Date(reply.date)) / (60 * 1000))
@@ -73,7 +74,7 @@ router.get('/api', function(req, res) {
           "username": username,
           "time": formatedTimeLeft,
           "replies": replies,
-          "likes": currentUserStarPost,
+          "likes": numOfStars,
           'OneSignalUserId':item.OneSignalUserId
         })
       });
@@ -114,15 +115,18 @@ router.post('/api', function(req, res) {
 // client.sendNotification('test notification', {
 //     included_segments: 'all'
 // });
+  console.log(0)
   MongoClient.connect(url, (err, db) => {
     if (err) {
       console.log(err);
     }
+    console.log(1)
     console.log('connected successfully to database');
     var posts = db.collection('posts');
     var data = req.body;
     var text = sanitizer.escape(data.text_content);
     var username = (req.session.user) ? req.session.user.username : null;
+    console.log(2)
     posts.insert({
       'text_content': text,
       'username': username,
@@ -131,6 +135,7 @@ router.post('/api', function(req, res) {
       'likes':[],
       'OneSignalUserId':data.OneSignalUserId,
     }, (err, post)=>{
+      console.log(3)
       res.json({
       "text_content": text,
       "username": username,
@@ -138,6 +143,7 @@ router.post('/api', function(req, res) {
       "_id": post.insertedIds[0]
       });
     });
+    console.log(2)
     db.close();
     if (username) {
       console.log('sending notification...')
@@ -200,7 +206,7 @@ router.post('/api/like', (req, res) => {
         }, (err, data)=>{
            console.log(data.value)
            res.status(200).send('liked!');
-        });        
+        });
       }else{
         posts.update(
           { "_id" : new ObjectId(postId) },

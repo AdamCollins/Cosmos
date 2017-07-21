@@ -1,9 +1,16 @@
 var express = require('express');
 var reload = require('reload');
+var https = require('https');
+var fs = require('fs');
 var app = express();
 var postData = require('./data/posts.json');
 var session = require('express-session');
 var port = process.env.PORT || 3000;
+var httpsOptions = {
+  ca: fs.readFileSync("./ssl/bundle.cert"),
+  key: fs.readFileSync("./ssl/key.pem"),
+  cert: fs.readFileSync("./ssl/cert.pem")
+};
 app.set('port',port);
 app.set('view engine', 'ejs');
 app.set('views', 'app/views');
@@ -21,8 +28,8 @@ app.use(session({
 }));
 
 var port = app.get('port')
-var server = app.listen(port, function(){
-  console.log('listening on port ' + port);
+var server = var server = https.createServer(httpsOptions, app).listen(443, function(){
+  console.log('listening securely on port 443');
 });
 
 reload(server,app);

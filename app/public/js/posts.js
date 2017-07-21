@@ -161,7 +161,10 @@ $("form.submitPanel").on('submit', function(e) {
   var text = $('#PostTextArea').val();
   $('#PostTextArea').val('');
   $('#CharCount').text('')
+
+
   OneSignal.push(function() {
+    console.log(1)
     OneSignal.getUserId(function(userId) {
       console.log("OneSignal User ID:", userId);
       var params = {

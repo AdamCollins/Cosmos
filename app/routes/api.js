@@ -54,7 +54,7 @@ router.get('/api', function(req, res) {
         var username = item.username;
         var date = item.date;
         var fomatedTimeLeft = formatDate(date);
-        var replies = []
+        var replies = [];
 
         var currentUserId = (req.session.user) ? req.session.user._id: null;
         var currentUserStarPost = item.likes.includes(currentUserId)? 1:0
@@ -67,14 +67,14 @@ router.get('/api', function(req, res) {
               "time": minutes < 120 ? minutes + 'm ago' : Math.floor(minutes / 60) + 'h ago'
             })
           });
-
         data.push({
           "_id": id,
           "text_content": text,
           "username": username,
           "time": formatedTimeLeft,
           "replies": replies,
-          "likes": currentUserStarPost
+          "likes": currentUserStarPost,
+          'OneSignalUserId':item.OneSignalUserId
         })
       });
       res.json(data)
@@ -128,7 +128,8 @@ router.post('/api', function(req, res) {
       'username': username,
       'date': new Date(),
       'replies': [],
-      'likes':[]
+      'likes':[],
+      'OneSignalUserId':data.OneSignalUserId,
     }, (err, post)=>{
       res.json({
       "text_content": text,
@@ -161,12 +162,15 @@ router.post('/api/reply', function(req, res) {
       'username': username,
       'date': new Date()
     }
-    posts.update({
+    posts.findOneAndUpdate({
       '_id': new ObjectId(replyPostId)
     }, {
       '$push': {
         "replies": newReply
       }
+    },(err, data)=>{
+      if(data.value.OneSignalUserId)
+        notifier.sendNotification('Yo, someone replied to your post: '+text,data.value.OneSignalUserId);
     })
     db.close();
     res.json({
@@ -192,6 +196,7 @@ router.post('/api/like', (req, res) => {
           $addToSet: {
             "likes": userId
           }
+
         }, (err, data)=>{
            console.log(data.value)
            res.status(200).send('liked!');
@@ -199,7 +204,7 @@ router.post('/api/like', (req, res) => {
       }else{
         posts.update(
           { "_id" : new ObjectId(postId) },
-          { $pull: { 
+          { $pull: {
             "likes":userId }
           }
         );

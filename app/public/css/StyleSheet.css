@@ -35,7 +35,10 @@ div.loginmenu {
   padding: 0px;
   margin-left: 0px;
   margin-right: 0px;
+  z-index: 5;
+  border-radius: 0px 0px 3px 3px;
 }
+
 
 ul.loginmenu.dropdown {
   border: solid 1px #52ffb8;
@@ -63,6 +66,8 @@ p.loginmenu {
   margin-top: -18px;
   margin-bottom: 0px;
   padding-left: 5px;
+  border-radius: 10px 10px 0px 0px;
+  min-width: 100px;
 }
 
 div.post {
@@ -350,6 +355,18 @@ i.exit-btn {
   a#RegisterBtn {
     float: right;
   }
+}
+
+div.reply-container{
+  color:#52FFB8;
+}
+div.reply-container > p {
+  margin-top: 0px;
+}
+
+span.reply.postDate{
+  color:#d1d1d1;
+  float: right;
 }
 
 .coloredStar {

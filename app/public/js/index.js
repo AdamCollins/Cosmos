@@ -14,7 +14,7 @@ $('.exit-btn').click(function() {
 });
 
 $("div.loginmenu").click(function() {
-  $(".loginmenu.dropdown").toggle(100);
+  $(".loginmenu.dropdown").slideToggle(100)
 });
 
 

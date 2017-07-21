@@ -22,7 +22,8 @@
   <!--MyStyleSheets-->
   <link href="css/StyleSheet.css" rel="stylesheet" />
   <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async='async'></script>
-  <!-- <script>
+  <script>
+    //Sets up OneSignal push notifications
     var OneSignal = window.OneSignal || [];
     OneSignal.push(["init", {
       appId: "9f7861b3-e1cc-4fab-85db-8dcbf09fbaab",
@@ -35,7 +36,24 @@
         enable: true /* Set to false to hide */
       }
     }]);
-  </script> -->
+  </script>
+  <script>
+    //sets up google-analytics
+    (function(i, s, o, g, r, a, m) {
+      i['GoogleAnalyticsObject'] = r;
+      i[r] = i[r] || function() {
+        (i[r].q = i[r].q || []).push(arguments)
+      }, i[r].l = 1 * new Date();
+      a = s.createElement(o),
+        m = s.getElementsByTagName(o)[0];
+      a.async = 1;
+      a.src = g;
+      m.parentNode.insertBefore(a, m)
+    })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+    ga('create', 'UA-102872042-1', 'auto');
+    ga('send', 'pageview');
+  </script>
 </head>
 
 <body>
@@ -55,7 +73,7 @@
         <p class="loginmenu">
           <%=(username)?username+' ('+score+')':'Log In'%><i class="material-icons right">arrow_drop_down</i></p>
       </a>
-      <ul class="loginmenu dropdown hidden">
+      <ul class="loginmenu dropdown z-depth-2 hidden">
         <li><a href="javascript:void(0);" id='loginMenuBtn'>Login</a></li>
         <li><a href="javascript:void(0);" id='registerMenuBtn'>Register</a></li>
         <li <%=(username)? '': 'hidden="hidden"'%>><a href="javascript:void(0);" id="LogoutBtn">Logout</a></li>
@@ -105,7 +123,7 @@
       <div class="col s12 m6 replyField">
         <div class="input-field col s12">
           <!--Fix later-->
-          <a href="javascript:void(0);" id="test" style="margin-bottom:-150px;" class="exit-btn"><i class="Medium material-icons exit-btn">exit_to_app</i></a>
+          <a href="javascript:void(0);" id="test" class="exit-btn"><i class="Medium material-icons exit-btn">exit_to_app</i></a>
         </div>
         <div class="row register-page">
           <h4 class="col s12">Login/Register</h4>
@@ -119,16 +137,16 @@
               <label for="password">Password</label>
             </div>
           </div>
-            <div class="col s12" id="RegisterContainer" style="position:relative">
-          <div class="input-field col s12 m6">
-            <input ID="passwordConfTF" type="password" autocomplete="off" maxlength="40"></input>
-            <label for="passwordconf">Confirm Password</label>
+          <div class="col s12" id="RegisterContainer" style="position:relative">
+            <div class="input-field col s12 m6">
+              <input ID="passwordConfTF" type="password" autocomplete="off" maxlength="40"></input>
+              <label for="passwordconf">Confirm Password</label>
+            </div>
+            <div class="input-field col s12 m6">
+              <input ID="emailTF" type="email" autocomplete="off" maxlength="40"></input>
+              <label for="emailTF">Email</label>
+            </div>
           </div>
-          <div class="input-field col s12 m6">
-            <input ID="emailTF" type="email" autocomplete="off" maxlength="40"></input>
-            <label for="emailTF">Email</label>
-          </div>
-        </div>
           <div class="col m6"></div>
         </div>
         <row>

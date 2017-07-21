@@ -26,7 +26,9 @@ router.post('/login', (req, res) => {
     var userCol = database.collection('users');
     console.log(req.body.username)
     userCol.findOne({
-      "username": req.body.username
+      "username": {
+        $regex: new RegExp("^" + req.body.username.toLowerCase(), "i")
+      }
     }, function(err, user) {
       console.log(user)
       if (user) {
@@ -34,14 +36,14 @@ router.post('/login', (req, res) => {
         console.log(user);
         console.log(3)
         if (passwordMatchesHash(req.body.password, user.hashed_password)) {
-          if(user.verified){
-          req.session.user = user;
-          req.session.save();
-          console.log('logged ' + req.session.user.username + ' successfully!');
-          res.status(200).send('Login successfully');
-        }else{
-          res.status(403).send('Unverified');
-        }
+          if (user.verified) {
+            req.session.user = user;
+            req.session.save();
+            console.log('logged ' + req.session.user.username + ' successfully!');
+            res.status(200).send('Login successfully');
+          } else {
+            res.status(403).send('Unverified');
+          }
         } else {
           console.log('1log');
           res.status(401).send('Invalid login');
@@ -139,6 +141,7 @@ function addUser(userdata, callback) {
     database.close();
   });
 }
+
 function sendVerificationEmail(recipient, username, verificationCode) {
   var transporter = nodemailer.createTransport({
     service: 'Gmail',
@@ -148,7 +151,7 @@ function sendVerificationEmail(recipient, username, verificationCode) {
     }
   });
   var verificationLink = 'localhost:3000/register/accountverify/' + verificationCode;
-  console.log("recipient:"+recipient)
+  console.log("recipient:" + recipient)
   var mailOptions = {
     from: '"Cosmos Team 🚀"<gocosmosxyz@gmail.com>',
     to: recipient,
@@ -203,7 +206,7 @@ router.get('/logout', (req, res) => {
   res.send('Logout successfully');
 });
 
-function generateEmail(username, verificationCode){
+function generateEmail(username, verificationCode) {
   var verificationLink = 'http://gocosmos.xyz/register/accountverify/' + verificationCode;
   return `
   <html>
@@ -354,7 +357,7 @@ function generateEmail(username, verificationCode){
                       <tr>
                         <td style="word-break:break-word;font-size:0px;padding:0px 0px 10px;" align="left">
                           <div style="cursor:auto;color: #ffffff;font-family:'Avenir Next', Avenir, sans-serif;font-size:16px;line-height:30px;">
-                            `+username+`
+                            ` + username + `
                           </div>
                         </td>
                       </tr>
@@ -386,7 +389,7 @@ function generateEmail(username, verificationCode){
                       <tr>
                         <td style="word-break:break-word;font-size:0px;padding:0px 0px 25px;" align="left">
                           <div style="cursor:auto;color:#222228;font-family:'Avenir Next', Avenir, sans-serif;font-size:16px;line-height:30px;">
-                            <a href="`+verificationLink+`" style="color: #52ffb8;text-decoration:none;" target="_blank">`+verificationLink+`</a>
+                            <a href="` + verificationLink + `" style="color: #52ffb8;text-decoration:none;" target="_blank">` + verificationLink + `</a>
                           </div>
                         </td>
                       </tr>
@@ -451,7 +454,7 @@ function generateEmail(username, verificationCode){
                           <table cellpadding="0" cellspacing="0" align="center" border="0">
                             <tbody>
                               <tr>
-                                <td style="border-radius:3px;color:white;cursor:auto;" align="center" valign="middle" bgcolor="#EB5424"><a href="`+verificationLink+`" style="display:inline-block;text-decoration:none;background: #52FFB8;border-radius:3px;color: #615756;font-family:'Avenir Next', Avenir, sans-serif;font-size:14px;font-weight:500;line-height:35px;padding:10px 25px;margin:0px;font-weight: bold;"
+                                <td style="border-radius:3px;color:white;cursor:auto;" align="center" valign="middle" bgcolor="#EB5424"><a href="` + verificationLink + `" style="display:inline-block;text-decoration:none;background: #52FFB8;border-radius:3px;color: #615756;font-family:'Avenir Next', Avenir, sans-serif;font-size:14px;font-weight:500;line-height:35px;padding:10px 25px;margin:0px;font-weight: bold;"
                                     target="_blank">
               VERIFY YOUR ACCOUNT
             </a></td>

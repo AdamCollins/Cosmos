@@ -186,12 +186,12 @@ $("form.submitPanel").on('submit', function(e) {
   var text = $('#PostTextArea').val();
   $('#PostTextArea').val('');
   $('#CharCount').text('');
-  // OneSignal.push(function() {
-  //   OneSignal.getUserId(function(userId) {
-  //     console.log("OneSignal User ID:", userId);
+  OneSignal.push(function() {
+    OneSignal.getUserId(function(userId) {
+      console.log("OneSignal User ID:", userId);
       var params = {
         'text_content': text 
-        // 'OneSignalUserId':userId
+        'OneSignalUserId':userId
       }
       $.ajax({
         method: 'post',
@@ -206,7 +206,7 @@ $("form.submitPanel").on('submit', function(e) {
         error: function() {
           alert('oops something went wrong')
         }
-    //   });
-    // });
+      });
+    });
   });
 });

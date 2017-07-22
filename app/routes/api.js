@@ -59,6 +59,7 @@ router.get('/api', function(req, res) {
         var currentUserId = (req.session.user) ? req.session.user._id: null;
         var currentUserStar = item.likes.includes(currentUserId)? 1:0;
         var numberOfLikes = item.likes.length;
+
         if (item.replies)
           item.replies.forEach((reply) => {
             var minutes = Math.floor((new Date() - new Date(reply.date)) / (60 * 1000))
@@ -74,6 +75,7 @@ router.get('/api', function(req, res) {
           "username": username,
           "time": formatedTimeLeft,
           "replies": replies,
+
           "likes": numberOfLikes,
           "currentUserStarPost": currentUserStar,
           'OneSignalUserId':item.OneSignalUserId
@@ -112,15 +114,22 @@ function msToTime(msDate) {
 
 //add post to database
 router.post('/api', function(req, res) {
+//   // send a notification
+// client.sendNotification('test notification', {
+//     included_segments: 'all'
+// });
+
   MongoClient.connect(url, (err, db) => {
     if (err) {
       console.log(err);
     }
+    console.log(1)
     console.log('connected successfully to database');
     var posts = db.collection('posts');
     var data = req.body;
     var text = sanitizer.escape(data.text_content);
     var username = (req.session.user) ? req.session.user.username : null;
+    console.log(2)
     posts.insert({
       'text_content': text,
       'username': username,
@@ -130,6 +139,7 @@ router.post('/api', function(req, res) {
       'currentUserStarPost': 0,
       'OneSignalUserId':data.OneSignalUserId,
     }, (err, post)=>{
+      console.log(3)
       res.json({
       "text_content": text,
       "username": username,
@@ -137,6 +147,7 @@ router.post('/api', function(req, res) {
       "_id": post.insertedIds[0]
       });
     });
+    console.log(2)
     db.close();
     if (username) {
       console.log('sending notification...')

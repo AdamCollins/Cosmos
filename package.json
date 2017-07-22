@@ -16,6 +16,8 @@
     "ejs": "^2.5.6",
     "express": "^4.15.3",
     "express-session": "^1.15.3",
+    "fs": "0.0.1-security",
+    "https": "^1.0.0",
     "jquery-serializejson": "^2.8.1",
     "mongo": "^0.1.0",
     "node-onesignal": "^0.3.1",

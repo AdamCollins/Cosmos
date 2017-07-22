@@ -17,6 +17,7 @@
     "express": "^4.15.3",
     "express-session": "^1.15.3",
     "fs": "0.0.1-security",
+    "http": "0.0.0",
     "https": "^1.0.0",
     "jquery-serializejson": "^2.8.1",
     "mongo": "^0.1.0",

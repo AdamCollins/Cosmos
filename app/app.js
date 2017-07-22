@@ -1,6 +1,7 @@
 var express = require('express');
 var reload = require('reload');
 var https = require('https');
+var http = require('http');
 var fs = require('fs');
 var app = express();
 var postData = require('./data/posts.json');
@@ -27,9 +28,15 @@ app.use(session({
   saveUninitialized: true
 }));
 
+
+
 var port = app.get('port')
 var server = https.createServer(httpsOptions, app).listen(443, function(){
   console.log('listening securely on port 443');
 });
+http.createServer(function (req, res) {
+    res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url });
+    res.end();
+}).listen(80);
 
 reload(server,app);

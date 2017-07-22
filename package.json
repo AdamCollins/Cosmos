@@ -5,7 +5,8 @@
   "main": "app/app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon -e css,ejs,js,json --watch app/"
+    "dev": "nodemon -e css,ejs,js,json --watch app/",
+    "start": "node app/app.js -https"
   },
   "author": "Adam Collins, Andy Li",
   "license": "MIT",

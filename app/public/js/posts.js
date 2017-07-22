@@ -44,7 +44,7 @@ function upVote() {
   $('body').on('click', '.myButtonGroup a', function() {
     console.log('3')
     var postId = $(this).parents().eq(1).attr('post_id');
-    
+
     if ($(this).children('i').is('.unColoredStar')) {
       console.log('4')
       var starStatus = 1
@@ -190,7 +190,7 @@ $("form.submitPanel").on('submit', function(e) {
     OneSignal.getUserId(function(userId) {
       console.log("OneSignal User ID:", userId);
       var params = {
-        'text_content': text 
+        'text_content': text,
         'OneSignalUserId':userId
       }
       $.ajax({

@@ -1,3 +1,6 @@
+const HTTPSENABLED = process.argv[2]==='-https';
+
+console.log(process.argv)
 var express = require('express');
 var reload = require('reload');
 var https = require('https');
@@ -7,12 +10,13 @@ var app = express();
 var postData = require('./data/posts.json');
 var session = require('express-session');
 var port = process.env.PORT || 3000;
-var httpsOptions = {
-  ca: fs.readFileSync("./ssl/bundle.crt"),
-  key: fs.readFileSync("./ssl/gocosmos.key"),
-  cert: fs.readFileSync("./ssl/gocosmos.crt")
-};
-app.set('port',port);
+if (HTTPSENABLED)
+  var httpsOptions = {
+    ca: fs.readFileSync("./ssl/bundle.crt"),
+    key: fs.readFileSync("./ssl/gocosmos.key"),
+    cert: fs.readFileSync("./ssl/gocosmos.crt")
+  };
+app.set('port', port);
 app.set('view engine', 'ejs');
 app.set('views', 'app/views');
 
@@ -28,15 +32,21 @@ app.use(session({
   saveUninitialized: true
 }));
 
-
-
 var port = app.get('port')
-var server = https.createServer(httpsOptions, app).listen(443, function(){
-  console.log('listening securely on port 443');
-});
-http.createServer(function (req, res) {
-    res.writeHead(301, { "Location": "https://" + req.headers['host'] + req.url });
+var server = null;
+if (HTTPSENABLED) {
+  server = https.createServer(httpsOptions, app).listen(443, function() {
+    console.log('listening securely on port 443');
+  });
+  http.createServer(function(req, res) {
+    res.writeHead(301, {
+      "Location": "https://" + req.headers['host'] + req.url
+    });
     res.end();
-}).listen(80);
-
-reload(server,app);
+  }).listen(80);
+} else {
+  server = app.listen(3000, () => {
+    console.log('HTTPS DISABLED: listening on port 3000');
+  })
+}
+reload(server, app);

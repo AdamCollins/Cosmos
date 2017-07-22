@@ -37,16 +37,41 @@ function getScore(username) {
 }
 
 function upVote() {
-  $('a.starBtn').on('click', function(e) {
+  console.log('1')
+
+  console.log('2')
+
+  $('body').on('click', '.myButtonGroup a', function() {
+    console.log('3')
     var postId = $(this).parents().eq(1).attr('post_id');
+    
     if ($(this).children('i').is('.unColoredStar')) {
+      console.log('4')
       var starStatus = 1
       $(this).find(".unColoredStar").css('color', '#52FFB8').removeClass("unColoredStar").addClass('coloredStar');
-    } else if ($(this).children('i').is('.coloredStar')) {
+
+      var addedTimeString = $(this).parents().eq(1).find('.stars').text();
+      var addedTimeInt = addedTimeString.replace(/\D/g,'');
+      var timeAdded = isNaN(parseInt(addedTimeInt))? 1 :parseInt(addedTimeInt) + 1;
+      $(this).parents().eq(1).find('.stars').text('ADDED '+ timeAdded + 'HOUR' + ((timeAdded != 1)? 'S': ''));
+
+    } else {
+      console.log('5')
+      $(this).children('i').is('.coloredStar')
+        console.log('6')
       $(this).find(".coloredStar").css('color', 'white').removeClass("coloredStar").addClass('unColoredStar');
       var starStatus = 0
+
+      var addedTimeString = $(this).parents().eq(1).find('.stars').text();
+      var addedTimeInt = addedTimeString.replace(/\D/g,'');
+      var timeAdded = (parseInt(addedTimeInt) === 0) ? 0 :parseInt(addedTimeInt) - 1;
+      var addedTimeText = (timeAdded === 0 )? '' :'ADDED '+ timeAdded + 'HOUR' + ((timeAdded != 1)? 'S': '');
+      $(this).parents().eq(1).find('.stars').text(addedTimeText);
+
     }
-    console.log(starStatus)
+
+    console.log('7')
+    //console.log(starStatus)
     $.ajax({
       method: 'post',
       url: '/api/like',
@@ -56,9 +81,7 @@ function upVote() {
       },
       datatype: 'json',
       success: (textStatus) => {
-        console.log(textStatus)
-        $(this).parents().find('span.stars').append('ADDED '+'')
-        //ADDED ' + post.likes + ' HOUR' + ((post.likes != 1) ? 'S' : '') + '
+        console.log(textStatus);
       },
       error: (xhr, textStatus) => {
         //if (xhr.status == 401) {
@@ -69,6 +92,8 @@ function upVote() {
     });
   });
 }
+
+
 
 function createPost(post, prepend) {
   var postDOM = '';
@@ -90,7 +115,7 @@ function createPost(post, prepend) {
   var usernameDOM = '<img src="images/' + getLevel(0) + '.png" width="32px"/><span class="username">' + post.username + '</span>';
   var anonUserDOM = ' <i class="fa fa-rocket fa-2x" aria-hidden="true"></i><span class="username"><i>Unknown Cosmonaut</i></span>';
 
-  var colorStar = (post.likes == 1) ? "coloredStar" : "unColoredStar";
+  var colorStar = (post.currentUserStarPost == 1) ? "coloredStar" : "unColoredStar";
   postDOM += '  <div class="post col s12 m6 hidden z-depth-2" post_id="' + post._id + '">';
   postDOM += '    <span class="post postDate">' + post.time + '</span>';
   postDOM += '    <div class="user post">' + ((post.username) ? usernameDOM : anonUserDOM) + '</div>'
@@ -160,13 +185,13 @@ $("form.submitPanel").on('submit', function(e) {
   e.preventDefault();
   var text = $('#PostTextArea').val();
   $('#PostTextArea').val('');
-  $('#CharCount').text('')
-  OneSignal.push(function() {
-    OneSignal.getUserId(function(userId) {
-      console.log("OneSignal User ID:", userId);
+  $('#CharCount').text('');
+  // OneSignal.push(function() {
+  //   OneSignal.getUserId(function(userId) {
+  //     console.log("OneSignal User ID:", userId);
       var params = {
-        'text_content': text,
-        'OneSignalUserId':userId
+        'text_content': text 
+        // 'OneSignalUserId':userId
       }
       $.ajax({
         method: 'post',
@@ -176,13 +201,12 @@ $("form.submitPanel").on('submit', function(e) {
         success: function(post) {
           createPost(post, true);
           $('div.post.hidden').hide().removeClass('hidden').fadeIn(800);
-          upVote();
           openReply();
         },
         error: function() {
           alert('oops something went wrong')
         }
-      });
-    });
+    //   });
+    // });
   });
 });

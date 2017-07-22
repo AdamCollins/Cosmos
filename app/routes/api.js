@@ -57,7 +57,8 @@ router.get('/api', function(req, res) {
         var replies = [];
 
         var currentUserId = (req.session.user) ? req.session.user._id: null;
-        var currentUserStarPost = item.likes.includes(currentUserId)? 1:0
+        var currentUserStar = item.likes.includes(currentUserId)? 1:0;
+        var numberOfLikes = item.likes.length;
         if (item.replies)
           item.replies.forEach((reply) => {
             var minutes = Math.floor((new Date() - new Date(reply.date)) / (60 * 1000))
@@ -73,7 +74,8 @@ router.get('/api', function(req, res) {
           "username": username,
           "time": formatedTimeLeft,
           "replies": replies,
-          "likes": currentUserStarPost,
+          "likes": numberOfLikes,
+          "currentUserStarPost": currentUserStar,
           'OneSignalUserId':item.OneSignalUserId
         })
       });
@@ -110,10 +112,6 @@ function msToTime(msDate) {
 
 //add post to database
 router.post('/api', function(req, res) {
-//   // send a notification
-// client.sendNotification('test notification', {
-//     included_segments: 'all'
-// });
   MongoClient.connect(url, (err, db) => {
     if (err) {
       console.log(err);
@@ -129,6 +127,7 @@ router.post('/api', function(req, res) {
       'date': new Date(),
       'replies': [],
       'likes':[],
+      'currentUserStarPost': 0,
       'OneSignalUserId':data.OneSignalUserId,
     }, (err, post)=>{
       res.json({
@@ -196,22 +195,19 @@ router.post('/api/like', (req, res) => {
           $addToSet: {
             "likes": userId
           }
-
-        }, (err, data)=>{
-           console.log(data.value)
-           res.status(200).send('liked!');
-        });        
+        });
+        res.status(200).send('liked!');
+        db.close();
       }else{
         posts.update(
           { "_id" : new ObjectId(postId) },
-          { $pull: {
-            "likes":userId }
-          }
-        );
+            { $pull: {
+              "likes":userId }
+            });
         res.status(200).send('unliked!');
+        db.close();
       }
     }
-    db.close();
   })
 })
 

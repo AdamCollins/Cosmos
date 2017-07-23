@@ -7,20 +7,14 @@ var dbpassword = config.password;
 var url = 'mongodb://cosmos:' + dbpassword + '@cluster0-shard-00-00-oe5ks.mongodb.net:27017,cluster0-shard-00-01-oe5ks.mongodb.net:27017,cluster0-shard-00-02-oe5ks.mongodb.net:27017/' + dbName + '?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin';
 var bcrypt = require('bcrypt');
 var session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
 var router = express.Router();
 var cookieParser = require('cookie-parser');
 router.use(cookieParser());
 router.use(session({
-  cookie: {
-    path: '/',
-    httpOnly: false,
-    maxAge: 24 * 60 * 60 * 1000
-  },
-  secret: "asdfghjhrgtygf4etr23retfgcnvhmKJHJGHJKm",
-  resave: false,
-  saveUninitialized: true
+    secret:'foo',
+    store: new MongoStore({ 'url': url })
 }));
-
 
 
 

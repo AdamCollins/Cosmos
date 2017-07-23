@@ -76,6 +76,7 @@
       <ul class="loginmenu dropdown z-depth-2 hidden">
         <li><a href="javascript:void(0);" id='loginMenuBtn'>Login</a></li>
         <li><a href="javascript:void(0);" id='registerMenuBtn'>Register</a></li>
+        <li <%=(username)? '': 'hidden="hidden"'%>><a href="javascript:void(0);" id="BadgesBtn">Badges</a></li>
         <li <%=(username)? '': 'hidden="hidden"'%>><a href="javascript:void(0);" id="LogoutBtn">Logout</a></li>
 
       </ul>
@@ -166,6 +167,31 @@
       <div class="col m3"></div>
     </div>
   </div>
+
+  <div ID="BadgesMenu" class="replyOverlay hidden">
+    <div ID="BadgesPanel" replypostid="" class="submitPanel row">
+      <div class="col m3"></div>
+      <div class="col s12 m6 replyField">
+        <h4>Badges</h4>
+        <div class="input-field col s12">
+          <a href="javascript:void(0);" class="exit-btn"><i class="Medium material-icons exit-btn">exit_to_app</i></a>
+        </div>
+        <div class="row">
+          <div class="col s4 m3">
+            <img width="32px" src="images/1.png"/>
+          </div>
+          <div class="col s4 m3">
+            <img width="32px" src="images/1.png"/>
+          </div>
+          <div class="col s4 m3">
+            <img width="32px" src="images/1.png"/>
+          </div>
+        </div>
+      </div>
+      <div class="col m3"></div>
+    </div>
+  </div>
+
 
   <div ID="PostsPanel" class="row">
   </div>

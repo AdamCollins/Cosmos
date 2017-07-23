@@ -8,7 +8,6 @@ var http = require('http');
 var fs = require('fs');
 var app = express();
 var postData = require('./data/posts.json');
-var session = require('express-session');
 var port = process.env.PORT || 3000;
 if (HTTPSENABLED)
   var httpsOptions = {
@@ -26,11 +25,7 @@ app.use(require('./routes/api'));
 app.use(require('./routes/login'));
 // app.use(require('./modules/notifications'));
 // app.use(require('./routes/notifications'));
-app.use(session({
-  secret: "asdfghjhrgtygf4etr23retfgcnvhmKJHJGHJKm",
-  resave: false,
-  saveUninitialized: true
-}));
+
 
 var port = app.get('port')
 var server = null;

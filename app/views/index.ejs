@@ -71,13 +71,13 @@
     <div class="loginmenu">
       <a href="javascript:void(0);">
         <p class="loginmenu">
-          <%=(username)?username+' ('+score+')':'Log In'%><i class="material-icons right">arrow_drop_down</i></p>
+          <%=(user)?user.username+' ('+score+')':'Log In'%><i class="material-icons right">arrow_drop_down</i></p>
       </a>
       <ul class="loginmenu dropdown z-depth-2 hidden">
         <li><a href="javascript:void(0);" id='loginMenuBtn'>Login</a></li>
         <li><a href="javascript:void(0);" id='registerMenuBtn'>Register</a></li>
-        <li <%=(username)? '': 'hidden="hidden"'%>><a href="javascript:void(0);" id="BadgesBtn">Badges</a></li>
-        <li <%=(username)? '': 'hidden="hidden"'%>><a href="javascript:void(0);" id="LogoutBtn">Logout</a></li>
+        <li <%=(user)? '': 'hidden="hidden"'%>><a href="javascript:void(0);" id="BadgesBtn">Badges</a></li>
+        <li <%=(user)? '': 'hidden="hidden"'%>><a href="javascript:void(0);" id="LogoutBtn">Logout</a></li>
 
       </ul>
     </div>

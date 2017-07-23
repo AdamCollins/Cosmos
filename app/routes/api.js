@@ -193,6 +193,9 @@ router.post('/api/reply', function(req, res) {
 });
 
 router.post('/api/like', (req, res) => {
+  if (!req.session.user) {
+      return res.status(401).send('please login');
+    }
   MongoClient.connect(url, (err, db) => {
     if (!req.session.user) {
       res.status(401).send('please login')
@@ -202,18 +205,29 @@ router.post('/api/like', (req, res) => {
       var starStatus = req.body.starStatus
       var posts = db.collection('posts')
       var users = db.collection('users')
+      
       if (starStatus == 1){
-        posts.findOneAndUpdate({"_id": new ObjectId(postId)},
-        {
-          $addToSet: {
-            "likes": userId
-          }
+        users.findOneAndUpdate(
+          {"_id": new ObjectId(userId)},
+          {$inc: { "score" : 1} 
         });
+        posts.findOneAndUpdate(
+          {"_id": new ObjectId(postId)},
+            {
+              $addToSet: {
+                "likes": userId
+              }
+            });
         res.status(200).send('liked!');
         db.close();
       }else{
+        users.findOneAndUpdate(
+          {"_id": new ObjectId(userId)},
+          {$inc: { "score" : - 1} 
+        });
+
         posts.update(
-          { "_id" : new ObjectId(postId) },
+          { "_id" : new ObjectId(postId)},
             { $pull: {
               "likes":userId }
             });

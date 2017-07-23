@@ -41,7 +41,7 @@ function upVote() {
 
   console.log('2')
 
-  $('body').on('click', '.myButtonGroup a', function() {
+  $('body').on('click', '.myButtonGroup .starBtn', function() {
     console.log('3')
     var postId = $(this).parents().eq(1).attr('post_id');
 
@@ -53,7 +53,7 @@ function upVote() {
       var addedTimeString = $(this).parents().eq(1).find('.stars').text();
       var addedTimeInt = addedTimeString.replace(/\D/g,'');
       var timeAdded = isNaN(parseInt(addedTimeInt))? 1 :parseInt(addedTimeInt) + 1;
-      $(this).parents().eq(1).find('.stars').text('ADDED '+ timeAdded + 'HOUR' + ((timeAdded != 1)? 'S': ''));
+      $(this).parents().eq(1).find('.stars').text('ADDED '+ timeAdded + ' HOUR' + ((timeAdded != 1)? 'S': ''));
 
     } else {
       console.log('5')
@@ -86,6 +86,7 @@ function upVote() {
       error: (xhr, textStatus) => {
         //if (xhr.status == 401) {
         $(this).find("i.coloredStar").css('color', 'white')
+        $(this).parents().eq(1).find('.stars').text("");
         openLoginMenu();
         //}
       }

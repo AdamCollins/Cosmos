@@ -29,48 +29,36 @@ function getLevel(score) {
 }
 
 function getScore(username) {
-  var value = $.ajax({
-    url: '/users/score/' + username,
-    async: false
-  }).responseText;
-  return value;
+  $.ajax({
+    method: 'get',
+    url: '/users/score/'+username,
+    success(userScore){
+      return userScore;
+      console.log('here3')
+    },
+    error(){
+      console.log('oops, something went wrong')
+    }
+  })
 }
 
+getScore("sushi")
+
 function upVote() {
-  console.log('1')
-
-  console.log('2')
-
   $('body').on('click', '.myButtonGroup .starBtn', function() {
-    console.log('3')
     var postId = $(this).parents().eq(1).attr('post_id');
 
     if ($(this).children('i').is('.unColoredStar')) {
-      console.log('4')
-      var starStatus = 1
       $(this).find(".unColoredStar").css('color', '#52FFB8').removeClass("unColoredStar").addClass('coloredStar');
-
-      var addedTimeString = $(this).parents().eq(1).find('.stars').text();
-      var addedTimeInt = addedTimeString.replace(/\D/g,'');
-      var timeAdded = isNaN(parseInt(addedTimeInt))? 1 :parseInt(addedTimeInt) + 1;
-      $(this).parents().eq(1).find('.stars').text('ADDED '+ timeAdded + ' HOUR' + ((timeAdded != 1)? 'S': ''));
-
+      var starStatus = 1
+      var addOrSubtract = 1
     } else {
-      console.log('5')
       $(this).children('i').is('.coloredStar')
-        console.log('6')
       $(this).find(".coloredStar").css('color', 'white').removeClass("coloredStar").addClass('unColoredStar');
       var starStatus = 0
-
-      var addedTimeString = $(this).parents().eq(1).find('.stars').text();
-      var addedTimeInt = addedTimeString.replace(/\D/g,'');
-      var timeAdded = (parseInt(addedTimeInt) === 0) ? 0 :parseInt(addedTimeInt) - 1;
-      var addedTimeText = (timeAdded === 0 )? '' :'ADDED '+ timeAdded + 'HOUR' + ((timeAdded != 1)? 'S': '');
-      $(this).parents().eq(1).find('.stars').text(addedTimeText);
-
+      var addOrSubtract = 0
     }
 
-    console.log('7')
     //console.log(starStatus)
     $.ajax({
       method: 'post',
@@ -82,6 +70,7 @@ function upVote() {
       datatype: 'json',
       success: (textStatus) => {
         console.log(textStatus);
+        updateHours(addOrSubtract, $(this))
       },
       error: (xhr, textStatus) => {
         //if (xhr.status == 401) {
@@ -94,7 +83,21 @@ function upVote() {
   });
 }
 
+function updateHours(addOrSubtract, clickButton){
+  if(addOrSubtract == 0){
+    var addedTimeString = clickButton.parents().eq(1).find('.stars').text();
+    var addedTimeInt = addedTimeString.replace(/\D/g,'');
+    var timeAdded = (parseInt(addedTimeInt) === 0) ? 0 :parseInt(addedTimeInt) - 1;
+    var addedTimeText = (timeAdded === 0 )? '' :'ADDED '+ timeAdded + ' HOUR' + ((timeAdded != 1)? 'S': '');
+    clickButton.parents().eq(1).find('.stars').text(addedTimeText);
 
+  }else{
+    var addedTimeString = clickButton.parents().eq(1).find('.stars').text();
+    var addedTimeInt = addedTimeString.replace(/\D/g,'');
+    var timeAdded = isNaN(parseInt(addedTimeInt))? 1 :parseInt(addedTimeInt) + 1;
+    clickButton.parents().eq(1).find('.stars').text('ADDED '+ timeAdded + ' HOUR' + ((timeAdded != 1)? 'S': '')).hide().fadeIn(300);
+  }
+}
 
 function createPost(post, prepend) {
   var postDOM = '';

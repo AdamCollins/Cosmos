@@ -58,12 +58,6 @@ router.post('/login', (req, res) => {
 });
 
 
-
-
-
-
-
-
 router.get('/listusers', (req, res) => {
   console.log()
   MongoClient.connect(url, (err, database) => {
@@ -75,29 +69,25 @@ router.get('/listusers', (req, res) => {
   });
 });
 
-router.get('/users/score/:username', (req, res) => {
-  MongoClient.connect(url, (err, database) => {
-    var userCol = database.collection('users');
-    var query = {
-      "username": {
-        $regex: new RegExp("^" + req.params.username.toLowerCase(), "i")
+
+router.get('/users/score/:username', (req, res)=>{
+  MongoClient.connect(url, (err, db) => {
+    var users = db.collection('users');
+    var query = {'username': {$eq: req.params.username.toLowerCase()}}
+    users.findOne(query, (err, user)=>{
+      if(user){
+        console.log(user)
+        res.json({'score': user.score})
+      }else{
+        console.log('here 2')
+        res.json({'score': 0})
       }
-    }
-    userCol.findOne(query, (err, user) => {
-      console.log(user)
-      if (user) {
-        res.json({
-          "score": user.score
-        })
-      } else {
-        res.json({
-          "score": null
-        })
-      }
-    });
-    database.close();
-  })
+    })
+    db.close();
+  });
 })
+
+
 
 router.get('/registraion/availible/:username', (req, res) => {
   MongoClient.connect(url, (err, database) => {

@@ -27,11 +27,25 @@ router.use(session({
 router.get('/', function(req, res) {
   //console.log(req.session.user)
   if (req.session.user)
-    res.render('index', req.session.user);
-  else
-    res.render('index', {
-      "username": ""
+    MongoClient.connect(url, (err, db) => {
+      var users = db.collection('users');
+      var query = {'username': {$eq: req.session.user.username.toLowerCase()}}
+      users.findOne(query, (err, user)=>{
+        if(user){
+          var data = {'user': req.session.user, 'score': user.score}
+          console.log('here1')
+          console.log(data)
+          res.render('index', data);
+        }
+      })
+      db.close();
     });
+  else{
+    var data = {'user': req.session.user, 'score': 0}
+    console.log('here2')
+    console.log(data)
+    res.render('index', data);
+  }
 });
 
 router.use(bodyParser.json());

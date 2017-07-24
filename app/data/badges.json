@@ -1,0 +1,24 @@
+[{
+    "id":0,
+    "name": "North Star",
+    "stub": "north-star",
+    "icon": "images/const/north-star.png",
+    "viewed":false
+  },
+  {
+    "id":1,
+    "name": "Orion's Belt",
+    "stub": "orions-belt",
+    "icon": "images/const/orions-belt.png",
+    "level":1,
+    "viewed":false
+  },
+  {
+    "id":2,
+    "name": "Orion's Belt",
+    "stub": "orions-belt",
+    "icon": "images/const/orions-belt.png",
+    "level":2,
+    "viewed":false
+  }
+]

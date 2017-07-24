@@ -9,7 +9,6 @@
     "start": "node app/app.js -https"
   },
   "author": "Adam Collins, Andy Li",
-  "license": "MIT",
   "dependencies": {
     "bcrypt": "^1.0.2",
     "body-parser": "^1.17.2",

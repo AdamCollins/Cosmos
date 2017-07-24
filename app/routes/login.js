@@ -152,9 +152,10 @@ router.get('/register/accountverify/:verificationCode', (req, res) => {
   MongoClient.connect(url, (err, database) => {
     console.log(req.params.verificationCode)
     database.collection('users').findOne({
-      "vverification_code": req.params.verificationCode
+      "verification_code": req.params.verificationCode
     }, function(err, user) {
-      console.log(user)
+      if(user.verified==false)
+        req.session.user = user;
     });
     database.collection('users').updateOne({
       "verification_code": req.params.verificationCode
@@ -164,7 +165,7 @@ router.get('/register/accountverify/:verificationCode', (req, res) => {
       }
     })
   });
-  res.send('Thank you for verifying')
+  res.send('<script>setTimeout(function(){location.replace("/"),1000})</script>Thank you for verifying')
 });
 
 router.post('/register', (req, res) => {
@@ -352,7 +353,7 @@ function generateEmail(username, verificationCode) {
                       <tr>
                         <td style="word-break:break-word;font-size:0px;padding:0px 0px 10px;" align="left">
                           <div style="cursor:auto;color: #ffffff;font-family:'Avenir Next', Avenir, sans-serif;font-size:16px;line-height:30px;">
-                            <strong style="font-weight: 500; white-space: nowrap;">Verify Link</strong>
+                            <strong style="font-weight: 500; white-space: nowrap;">Verification Link:</strong>
                           </div>
                         </td>
                       </tr>

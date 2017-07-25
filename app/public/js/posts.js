@@ -34,7 +34,6 @@ function getScore(username) {
     url: '/users/score/'+username,
     success(userScore){
       return userScore;
-      console.log('here3')
     },
     error(){
       console.log('oops, something went wrong')

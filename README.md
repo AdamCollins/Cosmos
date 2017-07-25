@@ -1,6 +1,8 @@
 # COSMOS Anonymous Forum
 <img src="https://raw.githubusercontent.com/AdamCollins/Cosmos/master/logo.png" alt="alt text" width="240px">
 A Lightweight forum for university students written in NodeJS and MongoDB
+Try Cosmos out now at https://gocomsos.xyz !
+
 
 
 ## Building Cosmos
@@ -14,9 +16,6 @@ I chose the name Cosmos because I enjoy astronomy and referring to yourself as a
 * [Node.JS](https://nodejs.org/en/)
 * [Materialize CSS](http://materializecss.com)
 * [MongoDB](https://www.mongodb.com/)
-
-## License
-Distributed under the MIT license.
 
 [travis-image]: https://img.shields.io/travis/dbader/node-datadog-metrics/master.svg?style=flat-square
 [travis-url]: https://travis-ci.org/dbader/node-datadog-metrics

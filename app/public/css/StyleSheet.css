@@ -299,6 +299,16 @@ i.exit-btn {
   background-color: rgba(41, 127, 92, 0.8);
 }
 
+#BadgesMenu {
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9;
+  background-color: rgba(41, 127, 92, 0.8);
+}
+
 .register-page {
   margin-top: -52px;
 }

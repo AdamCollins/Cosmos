@@ -11,33 +11,16 @@ var dbpassword = config.password;
 var postData = require('../data/posts.json');
 var bodyParser = require('body-parser');
 var url = 'mongodb://cosmos:' + dbpassword + '@cluster0-shard-00-00-oe5ks.mongodb.net:27017,cluster0-shard-00-01-oe5ks.mongodb.net:27017,cluster0-shard-00-02-oe5ks.mongodb.net:27017/' + dbName + '?ssl=true&replicaSet=Cluster0-shard-0&authSource=admin';
-//var url = 'mongodb://adam:'+dbpassword+'@ds151702.mlab.com:51702/cosmosdb'
-var datapost = null;
 router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({
   extended: false
 }));
-
+var data = []
 // // require the module
 // const OneSignalClient = require('node-onesignal').default;
 
 // // // create a new clinet
 // const client = new OneSignalClient(config.oneSignalAppID, config.oneSignalRestAPIKey);
-
-function getData(db, callback) {
-  var posts = db.collection('posts');
-  posts.find({
-    "date": {
-      $gte: (new Date((new Date()).getTime() - (48 * 60 * 60 * 1000)))
-    }
-  }).sort({
-    "date": -1
-  }).toArray((err, data) => {
-    datapost = data
-    db.close();
-    callback();
-  });
-}
 
 router.get('/api', function(req, res) {
   MongoClient.connect(url, (err, db) => {
@@ -46,21 +29,36 @@ router.get('/api', function(req, res) {
     }
     console.log('connected successfully to database');
 
-    getData(db, () => {
-      var data = []
-      datapost.forEach((item) => {
+    var posts = db.collection('posts');
+    var users =db.collection('users');
+    
+    //find by 48 hours
+    posts.find({
+      "date": {
+        $gte: (new Date((new Date()).getTime() - (48 * 60 * 60 * 1000)))
+      }
+    }).sort({
+      "date": -1
+    }).toArray((err, datapost)=>{
+      if(err){
+        console.log(err);
+      }
+
+      //go through make each post
+      var lastElement = datapost.length-1;
+      datapost.forEach((item, index) => {
         var id = item._id
         var text = item.text_content;
         var username = item.username;
         var date = item.date;
         var fomatedTimeLeft = formatDate(date);
         var replies = [];
-
         var currentUserId = (req.session.user) ? req.session.user._id: null;
         var currentUserStar = item.likes.includes(currentUserId)? 1:0;
         var numberOfLikes = item.likes.length;
-
-        if (item.replies)
+        var userScore;
+        console.log("index:"+index)
+        if (item.replies){
           item.replies.forEach((reply) => {
             var minutes = Math.floor((new Date() - new Date(reply.date)) / (60 * 1000))
             replies.push({
@@ -69,20 +67,31 @@ router.get('/api', function(req, res) {
               "time": minutes < 120 ? minutes + 'm ago' : Math.floor(minutes / 60) + 'h ago'
             })
           });
-        data.push({
-          "_id": id,
-          "text_content": text,
-          "username": username,
-          "time": formatedTimeLeft,
-          "replies": replies,
-
-          "likes": numberOfLikes,
-          "currentUserStarPost": currentUserStar,
-          'OneSignalUserId':item.OneSignalUserId
-        })
+        }
+        
+        users.findOne({
+          "username":username,
+        }, (err, user)=>{
+          userScore = user.score
+          data.push({
+            "_id": id,
+            "text_content": text,
+            "username": username,
+            "time": formatedTimeLeft,
+            "replies": replies,
+            "score": userScore,
+            "likes": numberOfLikes,
+            "currentUserStarPost": currentUserStar,
+            'OneSignalUserId':item.OneSignalUserId
+          })
+          if(index==lastElement){
+            res.json(data)
+            db.close()
+          }
+        })  
       });
-      res.json(data)
-    });
+      
+    }); 
   });
 });
 
@@ -119,41 +128,41 @@ router.post('/api', function(req, res) {
 //     included_segments: 'all'
 // });
 
-  MongoClient.connect(url, (err, db) => {
-    if (err) {
-      console.log(err);
-    }
-    console.log(1)
-    console.log('connected successfully to database');
-    var posts = db.collection('posts');
-    var data = req.body;
-    var text = sanitizer.escape(data.text_content);
-    var username = (req.session.user) ? req.session.user.username : null;
-    console.log(2)
-    posts.insert({
-      'text_content': text,
-      'username': username,
-      'date': new Date(),
-      'replies': [],
-      'likes':[],
-      'currentUserStarPost': 0,
-      'OneSignalUserId':data.OneSignalUserId,
-    }, (err, post)=>{
-      console.log(3)
-      res.json({
+MongoClient.connect(url, (err, db) => {
+  if (err) {
+    console.log(err);
+  }
+
+  console.log('connected successfully to database');
+  var posts = db.collection('posts');
+  var data = req.body;
+  var text = sanitizer.escape(data.text_content);
+  var username = (req.session.user) ? req.session.user.username : null;
+
+  posts.insert({
+    'text_content': text,
+    'username': username,
+    'date': new Date(),
+    'replies': [],
+    'likes':[],
+    'currentUserStarPost': 0,
+    'OneSignalUserId':data.OneSignalUserId,
+  }, (err, post)=>{
+
+    res.json({
       "text_content": text,
       "username": username,
       "time": "48h remaining",
       "_id": post.insertedIds[0]
-      });
     });
-    console.log(2)
-    db.close();
-    if (username) {
-      console.log('sending notification...')
-      notifier.sendNotification('<h2>'+username +' just made a new Post!</h2>'+text)
-    }
-  })
+  });
+
+  db.close();
+  if (username) {
+    console.log('sending notification...')
+    notifier.sendNotification('<h2>'+username +' just made a new Post!</h2>'+text)
+  }
+})
 });
 
 router.post('/api/reply', function(req, res) {
@@ -192,8 +201,8 @@ router.post('/api/reply', function(req, res) {
 
 router.post('/api/like', (req, res) => {
   if (!req.session.user) {
-      return res.status(401).send('please login');
-    }
+    return res.status(401).send('please login');
+  }
   MongoClient.connect(url, (err, db) => {
     if (!req.session.user) {
       res.status(401).send('please login')
@@ -211,11 +220,11 @@ router.post('/api/like', (req, res) => {
         });
         posts.findOneAndUpdate(
           {"_id": new ObjectId(postId)},
-            {
-              $addToSet: {
-                "likes": userId
-              }
-            });
+          {
+            $addToSet: {
+              "likes": userId
+            }
+          });
         res.status(200).send('liked!');
         db.close();
       }else{
@@ -226,9 +235,9 @@ router.post('/api/like', (req, res) => {
 
         posts.update(
           { "_id" : new ObjectId(postId)},
-            { $pull: {
-              "likes":userId }
-            });
+          { $pull: {
+            "likes":userId }
+          });
         res.status(200).send('unliked!');
         db.close();
       }

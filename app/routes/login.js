@@ -32,9 +32,6 @@ router.post('/login', (req, res) => {
     }, function(err, user) {
       console.log(user)
       if (user) {
-        console.log(req.body);
-        console.log(user);
-        console.log(3)
         if (passwordMatchesHash(req.body.password, user.hashed_password)) {
           if (user.verified) {
             req.session.user = user;

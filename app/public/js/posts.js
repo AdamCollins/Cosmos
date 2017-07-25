@@ -102,7 +102,8 @@ function updateHours(addOrSubtract, clickButton){
 function createPost(post, prepend) {
   var postDOM = '';
   var repliesDOM = '';
-  var score;
+  var userScore = post.score;
+  console.log(post)
   if (post.username) {
     //sync call
     //console.log('poster\'s score:'+getScore(post.username));
@@ -116,7 +117,8 @@ function createPost(post, prepend) {
   $.each(post.replies, function(key, item) {
     repliesDOM += createReply(item);
   });
-  var usernameDOM = '<img src="images/' + getLevel(0) + '.png" width="32px"/><span class="username">' + post.username + '</span>';
+  //<a class="btn tooltipped" data-position="bottom" data-delay="50" data-tooltip="I am a tooltip ">Hover me!</a>
+  var usernameDOM = '<img src="images/' + getLevel(0) + '.png" width="32px"/><span class="username tooltipped" data-position="top" data-delay="50" data-tooltip="'+post.score+' ">' + post.username + '</span>';
   var anonUserDOM = ' <i class="fa fa-rocket fa-2x" aria-hidden="true"></i><span class="username"><i>Unknown Cosmonaut</i></span>';
 
   var colorStar = (post.currentUserStarPost == 1) ? "coloredStar" : "unColoredStar";
@@ -146,6 +148,10 @@ function createPost(post, prepend) {
   }
 
   $('.coloredStar').css('color', '#52FFB8');
+
+  $(document).ready(function(){
+    $('.tooltipped').tooltip({delay: 50});
+  });
 }
 
 

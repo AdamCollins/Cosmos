@@ -6,7 +6,9 @@ $(".loginmenu.dropdown").hide().removeClass("hidden");
 $("#RegisterMenu").hide().removeClass("hidden");
 $('#BadgesMenu').hide().removeClass('hidden')
 
-document.onLoad = $(".loading").fadeOut(800);
+// $(document).ready(function() {
+//     $(".loading").fadeOut(800);
+// });
 document.onLoad = $('div.post').fadeIn(1200);
 
 $('.exit-btn').click(function() {

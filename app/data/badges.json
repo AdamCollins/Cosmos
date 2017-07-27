@@ -3,7 +3,7 @@
     "name": "North Star",
     "stub": "north-star",
     "icon": "images/const/north-star.png",
-    "viewed":false
+    "viewed":true
   },
   {
     "id":1,

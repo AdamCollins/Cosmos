@@ -9,6 +9,7 @@ function loadPosts(postData) {
   //Fades in posts
   openReply();
   upVote();
+  $(".loading").fadeOut(800);
 }
 
 function openReply() {
@@ -25,7 +26,7 @@ function getLevel(score) {
   if (score > 10) {
     return 2;
   }
-  return 1;
+  return "badge-icons/orions-belt";
 }
 
 function getScore(username) {
@@ -117,7 +118,7 @@ function createPost(post, prepend) {
     repliesDOM += createReply(item);
   });
   //<a class="btn tooltipped" data-position="bottom" data-delay="50" data-tooltip="I am a tooltip ">Hover me!</a>
-  var usernameDOM = '<img src="images/' + getLevel(0) + '.png" width="32px"/><span class="username tooltipped" data-position="top" data-delay="50" data-tooltip="'+post.score+' ">' + post.username + '</span>';
+  var usernameDOM = '<img src="images/' + getLevel(0) + '.svg" width="32px"/><span class="username tooltipped" data-position="top" data-delay="50" data-tooltip="'+post.score+' ">' + post.username + '</span>';
   var anonUserDOM = ' <i class="fa fa-rocket fa-2x" aria-hidden="true"></i><span class="username"><i>Unknown Cosmonaut</i></span>';
 
   var colorStar = (post.currentUserStarPost == 1) ? "coloredStar" : "unColoredStar";
@@ -160,7 +161,7 @@ function createReply(reply) {
   if(!time ||time<0 ){
     time = 'now'
   }
-  replyDOM += '<span class="user reply">' + ((reply.username) ? '<img src="images/' + getLevel(0) + '.png" width="32px" style="margin-left:-5px; margin-right:3px"/>' + reply.username : ' <i class="fa fa-rocket fa-2x" aria-hidden="true"></i><span class="username"><i>Unknown Cosmonaut</i></span>') + '</span>';
+  replyDOM += '<span class="user reply">' + ((reply.username) ? '<img src="images/' + getLevel(0) + '.svg" width="32px" style="margin-left:-5px; margin-right:3px"/>' + reply.username : ' <i class="fa fa-rocket fa-2x" aria-hidden="true"></i><span class="username"><i>Unknown Cosmonaut</i></span>') + '</span>';
   replyDOM += '<span class="reply postDate" style="margin-left:50px;">' + time + '</span>';
   replyDOM += '<p style="border-top:1px solid #52FFB8; margin-left:50px;  margin-bottom:15px;">' + reply.text_content + '</p>';
   return replyDOM;

@@ -17,7 +17,6 @@ function openReply() {
   $('a.OpenReplyWindowBtn').click((e) => {
     $('#ReplyArea').fadeIn(300);
     var post_id = $(e.target).parents().eq(2).attr("post_id");
-    console.log(post_id);
     $('#ReplyPanel').attr('replypostid', post_id);
   });
 }
@@ -59,7 +58,6 @@ function upVote() {
       var addOrSubtract = 0
     }
 
-    //console.log(starStatus)
     $.ajax({
       method: 'post',
       url: '/api/like',
@@ -69,7 +67,6 @@ function upVote() {
       },
       datatype: 'json',
       success: (textStatus) => {
-        console.log(textStatus);
         updateHours(addOrSubtract, $(this))
       },
       error: (xhr, textStatus) => {
@@ -103,10 +100,8 @@ function createPost(post, prepend) {
   var postDOM = '';
   var repliesDOM = '';
   var userScore = post.score;
-  console.log(post)
   if (post.username) {
     //sync call
-    //console.log('poster\'s score:'+getScore(post.username));
     //async call
     // $.getJSON('/users/score/'+post.username,(data)=>{
     //    score = data.score;
@@ -170,7 +165,6 @@ function createReply(reply) {
 
 
 function addReply(replyDOM, postId) {
-  console.log($('[post_id="' + postId + '"]'))
   $('[post_id="' + postId + '"]').append(replyDOM);
 }
 
@@ -187,36 +181,4 @@ $('#PostTextArea').bind('input propertychange', () => {
   } else {
     $('#CharCount').text('');
   }
-});
-
-
-
-$("form.submitPanel").on('submit', function(e) {
-  e.preventDefault();
-  var text = $('#PostTextArea').val();
-  $('#PostTextArea').val('');
-  $('#CharCount').text('');
-  OneSignal.push(function() {
-    OneSignal.getUserId(function(userId) {
-      console.log("OneSignal User ID:", userId);
-      var params = {
-        'text_content': text,
-        'OneSignalUserId':userId
-      }
-      $.ajax({
-        method: 'post',
-        url: '/api',
-        data: params,
-        datatype: 'json',
-        success: function(post) {
-          createPost(post, true);
-          $('div.post.hidden').hide().removeClass('hidden').fadeIn(800);
-          openReply();
-        },
-        error: function() {
-          alert('oops something went wrong')
-        }
-      });
-    });
-  });
 });

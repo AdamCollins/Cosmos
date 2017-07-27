@@ -1,24 +1,29 @@
 [{
     "id":0,
-    "name": "North Star",
-    "stub": "north-star",
-    "icon": "images/const/north-star.png",
+    "name": "Polaris",
+    "stub": "polaris",
+    "icon": "images/badge-icons/polaris.svg",
     "viewed":true
   },
   {
     "id":1,
-    "name": "Orion's Belt",
-    "stub": "orions-belt",
-    "icon": "images/const/orions-belt.png",
-    "level":1,
+    "name": "Ursa Minor",
+    "stub": "ursa-minor",
+    "icon": "images/badge-icons/ursa-minor.svg",
     "viewed":false
   },
   {
     "id":2,
-    "name": "Orion's Belt",
-    "stub": "orions-belt",
-    "icon": "images/const/orions-belt.png",
-    "level":2,
+    "name": "Cancer",
+    "stub": "cancer",
+    "icon": "images/badge-icons/cancer.svg",
+    "viewed":false
+  },
+  {
+    "id":3,
+    "name": "Taurus",
+    "stub": "taurus",
+    "icon": "images/badge-icons/taurus.svg",
     "viewed":false
   }
 ]

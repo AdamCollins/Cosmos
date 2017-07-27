@@ -24,11 +24,17 @@ function openLoginMenu(){
   $("#RegisterMenu").fadeIn(300);
 }
 
+$('.badge-tile').hover(
+  function() {
+    $( this ).addClass('badge-hover')
+  }, function() {
+    $( this ).removeClass('badge-hover')
+  }
+);
 
 $("#loginMenuBtn, #registerMenuBtn").click(openLoginMenu);
 $('#BadgesBtn').click(openBageMenu);
 
 function openBageMenu(){
-  console.log('fff');
   $('#BadgesMenu').fadeIn(300)
 }

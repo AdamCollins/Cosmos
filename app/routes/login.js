@@ -13,13 +13,11 @@ var cookieParser = require('cookie-parser');
 router.post('/login', (req, res) => {
   MongoClient.connect(url, (err, database) => {
     var userCol = database.collection('users');
-    console.log(req.body.username)
     userCol.findOne({
       "username": {
         $regex: new RegExp("^" + req.body.username.toLowerCase(), "i")
       }
     }, function(err, user) {
-      console.log(user)
       if (user) {
         if (passwordMatchesHash(req.body.password, user.hashed_password)) {
           if (user.verified) {
@@ -31,11 +29,9 @@ router.post('/login', (req, res) => {
             res.status(403).send('Unverified');
           }
         } else {
-          console.log('1log');
           res.status(401).send('Invalid login');
         }
       } else {
-        console.log('2log');
         res.status(401).send('Invalid login');
       }
     });
@@ -45,7 +41,6 @@ router.post('/login', (req, res) => {
 
 
 router.get('/listusers', (req, res) => {
-  console.log()
   MongoClient.connect(url, (err, database) => {
     var userCol = database.collection('users');
     userCol.find({}).toArray(function(err, users) {
@@ -62,10 +57,8 @@ router.get('/users/score/:username', (req, res)=>{
     var query = {'username': {$eq: req.params.username.toLowerCase()}}
     users.findOne(query, (err, user)=>{
       if(user){
-        console.log(user)
         res.json({'score': user.score})
       }else{
-        console.log('here 2')
         res.json({'score': 0})
       }
     })
@@ -147,7 +140,6 @@ function sendVerificationEmail(recipient, username, verificationCode) {
 
 router.get('/register/accountverify/:verificationCode', (req, res) => {
   MongoClient.connect(url, (err, database) => {
-    console.log(req.params.verificationCode)
     database.collection('users').findOne({
       "verification_code": req.params.verificationCode
     }, function(err, user) {
@@ -166,7 +158,6 @@ router.get('/register/accountverify/:verificationCode', (req, res) => {
 });
 
 router.post('/register', (req, res) => {
-  console.log(req.body);
   var userdata = req.body;
   addUser(userdata);
   res.json({

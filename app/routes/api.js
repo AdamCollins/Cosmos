@@ -15,7 +15,6 @@ router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({
   extended: false
 }));
-var data = []
 // // require the module
 // const OneSignalClient = require('node-onesignal').default;
 
@@ -23,6 +22,7 @@ var data = []
 // const client = new OneSignalClient(config.oneSignalAppID, config.oneSignalRestAPIKey);
 
 router.get('/api', function(req, res) {
+  var data = [];
   MongoClient.connect(url, (err, db) => {
     if (err) {
       console.log(err);
@@ -31,7 +31,7 @@ router.get('/api', function(req, res) {
 
     var posts = db.collection('posts');
     var users =db.collection('users');
-    
+
     //find by 48 hours
     posts.find({
       "date": {
@@ -57,7 +57,6 @@ router.get('/api', function(req, res) {
         var currentUserStar = item.likes.includes(currentUserId)? 1:0;
         var numberOfLikes = item.likes.length;
         var userScore;
-        console.log("index:"+index)
         if (item.replies){
           item.replies.forEach((reply) => {
             var minutes = Math.floor((new Date() - new Date(reply.date)) / (60 * 1000))
@@ -68,7 +67,7 @@ router.get('/api', function(req, res) {
             })
           });
         }
-        
+
         users.findOne({
           "username":username,
         }, (err, user)=>{
@@ -88,10 +87,10 @@ router.get('/api', function(req, res) {
             res.json(data)
             db.close()
           }
-        })  
+        })
       });
-      
-    }); 
+
+    });
   });
 });
 
@@ -127,18 +126,17 @@ router.post('/api', function(req, res) {
 // client.sendNotification('test notification', {
 //     included_segments: 'all'
 // });
-
 MongoClient.connect(url, (err, db) => {
   if (err) {
     console.log(err);
   }
 
-  console.log('connected successfully to database');
+
   var posts = db.collection('posts');
   var data = req.body;
   var text = sanitizer.escape(data.text_content);
   var username = (req.session.user) ? req.session.user.username : null;
-
+   console.log(data);
   posts.insert({
     'text_content': text,
     'username': username,
@@ -170,7 +168,6 @@ router.post('/api/reply', function(req, res) {
     if (err)
       console.log(err);
 
-    console.log(req.body)
     var posts = db.collection('posts');
     var data = req.body;
     var text = sanitizer.escape(data.text_content);
@@ -188,8 +185,6 @@ router.post('/api/reply', function(req, res) {
         "replies": newReply
       }
     },(err, data)=>{
-      console.log('sending not')
-      console.log(data.value)
       if(data.value.OneSignalUserId)
         notifier.sendNotification('Yo, someone replied to your post: '+text,data.value.OneSignalUserId);
     })

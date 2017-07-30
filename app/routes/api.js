@@ -30,7 +30,7 @@ router.get('/api', function(req, res) {
     console.log('connected successfully to database');
 
     var posts = db.collection('posts');
-    var users =db.collection('users');
+    var users = db.collection('users');
 
     //find by 48 hours
     posts.find({
@@ -71,11 +71,13 @@ router.get('/api', function(req, res) {
         users.findOne({
           "username":username,
         }, (err, user)=>{
-          userScore = user.score
+          userScore = (user)?user.score:null;
+          userBadge = (user)?user.active_badge:null;
           data.push({
             "_id": id,
             "text_content": text,
             "username": username,
+            "userBadge":userBadge,
             "time": formatedTimeLeft,
             "replies": replies,
             "score": userScore,

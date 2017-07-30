@@ -2,6 +2,7 @@ var express = require('express');
 var MongoClient = require('mongodb').MongoClient;
 var bodyParser = require('body-parser');
 var config = require('../data/config');
+var badges = require('../data/badges.json')
 var nodemailer = require('nodemailer');
 var dbName = "cosmosdb";
 var dbpassword = config.password;
@@ -103,7 +104,8 @@ function addUser(userdata, callback) {
       "score": 0,
       "create_date": new Date(),
       "verified": false,
-      "verification_code": verificationCode
+      "verification_code": verificationCode,
+      "active_badge":badges[0]
     }, () => {
       sendVerificationEmail(userdata.email, userdata.username, verificationCode)
     });
@@ -152,6 +154,8 @@ router.get('/register/accountverify/:verificationCode', (req, res) => {
       $set: {
         verified: true
       }
+    },(err, data)=>{
+        console.log(data);
     })
   });
   res.send('<script>setTimeout(function(){location.replace("/"),1000})</script>Thank you for verifying')

@@ -96,6 +96,7 @@ function updateHours(addOrSubtract, clickButton){
   }
 }
 
+var x;
 function createPost(post, prepend) {
   var postDOM = '';
   var repliesDOM = '';
@@ -113,7 +114,7 @@ function createPost(post, prepend) {
     repliesDOM += createReply(item);
   });
   //<a class="btn tooltipped" data-position="bottom" data-delay="50" data-tooltip="I am a tooltip ">Hover me!</a>
-  var usernameDOM = '<img src="images/' + getLevel(0) + '.svg" width="32px"/><span class="username tooltipped" data-position="top" data-delay="50" data-tooltip="'+post.score+' ">' + post.username + '</span>';
+  var usernameDOM = '<img src="'+((post.userBadge!=null)?post.userBadge.icon:'')+'" width="32px"/><span class="username tooltipped" data-position="top" data-delay="50" data-tooltip="'+post.score+' ">' + post.username + '</span>';
   var anonUserDOM = ' <i class="fa fa-rocket fa-2x" aria-hidden="true"></i><span class="username"><i>Unknown Cosmonaut</i></span>';
 
   var colorStar = (post.currentUserStarPost == 1) ? "coloredStar" : "unColoredStar";

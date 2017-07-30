@@ -19,6 +19,7 @@ function login() {
         window.location = "";
       },
       error: function(data) {
+        console.log(data)
         let status = data.status;
         switch (status) {
           case 401:

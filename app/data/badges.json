@@ -33,7 +33,7 @@
     "stub": "delphius",
     "icon": "images/badge-icons/delphius.svg",
     "viewed":false
-  }
+  },
   {
     "name": "Aries",
     "stub": "aries",
@@ -79,7 +79,7 @@
   {
     "name": "Corvus",
     "stub": "corvus",
-    "icon": "images/badge-icons/cor.svg",
+    "icon": "images/badge-icons/corvus.svg",
     "viewed":false
   }
 ]

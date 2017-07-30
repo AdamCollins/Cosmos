@@ -188,8 +188,6 @@ router.post('/api/reply', function(req, res) {
         "replies": newReply
       }
     },(err, data)=>{
-      console.log('sending not')
-      console.log(data.value)
       if(data.value.OneSignalUserId)
         notifier.sendNotification('Yo, someone replied to your post: '+text,data.value.OneSignalUserId);
     })
@@ -214,13 +212,11 @@ router.post('/api/like', (req, res) => {
       var starStatus = req.body.starStatus
       var posts = db.collection('posts')
       var users = db.collection('users')
-
+      
       if (starStatus == 1){
         users.findOneAndUpdate(
           {"_id": new ObjectId(userId)},
-          {$inc: { "score" : 1}
-        },(err, data)=>{
-          updateUserLevel(data.user);
+          {$inc: { "score" : 1} 
         });
         posts.findOneAndUpdate(
           {"_id": new ObjectId(postId)},
@@ -234,7 +230,7 @@ router.post('/api/like', (req, res) => {
       }else{
         users.findOneAndUpdate(
           {"_id": new ObjectId(userId)},
-          {$inc: { "score" : - 1}
+          {$inc: { "score" : - 1} 
         });
 
         posts.update(
@@ -249,8 +245,5 @@ router.post('/api/like', (req, res) => {
   })
 })
 
-function updateUserLevel(user){
-
-}
 
 module.exports = router;

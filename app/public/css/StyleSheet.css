@@ -158,7 +158,7 @@ textarea.materialize-textarea:focus:not([readonly]) {
   height: 15%;
   margin: auto;
   position: fixed;
-  top: 0;
+  top: 40%;
   bottom: 0;
   left: 0;
   right: 0;
@@ -381,4 +381,30 @@ span.reply.postDate{
 
 .coloredStar {
   color: blue;
+}
+
+.badge-tile{
+  box-shadow: 0 0 0 2px #d1d1d1 inset;
+  width:20%;
+  padding:5px;
+}
+img.badge-icon{
+  width:42px;
+
+}
+
+.col.center-align.badge-tile {
+    padding: 5px;
+}
+
+
+.badge-grid{
+  border:solid 3px #d1d1d1;
+  width:300px;
+}
+.badge-hover{
+  box-shadow: 0 0 0 3px #52FFB8 inset;
+}
+.badge-menu-container{
+  margin-top: 50px;
 }

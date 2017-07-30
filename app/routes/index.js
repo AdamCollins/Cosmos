@@ -19,7 +19,6 @@ router.use(session({
 
 
 router.get('/', function(req, res) {
-  //console.log(req.session.user)
   if (req.session.user)
     MongoClient.connect(url, (err, db) => {
       var users = db.collection('users');
@@ -27,8 +26,6 @@ router.get('/', function(req, res) {
       users.findOne(query, (err, user)=>{
         if(user){
           var data = {'user': req.session.user, 'score': user.score}
-          console.log('here1')
-          console.log(data)
           res.render('index', data);
         }
       })
@@ -36,8 +33,6 @@ router.get('/', function(req, res) {
     });
   else{
     var data = {'user': req.session.user, 'score': 0}
-    console.log('here2')
-    console.log(data)
     res.render('index', data);
   }
 });

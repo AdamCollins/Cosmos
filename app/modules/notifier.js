@@ -1,6 +1,5 @@
 module.exports.sendNotification = function(message, userId) {
   var config = require('../data/config');
-	console.log(config.oneSignalRestAPIKey)
   var request = require('request');
   var restKey = config.oneSignalRestAPIKey+'';
   var appID = config.oneSignalAppID;

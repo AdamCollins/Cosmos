@@ -6,7 +6,9 @@ $(".loginmenu.dropdown").hide().removeClass("hidden");
 $("#RegisterMenu").hide().removeClass("hidden");
 $('#BadgesMenu').hide().removeClass('hidden')
 
-document.onLoad = $(".loading").fadeOut(800);
+// $(document).ready(function() {
+//     $(".loading").fadeOut(800);
+// });
 document.onLoad = $('div.post').fadeIn(1200);
 
 $('.exit-btn').click(function() {
@@ -22,11 +24,17 @@ function openLoginMenu(){
   $("#RegisterMenu").fadeIn(300);
 }
 
+$('.badge-tile').hover(
+  function() {
+    $( this ).addClass('badge-hover')
+  }, function() {
+    $( this ).removeClass('badge-hover')
+  }
+);
 
 $("#loginMenuBtn, #registerMenuBtn").click(openLoginMenu);
 $('#BadgesBtn').click(openBageMenu);
 
 function openBageMenu(){
-  console.log('fff');
   $('#BadgesMenu').fadeIn(300)
 }

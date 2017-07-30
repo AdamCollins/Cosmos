@@ -9,6 +9,7 @@ function loadPosts(postData) {
   //Fades in posts
   openReply();
   upVote();
+  $(".loading").fadeOut(800);
 }
 
 function openReply() {
@@ -16,7 +17,6 @@ function openReply() {
   $('a.OpenReplyWindowBtn').click((e) => {
     $('#ReplyArea').fadeIn(300);
     var post_id = $(e.target).parents().eq(2).attr("post_id");
-    console.log(post_id);
     $('#ReplyPanel').attr('replypostid', post_id);
   });
 }
@@ -25,7 +25,7 @@ function getLevel(score) {
   if (score > 10) {
     return 2;
   }
-  return 1;
+  return "badge-icons/orions-belt";
 }
 
 function getScore(username) {
@@ -58,7 +58,6 @@ function upVote() {
       var addOrSubtract = 0
     }
 
-    //console.log(starStatus)
     $.ajax({
       method: 'post',
       url: '/api/like',
@@ -68,7 +67,6 @@ function upVote() {
       },
       datatype: 'json',
       success: (textStatus) => {
-        console.log(textStatus);
         updateHours(addOrSubtract, $(this))
       },
       error: (xhr, textStatus) => {
@@ -102,10 +100,8 @@ function createPost(post, prepend) {
   var postDOM = '';
   var repliesDOM = '';
   var userScore = post.score;
-  console.log(post)
   if (post.username) {
     //sync call
-    //console.log('poster\'s score:'+getScore(post.username));
     //async call
     // $.getJSON('/users/score/'+post.username,(data)=>{
     //    score = data.score;
@@ -117,7 +113,7 @@ function createPost(post, prepend) {
     repliesDOM += createReply(item);
   });
   //<a class="btn tooltipped" data-position="bottom" data-delay="50" data-tooltip="I am a tooltip ">Hover me!</a>
-  var usernameDOM = '<img src="images/' + getLevel(0) + '.png" width="32px"/><span class="username tooltipped" data-position="top" data-delay="50" data-tooltip="'+post.score+' ">' + post.username + '</span>';
+  var usernameDOM = '<img src="images/' + getLevel(0) + '.svg" width="32px"/><span class="username tooltipped" data-position="top" data-delay="50" data-tooltip="'+post.score+' ">' + post.username + '</span>';
   var anonUserDOM = ' <i class="fa fa-rocket fa-2x" aria-hidden="true"></i><span class="username"><i>Unknown Cosmonaut</i></span>';
 
   var colorStar = (post.currentUserStarPost == 1) ? "coloredStar" : "unColoredStar";
@@ -160,7 +156,7 @@ function createReply(reply) {
   if(!time ||time<0 ){
     time = 'now'
   }
-  replyDOM += '<span class="user reply">' + ((reply.username) ? '<img src="images/' + getLevel(0) + '.png" width="32px" style="margin-left:-5px; margin-right:3px"/>' + reply.username : ' <i class="fa fa-rocket fa-2x" aria-hidden="true"></i><span class="username"><i>Unknown Cosmonaut</i></span>') + '</span>';
+  replyDOM += '<span class="user reply">' + ((reply.username) ? '<img src="images/' + getLevel(0) + '.svg" width="32px" style="margin-left:-5px; margin-right:3px"/>' + reply.username : ' <i class="fa fa-rocket fa-2x" aria-hidden="true"></i><span class="username"><i>Unknown Cosmonaut</i></span>') + '</span>';
   replyDOM += '<span class="reply postDate" style="margin-left:50px;">' + time + '</span>';
   replyDOM += '<p style="border-top:1px solid #52FFB8; margin-left:50px;  margin-bottom:15px;">' + reply.text_content + '</p>';
   return replyDOM;
@@ -169,7 +165,6 @@ function createReply(reply) {
 
 
 function addReply(replyDOM, postId) {
-  console.log($('[post_id="' + postId + '"]'))
   $('[post_id="' + postId + '"]').append(replyDOM);
 }
 
@@ -186,36 +181,4 @@ $('#PostTextArea').bind('input propertychange', () => {
   } else {
     $('#CharCount').text('');
   }
-});
-
-
-
-$("form.submitPanel").on('submit', function(e) {
-  e.preventDefault();
-  var text = $('#PostTextArea').val();
-  $('#PostTextArea').val('');
-  $('#CharCount').text('');
-  OneSignal.push(function() {
-    OneSignal.getUserId(function(userId) {
-      console.log("OneSignal User ID:", userId);
-      var params = {
-        'text_content': text,
-        'OneSignalUserId':userId
-      }
-      $.ajax({
-        method: 'post',
-        url: '/api',
-        data: params,
-        datatype: 'json',
-        success: function(post) {
-          createPost(post, true);
-          $('div.post.hidden').hide().removeClass('hidden').fadeIn(800);
-          openReply();
-        },
-        error: function() {
-          alert('oops something went wrong')
-        }
-      });
-    });
-  });
 });

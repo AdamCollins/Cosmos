@@ -1,24 +1,85 @@
 [{
-    "id":0,
-    "name": "North Star",
-    "stub": "north-star",
-    "icon": "images/const/north-star.png",
+    "name": "Polaris",
+    "stub": "polaris",
+    "icon": "images/badge-icons/polaris.svg",
+    "viewed":true
+  },
+  {
+    "name": "Ursa Minor",
+    "stub": "ursa-minor",
+    "icon": "images/badge-icons/ursa-minor.svg",
     "viewed":false
   },
   {
-    "id":1,
-    "name": "Orion's Belt",
-    "stub": "orions-belt",
-    "icon": "images/const/orions-belt.png",
-    "level":1,
+    "name": "Serpens",
+    "stub": "serpens",
+    "icon": "images/badge-icons/serpens.svg",
     "viewed":false
   },
   {
-    "id":2,
+    "name": "Cancer",
+    "stub": "cancer",
+    "icon": "images/badge-icons/cancer.svg",
+    "viewed":false
+  },
+  {
+    "name": "Taurus",
+    "stub": "taurus",
+    "icon": "images/badge-icons/taurus.svg",
+    "viewed":false
+  },
+  {
+    "name": "Delphius",
+    "stub": "delphius",
+    "icon": "images/badge-icons/delphius.svg",
+    "viewed":false
+  }
+  {
+    "name": "Aries",
+    "stub": "aries",
+    "icon": "images/badge-icons/aries.svg",
+    "viewed":false
+  },
+  {
+    "name": "Sagitta",
+    "stub": "sagitta",
+    "icon": "images/badge-icons/sagitta.svg",
+    "viewed":false
+  },
+  {
+    "name": "Aquila",
+    "stub": "aquila",
+    "icon": "images/badge-icons/aquila.svg",
+    "viewed":false
+  },
+  {
+    "name": "Sexton",
+    "stub": "sexton",
+    "icon": "images/badge-icons/sexton.svg",
+    "viewed":false
+  },
+  {
     "name": "Orion's Belt",
     "stub": "orions-belt",
-    "icon": "images/const/orions-belt.png",
-    "level":2,
+    "icon": "images/badge-icons/orions-belt.svg",
+    "viewed":false
+  },
+  {
+    "name": "Scutum",
+    "stub": "scutum",
+    "icon": "images/badge-icons/scutum.svg",
+    "viewed":false
+  },
+  {
+    "name": "Libra",
+    "stub": "libra",
+    "icon": "images/badge-icons/libra.svg",
+    "viewed":false
+  },
+  {
+    "name": "Corvus",
+    "stub": "corvus",
+    "icon": "images/badge-icons/cor.svg",
     "viewed":false
   }
 ]

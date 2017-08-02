@@ -13,13 +13,16 @@ var cookieParser = require('cookie-parser');
 
 router.post('/login', (req, res) => {
   MongoClient.connect(url, (err, database) => {
+    console.log(1);
     var userCol = database.collection('users');
     userCol.findOne({
       "username": {
         $regex: new RegExp("^" + req.body.username.toLowerCase(), "i")
       }
     }, function(err, user) {
+      console.log(2);
       if (user) {
+        console.log(3);
         if (passwordMatchesHash(req.body.password, user.hashed_password)) {
           if (user.verified) {
             req.session.user = user;
@@ -28,15 +31,19 @@ router.post('/login', (req, res) => {
             res.status(200).send('Login successfully');
           } else {
             res.status(403).send('Unverified');
+            console.log('uv');
           }
         } else {
           res.status(401).send('Invalid login');
+          console.log('inv log');
         }
       } else {
         res.status(401).send('Invalid login');
+        console.log('inv log 2');
       }
+      console.log(4);
+      database.close();
     });
-    database.close();
   });
 });
 

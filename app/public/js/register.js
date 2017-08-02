@@ -16,6 +16,8 @@ function login() {
       },
       datatype: 'json',
       success: function(data) {
+        console.log(data)
+        console.log('here')
         window.location = "";
       },
       error: function(data) {

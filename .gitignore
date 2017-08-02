@@ -2,3 +2,4 @@
 /app/data/config.js
 .DS_Store
 /app/ssl
+.idea

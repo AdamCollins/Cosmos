@@ -32,10 +32,10 @@ router.get('/api', function(req, res) {
     var posts = db.collection('posts');
     var users = db.collection('users');
 
-    //find by 48 hours
+    //find by 36 hours
     posts.find({
       "date": {
-        $gte: (new Date((new Date()).getTime() - (48 * 60 * 60 * 1000)))
+        $gte: (new Date((new Date()).getTime() - (36 * 60 * 60 * 1000)))
       }
     }).sort({
       "date": -1
@@ -45,6 +45,7 @@ router.get('/api', function(req, res) {
       }
 
       //go through make each post
+      if(datapost.length>0){
       var lastElement = datapost.length-1;
       datapost.forEach((item, index) => {
         var id = item._id
@@ -90,7 +91,11 @@ router.get('/api', function(req, res) {
             db.close()
           }
         })
-      });
+       });
+    } else {
+      res.json(data)
+      db.close()
+    }
 
     });
   });
@@ -100,7 +105,7 @@ router.get('/api', function(req, res) {
 function formatDate(date) {
   var currentDate = new Date();
   var msDate = currentDate - date;
-  var limit = 1000 * 60 * 60 * 48;
+  var limit = 1000 * 60 * 60 * 36;
   var timeLeft = limit - msDate;
   return formatedTimeLeft = msToTime(timeLeft);
 }
@@ -110,7 +115,7 @@ function msToTime(msDate) {
   var milliseconds = parseInt((msDate % 1000) / 100);
   var seconds = parseInt((msDate / 1000) % 60);
   var minutes = parseInt((msDate / (1000 * 60)) % 60);
-  var hours = parseInt((msDate / (1000 * 60 * 60)) % 48);
+  var hours = parseInt((msDate / (1000 * 60 * 60)) % 36);
 
   hours = (hours < 10) ? hours : hours;
   minutes = (minutes < 10) ? minutes : minutes;
@@ -152,7 +157,7 @@ MongoClient.connect(url, (err, db) => {
     res.json({
       "text_content": text,
       "username": username,
-      "time": "48h remaining",
+      "time": "36h remaining",
       "_id": post.insertedIds[0]
     });
   });
@@ -211,11 +216,11 @@ router.post('/api/like', (req, res) => {
       var starStatus = req.body.starStatus
       var posts = db.collection('posts')
       var users = db.collection('users')
-      
+
       if (starStatus == 1){
         users.findOneAndUpdate(
           {"_id": new ObjectId(userId)},
-          {$inc: { "score" : 1} 
+          {$inc: { "score" : 1}
         });
         posts.findOneAndUpdate(
           {"_id": new ObjectId(postId)},
@@ -229,7 +234,7 @@ router.post('/api/like', (req, res) => {
       }else{
         users.findOneAndUpdate(
           {"_id": new ObjectId(userId)},
-          {$inc: { "score" : - 1} 
+          {$inc: { "score" : - 1}
         });
 
         posts.update(

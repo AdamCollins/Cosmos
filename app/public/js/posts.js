@@ -129,7 +129,7 @@ function createPost(post, prepend) {
     postDOM += '    <span class="stars"></span>';
   postDOM += '        <a class="btn-floating btn-large waves-effect green waves-light hoverable"><i class="material-icons">report_problem</i></a>';
   postDOM += '        <a class="btn-floating btn-large waves-effect blue darken-1 hoverable OpenReplyWindowBtn waves-light"><i class="material-icons">chat_bubble_outline</i></a>';
-  postDOM += '        <a class="btn-floating btn-large waves-effect starBtn waves-light hoverable"><i class="material-icons ' + colorStar + '">star</i></a>';
+  postDOM += '        <a class="btn-floating btn-large waves-effect starBtn waves-light hoverable"><img src="images/up.svg"><i class="material-icons ' + colorStar + '">star</i></a>';
   postDOM += '    </div>';
   postDOM += ' <div class="reply-container">';
   postDOM += repliesDOM;

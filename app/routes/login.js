@@ -10,19 +10,16 @@ var url = 'mongodb://cosmos:' + dbpassword + '@cluster0-shard-00-00-oe5ks.mongod
 var bcrypt = require('bcrypt');
 var router = express.Router();
 var cookieParser = require('cookie-parser');
-
 router.post('/login', (req, res) => {
   MongoClient.connect(url, (err, database) => {
-    console.log(1);
+    console.log(123456789);
     var userCol = database.collection('users');
     userCol.findOne({
       "username": {
         $regex: new RegExp("^" + req.body.username.toLowerCase(), "i")
       }
     }, function(err, user) {
-      console.log(2);
       if (user) {
-        console.log(3);
         if (passwordMatchesHash(req.body.password, user.hashed_password)) {
           if (user.verified) {
             req.session.user = user;
@@ -67,7 +64,7 @@ router.get('/sessions', (req, res) => {
     database.close();
   });
 });
-router.get('/sessions/remove', (req, res) => {
+router.get('/sessions/clear', (req, res) => {
   MongoClient.connect(url, (err, database) => {
     var userCol = database.collection('sessions');
     userCol.remove({})

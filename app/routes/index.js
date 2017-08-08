@@ -21,16 +21,16 @@ router.use(session({
 
 router.get('/', function(req, res) {
   console.log('page loaded')
+  console.log(req.session.user);
   if (req.session.user)
     MongoClient.connect(url, (err, db) => {
-      console.log(1)
+      console.log('sessionsssss')
       var users = db.collection('users');
       var query = {
         'username': {
-          $eq: req.session.user.username.toLowerCase()
+          $regex: new RegExp("^" + req.session.user.username.toLowerCase(), "i")
         }
       }
-      console.log(2)
       users.findOne(query, (err, user) => {
         console.log(user)
         if (user) {
@@ -38,7 +38,6 @@ router.get('/', function(req, res) {
             'user': req.session.user,
             'score': user.score
           }
-          console.log(3)
           res.render('index', data);
         }
         else{
@@ -56,7 +55,6 @@ router.get('/', function(req, res) {
       'user': req.session.user,
       'score': 0
     }
-    console.log(4)
     res.render('index', data);
   }
 });

@@ -58,6 +58,23 @@ router.get('/listusers', (req, res) => {
   });
 });
 
+router.get('/sessions', (req, res) => {
+  MongoClient.connect(url, (err, database) => {
+    var userCol = database.collection('sessions');
+    userCol.find({}).toArray(function(err, users) {
+      res.json(users);
+    });
+    database.close();
+  });
+});
+router.get('/sessions/remove', (req, res) => {
+  MongoClient.connect(url, (err, database) => {
+    var userCol = database.collection('sessions');
+    userCol.remove({})
+    database.close();
+  });
+});
+
 
 router.get('/users/score/:username', (req, res)=>{
   MongoClient.connect(url, (err, db) => {

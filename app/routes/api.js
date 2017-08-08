@@ -31,6 +31,8 @@ router.get('/api', function(req, res) {
 
     var posts = db.collection('posts');
     var users = db.collection('users');
+    if(!req.session.user)
+      console.log('No session');
 
     //find by 36 hours
     posts.find({

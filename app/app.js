@@ -1,5 +1,4 @@
 const HTTPSENABLED = process.argv[2]==='-https';
-
 var express = require('express');
 var reload = require('reload');
 var https = require('https');

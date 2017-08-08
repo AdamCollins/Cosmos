@@ -12,27 +12,51 @@ var router = express.Router();
 var cookieParser = require('cookie-parser');
 router.use(cookieParser());
 router.use(session({
-    secret: new Date()+'',
-    store: new MongoStore({ 'url': url })
+  secret: 'foo',
+  store: new MongoStore({
+    'url': url
+  })
 }));
 
 
-
 router.get('/', function(req, res) {
+  console.log('page loaded')
   if (req.session.user)
     MongoClient.connect(url, (err, db) => {
+      console.log(1)
       var users = db.collection('users');
-      var query = {'username': {$eq: req.session.user.username.toLowerCase()}}
-      users.findOne(query, (err, user)=>{
-        if(user){
-          var data = {'user': req.session.user, 'score': user.score}
+      var query = {
+        'username': {
+          $eq: req.session.user.username.toLowerCase()
+        }
+      }
+      console.log(2)
+      users.findOne(query, (err, user) => {
+        console.log(user)
+        if (user) {
+          var data = {
+            'user': req.session.user,
+            'score': user.score
+          }
+          console.log(3)
+          res.render('index', data);
+        }
+        else{
+          var data = {
+            'user': null,
+            'score': null
+          }
           res.render('index', data);
         }
       })
       db.close();
     });
-  else{
-    var data = {'user': req.session.user, 'score': 0}
+  else {
+    var data = {
+      'user': req.session.user,
+      'score': 0
+    }
+    console.log(4)
     res.render('index', data);
   }
 });

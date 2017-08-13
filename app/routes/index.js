@@ -21,13 +21,18 @@ router.use(session({
 
 router.get('/', function(req, res) {
   console.log('page loaded')
+  console.log(req.session.user);
   if (req.session.user)
     MongoClient.connect(url, (err, db) => {
+<<<<<<< HEAD
 
+=======
+      console.log('sessionsssss')
+>>>>>>> 061a9639834efa496b1d8d6c148e23d7509c3129
       var users = db.collection('users');
       var query = {
         'username': {
-          $eq: req.session.user.username.toLowerCase()
+          $regex: new RegExp("^" + req.session.user.username.toLowerCase(), "i")
         }
       }
       users.findOne(query, (err, user) => {

@@ -75,7 +75,9 @@ router.get('/sessions/clear', (req, res) => {
 router.get('/users/score/:username', (req, res)=>{
   MongoClient.connect(url, (err, db) => {
     var users = db.collection('users');
-    var query = {'username': {$eq: req.params.username.toLowerCase()}}
+    console.log(req.params)
+    var query = {'username': {$regex: new RegExp("^" + req.params.username.toLowerCase(), "i")}}
+    console.log(query)
     users.findOne(query, (err, user)=>{
       if(user){
         res.json({'score': user.score})

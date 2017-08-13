@@ -41,7 +41,7 @@ function getScore(username) {
   })
 }
 
-getScore("sushi")
+
 
 function upVote() {
   $('body').on('click', '.myButtonGroup .starBtn', function() {
@@ -96,7 +96,7 @@ function updateHours(addOrSubtract, clickButton){
   }
 }
 
-var x;
+
 function createPost(post, prepend) {
   var postDOM = '';
   var repliesDOM = '';

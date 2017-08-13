@@ -5,6 +5,8 @@ $("#ReplyArea").hide().removeClass("hidden");
 $(".loginmenu.dropdown").hide().removeClass("hidden");
 $("#RegisterMenu").hide().removeClass("hidden");
 $('#BadgesMenu').hide().removeClass('hidden')
+$('.carousel').carousel();
+
 
 // $(document).ready(function() {
 //     $(".loading").fadeOut(800);

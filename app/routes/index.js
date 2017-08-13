@@ -23,14 +23,13 @@ router.get('/', function(req, res) {
   console.log('page loaded')
   if (req.session.user)
     MongoClient.connect(url, (err, db) => {
-      console.log(1)
+
       var users = db.collection('users');
       var query = {
         'username': {
           $eq: req.session.user.username.toLowerCase()
         }
       }
-      console.log(2)
       users.findOne(query, (err, user) => {
         console.log(user)
         if (user) {
@@ -38,7 +37,6 @@ router.get('/', function(req, res) {
             'user': req.session.user,
             'score': user.score
           }
-          console.log(3)
           res.render('index', data);
         }
         else{
@@ -56,7 +54,6 @@ router.get('/', function(req, res) {
       'user': req.session.user,
       'score': 0
     }
-    console.log(4)
     res.render('index', data);
   }
 });

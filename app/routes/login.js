@@ -13,14 +13,14 @@ var cookieParser = require('cookie-parser');
 
 router.post('/login', (req, res) => {
   MongoClient.connect(url, (err, database) => {
-    console.log(1);
+    console.log(11);
     var userCol = database.collection('users');
     userCol.findOne({
       "username": {
         $regex: new RegExp("^" + req.body.username.toLowerCase(), "i")
       }
     }, function(err, user) {
-      console.log(2);
+      console.log(22);
       if (user) {
         console.log(3);
         if (passwordMatchesHash(req.body.password, user.hashed_password)) {

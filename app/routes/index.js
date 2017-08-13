@@ -36,8 +36,10 @@ router.get('/', function(req, res) {
         if (user) {
           var data = {
             'user': req.session.user,
-            'score': user.score
+            'score': user.score,
+            'badges':user.badges
           }
+          console.log(data.user);
           res.render('index', data);
         }
         else{

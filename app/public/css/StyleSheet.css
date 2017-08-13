@@ -67,7 +67,13 @@ p.loginmenu {
   margin-bottom: 0px;
   padding-left: 5px;
   border-radius: 10px 10px 0px 0px;
-  min-width: 100px;
+  min-width: 130px;
+}
+span.badge{
+  margin: 0px;
+  background-color: #52FFB8 !important;
+  color: #615756 !important;
+  font-weight: bold !important;
 }
 
 div.post {

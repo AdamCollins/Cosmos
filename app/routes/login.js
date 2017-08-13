@@ -126,7 +126,8 @@ function addUser(userdata, callback) {
       "create_date": new Date(),
       "verified": false,
       "verification_code": verificationCode,
-      "active_badge":badges[0]
+      "active_badge":badges[0],
+      "badges":badges[0]
     }, () => {
       sendVerificationEmail(userdata.email, userdata.username, verificationCode)
     });

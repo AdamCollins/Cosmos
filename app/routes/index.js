@@ -24,7 +24,6 @@ router.get('/', function(req, res) {
   console.log(req.session.user);
   if (req.session.user)
     MongoClient.connect(url, (err, db) => {
-      console.log('sessionsssss')
       var users = db.collection('users');
       var query = {
         'username': {

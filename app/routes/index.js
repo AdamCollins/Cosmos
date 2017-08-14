@@ -12,7 +12,7 @@ var router = express.Router();
 var cookieParser = require('cookie-parser');
 router.use(cookieParser());
 router.use(session({
-  secret: 'foo',
+  secret: config.sessionSecretKey,
   store: new MongoStore({
     'url': url
   })

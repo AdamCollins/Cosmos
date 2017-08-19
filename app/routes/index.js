@@ -18,7 +18,7 @@ router.use(session({
   })
 }));
 
-
+//console
 router.get('/', function(req, res) {
   console.log('page loaded')
   console.log(req.session.user);

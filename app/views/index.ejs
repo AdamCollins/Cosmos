@@ -188,7 +188,7 @@
 
             <%if(user){%>
               <% for(var i = 0; i<user.badges.length; i++) {%>
-                <img height="48px" class="badgeGallery <%=(user.active_badge.name==user.badges[i].name)? 'active z-depth-4':''%>" src=<%=user.badges[i].icon %>>
+                <img height="48px" badge=<%=user.badges[i].stub%> class="badgeGallery <%=(user.active_badge.name==user.badges[i].name)? 'active z-depth-4':''%>" src=<%=user.badges[i].icon %>>
                 <%}%>
             <%}%>
 
@@ -210,5 +210,6 @@
 <script type="text/javascript" src="js/reply.js"></script>
 <script type="text/javascript" src="js/upVote.js"></script>
 <script type="text/javascript" src="js/submit.js"></script>
+<script type="text/javascript" src="js/badges.js"></script>
 
 </html>

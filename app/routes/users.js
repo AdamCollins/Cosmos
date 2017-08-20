@@ -10,6 +10,9 @@ var url = 'mongodb://cosmos:' + dbpassword + '@cluster0-shard-00-00-oe5ks.mongod
 var bcrypt = require('bcrypt');
 var router = express.Router();
 var cookieParser = require('cookie-parser');
+var ObjectId = require('mongodb').ObjectID;
+
+
 router.post('/login', (req, res) => {
   MongoClient.connect(url, (err, database) => {
     var userCol = database.collection('users');
@@ -72,23 +75,52 @@ router.get('/sessions/clear', (req, res) => {
 });
 
 
-router.get('/users/score/:username', (req, res)=>{
+router.get('/users/score/:username', (req, res) => {
   MongoClient.connect(url, (err, db) => {
     var users = db.collection('users');
-    console.log(req.params)
-    var query = {'username': {$regex: new RegExp("^" + req.params.username.toLowerCase(), "i")}}
-    console.log(query)
-    users.findOne(query, (err, user)=>{
-      if(user){
-        res.json({'score': user.score})
-      }else{
-        res.json({'score': 0})
+    var query = {
+      'username': {
+        $regex: new RegExp("^" + req.params.username.toLowerCase(), "i")
+      }
+    }
+    users.findOne(query, (err, user) => {
+      if (user) {
+        res.json({
+          'score': user.score
+        })
+      } else {
+        res.json({
+          'score': 0
+        })
       }
     })
     db.close();
   });
 })
 
+
+router.post('/users/change-badge', (req, res) => {
+  MongoClient.connect(url, (err, database) => {
+    if (req.session.user) {
+      database.collection('users').findOneAndUpdate({
+        '_id': new ObjectId(req.session.user._id)
+      }, {
+        $set: {
+          "active_badge": getBadgeByStub(req.body.badge)
+        }
+      }, (err, user) => {
+
+        console.log(user)
+        req.session.user = user.value
+        database.close();
+        res.status(200).send('badge updated!');
+      })
+    } else {
+      res.status(520);
+      database.close();
+    }
+  })
+})
 
 
 router.get('/registraion/availible/:username', (req, res) => {
@@ -127,13 +159,20 @@ function addUser(userdata, callback) {
       "create_date": new Date(),
       "verified": false,
       "verification_code": verificationCode,
-      "active_badge":badges[0],
-      "badges":badges[0]
+      "active_badge": badges[0],
+      "badges": badges[0]
     }, () => {
       sendVerificationEmail(userdata.email, userdata.username, verificationCode)
     });
     database.close();
   });
+}
+
+function getBadgeByStub(stub) {
+  for (var i = 0; i < badges.length; i++)
+    if (stub === badges[i].stub)
+      return badges[i];
+  return null;
 }
 
 function sendVerificationEmail(recipient, username, verificationCode) {
@@ -168,7 +207,7 @@ router.get('/register/accountverify/:verificationCode', (req, res) => {
     database.collection('users').findOne({
       "verification_code": req.params.verificationCode
     }, function(err, user) {
-      if(user.verified==false)
+      if (user.verified == false)
         req.session.user = user;
     });
     database.collection('users').updateOne({
@@ -177,9 +216,7 @@ router.get('/register/accountverify/:verificationCode', (req, res) => {
       $set: {
         verified: true
       }
-    },(err, data)=>{
-        console.log(data);
-    })
+    }, (err, data) => {})
   });
   res.send('<script>setTimeout(function(){location.replace("/"),1000})</script>Thank you for verifying')
 });

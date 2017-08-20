@@ -20,8 +20,6 @@ router.use(session({
 
 //console
 router.get('/', function(req, res) {
-  console.log('page loaded')
-  console.log(req.session.user);
   if (req.session.user)
     MongoClient.connect(url, (err, db) => {
       var users = db.collection('users');
@@ -31,14 +29,12 @@ router.get('/', function(req, res) {
         }
       }
       users.findOne(query, (err, user) => {
-        console.log(user)
         if (user) {
           var data = {
             'user': req.session.user,
             'score': user.score,
             'badges':user.badges
           }
-          console.log(data.user);
           res.render('index', data);
         }
         else{

@@ -44,7 +44,7 @@ router.get('/api', function(req, res) {
       "date": -1
     }).toArray((err, datapost) => {
       if (err) {
-        console.log(err);
+
       }
 
       //go through make each post
@@ -146,7 +146,6 @@ router.post('/api', function(req, res) {
     var data = req.body;
     var text = sanitizer.escape(data.text_content);
     var username = (req.session.user) ? req.session.user.username : null;
-    console.log(data);
     posts.insert({
       'text_content': text,
       'username': username,
@@ -160,6 +159,8 @@ router.post('/api', function(req, res) {
       res.json({
         "text_content": text,
         "username": username,
+        "userBadge":req.session.user.active_badge,
+        "score":req.session.user.score,
         "time": "36h remaining",
         "_id": post.insertedIds[0]
       });

@@ -21,7 +21,6 @@ module.exports.sendNotification = function(message, userId) {
     },
     function(error, response, body) {
       if (!body.errors) {
-        console.log(body);
       } else {
         console.error('Error:', body.errors);
       }

@@ -33,8 +33,9 @@ if (HTTPSENABLED) {
     res.writeHead(301, {
       "Location": "https://" + req.headers['host'] + req.url
     });
+
     res.end();
-  }).listen(3000);
+  }).listen(80);
   server = https.createServer(httpsOptions, app).listen(443, function() {
     console.log('listening securely on port 443');
   });

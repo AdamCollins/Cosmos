@@ -44,7 +44,8 @@ router.get('/', function(req, res) {
         else{
           var data = {
             'user': null,
-            'score': null
+            'score': null,
+            'badges':null
           }
           res.render('index', data);
         }

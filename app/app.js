@@ -28,16 +28,16 @@ app.use(require('./routes/login'));
 var port = app.get('port')
 var server = null;
 if (HTTPSENABLED) {
-  server = https.createServer(httpsOptions, app).listen(443, function() {
-    console.log('listening securely on port 443');
-  });
   //Redirects to https
   http.createServer(function(req, res) {
     res.writeHead(301, {
       "Location": "https://" + req.headers['host'] + req.url
     });
     res.end();
-  }).listen(80);
+  }).listen(3000);
+  server = https.createServer(httpsOptions, app).listen(443, function() {
+    console.log('listening securely on port 443');
+  });
 } else {
   server = app.listen(3000, () => {
     console.log('HTTPS DISABLED: listening on port 3000');

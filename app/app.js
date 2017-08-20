@@ -37,7 +37,7 @@ if (HTTPSENABLED) {
       "Location": "https://" + req.headers['host'] + req.url
     });
     res.end();
-  }).listen(3000);
+  }).listen(80);
 } else {
   server = app.listen(3000, () => {
     console.log('HTTPS DISABLED: listening on port 3000');

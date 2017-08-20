@@ -414,3 +414,11 @@ img.badge-icon{
 .badge-menu-container{
   margin-top: 50px;
 }
+
+img.badgeGallery{
+  margin: 10px;
+}
+
+img.badgeGallery.active{
+  outline: #52ffb8 solid 2px;
+}

@@ -186,8 +186,9 @@
         <div class="container badge-menu-container">
           <h6>Select Your Badge</h5>
 
-
-
+            <% for(var i = 0; i<user.badges.length; i++) {%>
+              <img height="48px" class="badgeGallery <%=(user.active_badge.name==user.badges[i].name)? 'active z-depth-4':''%>" src=<%=user.badges[i].icon %>>
+              <%}%>
 
         </div>
         </div>

@@ -1,7 +1,7 @@
 # COSMOS Anonymous Forum
 <img src="https://raw.githubusercontent.com/AdamCollins/Cosmos/master/logo.png" alt="alt text" width="240px">
 A Lightweight forum for university students written in NodeJS and MongoDB
-Try Cosmos out now at https://gocomsos.xyz !
+Try Cosmos out now at https://gocosmos.xyz/ !
 
 
 

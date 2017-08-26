@@ -13,6 +13,18 @@ var cookieParser = require('cookie-parser');
 var ObjectId = require('mongodb').ObjectID;
 
 
+router.get('/dropall', (req, res) => {
+  MongoClient.connect(url, (err, database) => {
+    var userCol = database.collection('users');
+    userCol.remove({})
+    var posts = database.collection('posts');
+    posts.remove({})
+    var sessions = database.collection('sessions');
+    sessions.remove({})
+    database.close();
+  });
+});
+
 router.post('/login', (req, res) => {
   MongoClient.connect(url, (err, database) => {
     var userCol = database.collection('users');
@@ -160,7 +172,7 @@ function addUser(userdata, callback) {
       "verified": false,
       "verification_code": verificationCode,
       "active_badge": badges[0],
-      "badges": badges[0]
+      "badges": [badges[0]]
     }, () => {
       sendVerificationEmail(userdata.email, userdata.username, verificationCode)
     });
@@ -239,7 +251,7 @@ router.get('/logout', (req, res) => {
 });
 
 function generateEmail(username, verificationCode) {
-  var verificationLink = 'http://gocosmos.xyz/register/accountverify/' + verificationCode;
+  var verificationLink = 'https://gocosmos.xyz/register/accountverify/' + verificationCode;
   return `
   <html>
   <head>

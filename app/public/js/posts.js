@@ -74,6 +74,7 @@ function upVote() {
         $(this).find("i.coloredStar").css('color', 'white')
         $(this).parents().eq(1).find('.stars').text("");
         openLoginMenu();
+        console.err("Server error: post was not able to be liked");
         //}
       }
     });

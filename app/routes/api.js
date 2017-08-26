@@ -159,8 +159,8 @@ router.post('/api', function(req, res) {
       res.json({
         "text_content": text,
         "username": username,
-        "userBadge":req.session.user.active_badge,
-        "score":req.session.user.score,
+        "userBadge": req.session.user.active_badge,
+        "score": req.session.user.score,
         "time": "36h remaining",
         "_id": post.insertedIds[0]
       });
@@ -221,43 +221,79 @@ router.post('/api/like', (req, res) => {
       var posts = db.collection('posts')
       var users = db.collection('users')
 
+      //Liking post
       if (starStatus == 1) {
-        users.findOneAndUpdate({
-          "_id": new ObjectId(userId)
-        }, {
-          $inc: {
-            "score": 1
-          }
-        }, (err, data) => {
-          badgeUnlocked(data.value)
-        });
+        //increments post score
         posts.findOneAndUpdate({
           "_id": new ObjectId(postId)
         }, {
           $addToSet: {
             "likes": userId
           }
-        });
-        res.status(200).send('liked!');
-        db.close();
-      } else {
-        users.findOneAndUpdate({
-          "_id": new ObjectId(userId)
-        }, {
-          $inc: {
-            "score": -1
+        }, (err, post) => {
+          if(err){
+            res.status(500).send('unable to like');
+            db.close();
+            return
           }
-        });
+          var posterUsername = post.value.username
+          console.log("poster:" + posterUsername)
+          //Increments poster score
+          //TODO not finding user
 
-        posts.update({
+          users.findOneAndUpdate({
+            "username": posterUsername
+          }, {
+            $inc: {
+              "score": 1
+            }
+          }, (err, posterData) => {
+            if(err){
+              res.status(500).send('unable to like');
+              db.close();
+              return
+            }
+
+            //Checks if poster unlocked a new badge
+            badgeUnlocked(posterData.value)
+            res.status(200).send('liked!');
+            db.close();
+          })
+        });
+        //Returns ajax call
+      } else {
+        //unliking post
+        //Decrements posts likes
+        posts.findOneAndUpdate({
           "_id": new ObjectId(postId)
         }, {
           $pull: {
             "likes": userId
           }
-        });
-        res.status(200).send('unliked!');
-        db.close();
+        }, (err, postData) => {
+          if(err){
+            res.status(500).send('unable to unlike');
+            db.close();
+            return
+          }
+          //Decrements posters score
+          var posterUsername = postData.value.username
+          users.findOneAndUpdate({
+            "username": posterUsername
+          }, {
+            $inc: {
+              "score": -1
+            }
+          }, (err, posterData) => {
+            if(err){
+              res.status(500).send('unable to like');
+              db.close();
+              return
+            }
+            res.status(200).send('unliked!');
+            db.close();
+          })
+        })
       }
     }
   })
@@ -274,7 +310,9 @@ function badgeUnlocked(user) {
   if (user.score >= 30 && user.badges.indexOf(badges[3]) < 0)
     unlockedBadges.push(badges[3])
 
-
+    console.log(user)
+    console.log(user.score >= 5)
+    console.log(unlockedBadges);
   if (unlockedBadges) {
     MongoClient.connect(url, (err, db) => {
       db.collection('users').findOneAndUpdate({
@@ -286,6 +324,7 @@ function badgeUnlocked(user) {
           }
         }
       }, (err, user) => {
+        console.log("unlocked a new badge!");
         db.close();
       })
     })

@@ -187,8 +187,8 @@
           <h6>Select Your Badge</h5>
 
             <%if(user){%>
-              <% for(var i = 0; i<badges.length; i++) {%>
-                <img height="48px" badge=<%=badges[i].stub%> class="badgeGallery <%=(user.active_badge.name==badges[i].name)? 'active z-depth-4':''%>" src=<%=badges[i].icon %>>
+              <% for(var i = 0; i<user.badges.length; i++) {%>
+                <img height="48px" badge=<%=user.badges[i].stub%> class="badgeGallery <%=(user.active_badge.name==user.badges[i].name)? 'active z-depth-4':''%>" src=<%=user.badges[i].icon %>>
                 <%}%>
             <%}%>
 

@@ -301,13 +301,14 @@ router.post('/api/like', (req, res) => {
 
 function badgeUnlocked(user) {
   var unlockedBadges = [];
+  //+1 for the like they just recieved
   if (!user.badges && user.badges.indexOf(badges[0]) < 0)
     unlockedBadges.push(badges[0])
-  if (user.score >= 5 && user.badges.indexOf(badges[1]) < 0)
+  if (user.score+1 >= 5 && user.badges.indexOf(badges[1]) < 0)
     unlockedBadges.push(badges[1])
-  if (user.score >= 15 && user.badges.indexOf(badges[2]) < 0)
+  if (user.score+1 >= 15 && user.badges.indexOf(badges[2]) < 0)
     unlockedBadges.push(badges[2])
-  if (user.score >= 30 && user.badges.indexOf(badges[3]) < 0)
+  if (user.score+1 >= 30 && user.badges.indexOf(badges[3]) < 0)
     unlockedBadges.push(badges[3])
 
     console.log(user)

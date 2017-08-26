@@ -30,8 +30,9 @@ router.get('/', function(req, res) {
       }
       users.findOne(query, (err, user) => {
         if (user) {
+          req.session.user = user
           var data = {
-            'user': req.session.user, //Used for constant info, username, id, onsignal id
+            'user': user, //Used for constant info, username, id, onsignal id
             'score': user.score, //Dynamic content
             'badges':user.badges //Dynamic content
           }

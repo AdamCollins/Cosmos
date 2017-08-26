@@ -3,7 +3,7 @@ $('#LoginBtn').click(login);
 function login() {
   $('#RegProgress').css('visibility', 'visible');
   console.log('attempting login...');
-  let username = $('#usernameTF').val();
+  let username = $('#usernameTF').val().trim();
   let password = $('#passwordTF').val();
 
   if (username.length > 0 && password.length > 0) {

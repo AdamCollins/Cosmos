@@ -158,7 +158,7 @@ function createReply(reply) {
   if(!time ||time<0 ){
     time = 'now'
   }
-  replyDOM += '<span class="user reply">' + ((reply.username) ? '<img src="images/' + getLevel(0) + '.svg" width="32px" style="margin-left:-5px; margin-right:3px"/>' + reply.username : ' <i class="fa fa-rocket fa-2x" aria-hidden="true"></i><span class="username"><i>Unknown Cosmonaut</i></span>') + '</span>';
+  replyDOM += '<span class="user reply">' + ((reply.badge && reply.username) ? '<img src="'reply.badge.icon'" width="32px" style="margin-left:-5px; margin-right:3px"/>' + reply.username : ' <i class="fa fa-rocket fa-2x" aria-hidden="true"></i><span class="username"><i>Unknown Cosmonaut</i></span>' + '</span>');
   replyDOM += '<span class="reply postDate" style="margin-left:50px;">' + time + '</span>';
   replyDOM += '<p style="border-top:1px solid #52FFB8; margin-left:50px;  margin-bottom:15px;">' + reply.text_content + '</p>';
   return replyDOM;

@@ -64,10 +64,17 @@ router.get('/api', function(req, res) {
           if (item.replies) {
             item.replies.forEach((reply) => {
               var minutes = Math.floor((new Date() - new Date(reply.date)) / (60 * 1000))
-              replies.push({
-                "text_content": reply.text_content,
-                "username": reply.username,
-                "time": minutes < 120 ? minutes + 'm ago' : Math.floor(minutes / 60) + 'h ago'
+              users.findOne({
+                "username":reply.username
+              },(err,user)=>{
+                console.log("user");
+                console.log(user)
+                replies.push({
+                  "text_content": reply.text_content,
+                  "username": reply.username,
+                  "badge":(user)?user.badge:null,
+                  "time": minutes < 120 ? minutes + 'm ago' : Math.floor(minutes / 60) + 'h ago'
+                })
               })
             });
           }

@@ -166,8 +166,8 @@ router.post('/api', function(req, res) {
       res.json({
         "text_content": text,
         "username": username,
-        "userBadge": req.session.user.active_badge,
-        "score": req.session.user.score,
+        "userBadge": (req.session.user)?req.session.user.active_badge:null,
+        "score": (req.session.user)?req.session.user.dcore:null,
         "time": "36h remaining",
         "_id": post.insertedIds[0]
       });

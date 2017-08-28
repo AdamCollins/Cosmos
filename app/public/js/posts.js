@@ -31,11 +31,11 @@ function getLevel(score) {
 function getScore(username) {
   $.ajax({
     method: 'get',
-    url: '/users/score/'+username,
-    success(userScore){
+    url: '/users/score/' + username,
+    success(userScore) {
       return userScore;
     },
-    error(){
+    error() {
       console.log('oops, something went wrong')
     }
   })
@@ -81,19 +81,19 @@ function upVote() {
   });
 }
 
-function updateHours(addOrSubtract, clickButton){
-  if(addOrSubtract == 0){
+function updateHours(addOrSubtract, clickButton) {
+  if (addOrSubtract == 0) {
     var addedTimeString = clickButton.parents().eq(1).find('.stars').text();
-    var addedTimeInt = addedTimeString.replace(/\D/g,'');
-    var timeAdded = (parseInt(addedTimeInt) === 0) ? 0 :parseInt(addedTimeInt) - 1;
-    var addedTimeText = (timeAdded === 0 )? '' :'ADDED '+ timeAdded + ' HOUR' + ((timeAdded != 1)? 'S': '');
+    var addedTimeInt = addedTimeString.replace(/\D/g, '');
+    var timeAdded = (parseInt(addedTimeInt) === 0) ? 0 : parseInt(addedTimeInt) - 1;
+    var addedTimeText = (timeAdded === 0) ? '' : 'ADDED ' + timeAdded + ' HOUR' + ((timeAdded != 1) ? 'S' : '');
     clickButton.parents().eq(1).find('.stars').text(addedTimeText);
 
-  }else{
+  } else {
     var addedTimeString = clickButton.parents().eq(1).find('.stars').text();
-    var addedTimeInt = addedTimeString.replace(/\D/g,'');
-    var timeAdded = isNaN(parseInt(addedTimeInt))? 1 :parseInt(addedTimeInt) + 1;
-    clickButton.parents().eq(1).find('.stars').text('ADDED '+ timeAdded + ' HOUR' + ((timeAdded != 1)? 'S': '')).hide().fadeIn(300);
+    var addedTimeInt = addedTimeString.replace(/\D/g, '');
+    var timeAdded = isNaN(parseInt(addedTimeInt)) ? 1 : parseInt(addedTimeInt) + 1;
+    clickButton.parents().eq(1).find('.stars').text('ADDED ' + timeAdded + ' HOUR' + ((timeAdded != 1) ? 'S' : '')).hide().fadeIn(300);
   }
 }
 
@@ -115,7 +115,7 @@ function createPost(post, prepend) {
     repliesDOM += createReply(item);
   });
   //<a class="btn tooltipped" data-position="bottom" data-delay="50" data-tooltip="I am a tooltip ">Hover me!</a>
-  var usernameDOM = '<img src="'+((post.userBadge!=null)?post.userBadge.icon:'')+'" width="32px"/><span class="username tooltipped" data-position="top" data-delay="50" data-tooltip="'+post.score+' ">' + post.username + '</span>';
+  var usernameDOM = '<img src="' + ((post.userBadge != null) ? post.userBadge.icon : '') + '" width="32px"/><span class="username tooltipped" data-position="top" data-delay="50" data-tooltip="' + post.score + ' ">' + post.username + '</span>';
   var anonUserDOM = ' <i class="fa fa-rocket fa-2x" aria-hidden="true"></i><span class="username"><i>Unknown Cosmonaut</i></span>';
 
   var colorStar = (post.currentUserStarPost == 1) ? "coloredStar" : "unColoredStar";
@@ -146,8 +146,10 @@ function createPost(post, prepend) {
 
   $('.coloredStar').css('color', '#52FFB8');
 
-  $(document).ready(function(){
-    $('.tooltipped').tooltip({delay: 50});
+  $(document).ready(function() {
+    $('.tooltipped').tooltip({
+      delay: 50
+    });
   });
 }
 
@@ -155,10 +157,16 @@ function createPost(post, prepend) {
 function createReply(reply) {
   var replyDOM = '';
   var time = reply.time;
-  if(!time ||time<0 ){
+  if (!time || time < 0) {
     time = 'now'
   }
-  replyDOM += '<span class="user reply">' + ((reply.badge && reply.username) ? '<img src="'reply.badge.icon'" width="32px" style="margin-left:-5px; margin-right:3px"/>' + reply.username : ' <i class="fa fa-rocket fa-2x" aria-hidden="true"></i><span class="username"><i>Unknown Cosmonaut</i></span>' + '</span>');
+  var username;
+  if (reply.username) {
+    username = '<img src="'+reply.badge.icon +'" width="32px" style="margin-left:-5px; margin-right:3px"/>' + reply.username
+  } else {
+    username = ' <i class="fa fa-rocket fa-2x" aria-hidden="true"></i><span class="username"><i>Unknown Cosmonaut</i></span>'
+  }
+  replyDOM += '<span class="user reply">' + username  + '</span>';
   replyDOM += '<span class="reply postDate" style="margin-left:50px;">' + time + '</span>';
   replyDOM += '<p style="border-top:1px solid #52FFB8; margin-left:50px;  margin-bottom:15px;">' + reply.text_content + '</p>';
   return replyDOM;

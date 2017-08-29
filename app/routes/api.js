@@ -72,7 +72,7 @@ router.get('/api', function(req, res) {
                 replies.push({
                   "text_content": reply.text_content,
                   "username": reply.username,
-                  "badge":(user)?user.badge:null,
+                  "badge":(user)?user.active_badge:null,
                   "time": minutes < 120 ? minutes + 'm ago' : Math.floor(minutes / 60) + 'h ago'
                 })
               })

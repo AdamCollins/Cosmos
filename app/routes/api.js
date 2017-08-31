@@ -167,7 +167,7 @@ router.post('/api', function(req, res) {
         "text_content": text,
         "username": username,
         "userBadge": (req.session.user)?req.session.user.active_badge:null,
-        "score": (req.session.user)?req.session.user.dcore:null,
+        "score": (req.session.user)?req.session.user.score:null,
         "time": "36h remaining",
         "_id": post.insertedIds[0]
       });
@@ -191,10 +191,12 @@ router.post('/api/reply', function(req, res) {
     var text = sanitizer.escape(data.text_content);
     var replyPostId = data.replypostid;
     var username = (req.session.user) ? req.session.user.username : null;
+    var badge = (req.session.user.active_badge) ? req.session.user.active_badge : null;
     var newReply = {
       'text_content': text,
       'username': username,
-      'date': new Date()
+      'date': new Date(),
+      'badge':badge
     }
     posts.findOneAndUpdate({
       '_id': new ObjectId(replyPostId)

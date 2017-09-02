@@ -1,4 +1,5 @@
 const HTTPSENABLED = process.argv[2]==='-https';
+var DEVMODE = !HTTPSENABLED;
 var express = require('express');
 var reload = require('reload');
 var https = require('https');
@@ -16,6 +17,7 @@ if (HTTPSENABLED)
 app.set('port', port);
 app.set('view engine', 'ejs');
 app.set('views', 'app/views');
+app.set('DEVMODE',DEVMODE);
 
 app.use(express.static('app/public'));
 app.use(require('./routes/index'));

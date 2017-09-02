@@ -13,17 +13,58 @@ var cookieParser = require('cookie-parser');
 var ObjectId = require('mongodb').ObjectID;
 
 
+//Debug Routes
 router.get('/dropall', (req, res) => {
-  MongoClient.connect(url, (err, database) => {
-    var userCol = database.collection('users');
-    userCol.remove({})
-    var posts = database.collection('posts');
-    posts.remove({})
-    var sessions = database.collection('sessions');
-    sessions.remove({})
-    database.close();
-  });
+  const DEVMODE = req.app.get('DEVMODE')
+  if (DEVMODE) {
+    MongoClient.connect(url, (err, database) => {
+      var userCol = database.collection('users');
+      userCol.remove({})
+      var posts = database.collection('posts');
+      posts.remove({})
+      var sessions = database.collection('sessions');
+      sessions.remove({})
+      database.close();
+    });
+  }
 });
+
+router.get('/listusers', (req, res) => {
+  const DEVMODE = req.app.get('DEVMODE')
+  if (DEVMODE) {
+    MongoClient.connect(url, (err, database) => {
+      var userCol = database.collection('users');
+      userCol.find({}).toArray(function(err, users) {
+        res.json(users);
+      });
+      database.close();
+    });
+  }
+});
+
+router.get('/sessions', (req, res) => {
+  const DEVMODE = req.app.get('DEVMODE')
+  if (DEVMODE) {
+    MongoClient.connect(url, (err, database) => {
+      var userCol = database.collection('sessions');
+      userCol.find({}).toArray(function(err, users) {
+        res.json(users);
+      });
+      database.close();
+    });
+  }
+});
+router.get('/sessions/clear', (req, res) => {
+  const DEVMODE = req.app.get('DEVMODE')
+  if (DEVMODE) {
+    MongoClient.connect(url, (err, database) => {
+      var userCol = database.collection('sessions');
+      userCol.remove({})
+      database.close();
+    });
+  }
+});
+
 
 router.post('/login', (req, res) => {
   MongoClient.connect(url, (err, database) => {
@@ -57,35 +98,6 @@ router.post('/login', (req, res) => {
     });
   });
 });
-
-
-router.get('/listusers', (req, res) => {
-  MongoClient.connect(url, (err, database) => {
-    var userCol = database.collection('users');
-    userCol.find({}).toArray(function(err, users) {
-      res.json(users);
-    });
-    database.close();
-  });
-});
-
-router.get('/sessions', (req, res) => {
-  MongoClient.connect(url, (err, database) => {
-    var userCol = database.collection('sessions');
-    userCol.find({}).toArray(function(err, users) {
-      res.json(users);
-    });
-    database.close();
-  });
-});
-router.get('/sessions/clear', (req, res) => {
-  MongoClient.connect(url, (err, database) => {
-    var userCol = database.collection('sessions');
-    userCol.remove({})
-    database.close();
-  });
-});
-
 
 router.get('/users/score/:username', (req, res) => {
   MongoClient.connect(url, (err, db) => {

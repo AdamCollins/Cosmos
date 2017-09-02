@@ -46,11 +46,10 @@ router.get('/api', function(req, res) {
       if (err) {
 
       }
-
       //go through make each post
       if (datapost.length > 0) {
-        var lastElement = datapost.length - 1;
-        datapost.forEach((item, index) => {
+        var lastPostElement = datapost.length - 1;
+        datapost.forEach((item, postIndex) => {
           var id = item._id
           var text = item.text_content;
           var username = item.username;
@@ -61,46 +60,76 @@ router.get('/api', function(req, res) {
           var currentUserStar = item.likes.includes(currentUserId) ? 1 : 0;
           var numberOfLikes = item.likes.length;
           var userScore;
-          if (item.replies) {
-            item.replies.forEach((reply) => {
+          //Creates an array of replies
+          var lastReplyElement = item.replies.length - 1;
+          //TODO Fix code duplication
+          if (item.replies.length > 0) {
+            item.replies.forEach((reply, replyIndex) => {
               var minutes = Math.floor((new Date() - new Date(reply.date)) / (60 * 1000))
               users.findOne({
-                "username":reply.username
-              },(err,user)=>{
-                console.log("user");
-                console.log(user)
+                "username": reply.username
+              }, (err, user) => {
                 replies.push({
                   "text_content": reply.text_content,
                   "username": reply.username,
-                  "badge":(user)?user.active_badge:null,
-                  "time": minutes < 120 ? minutes + 'm ago' : Math.floor(minutes / 60) + 'h ago'
+                  "badge": (user) ? user.active_badge : null,
+                  "time": minutes < 120 ? minutes + 'm ago' : Math.floor(minutes / 60) + 'h ago',
+                  "date": reply.date
                 })
-              })
-            });
-          }
-
-          users.findOne({
-            "username": username,
-          }, (err, user) => {
-            userScore = (user) ? user.score : null;
-            userBadge = (user) ? user.active_badge : null;
-            data.push({
-              "_id": id,
-              "text_content": text,
-              "username": username,
-              "userBadge": userBadge,
-              "time": formatedTimeLeft,
-              "replies": replies,
-              "score": userScore,
-              "likes": numberOfLikes,
-              "currentUserStarPost": currentUserStar,
-              'OneSignalUserId': item.OneSignalUserId
+                if (replyIndex == lastReplyElement) {
+                  //Finds posters score and active badge
+                  users.findOne({
+                    "username": username,
+                  }, (err, user) => {
+                    userScore = (user) ? user.score : null;
+                    userBadge = (user) ? user.active_badge : null;
+                    console.log(replies);
+                    data.push({
+                      "_id": id,
+                      "text_content": text,
+                      "username": username,
+                      "userBadge": userBadge,
+                      "time": formatedTimeLeft,
+                      "replies": replies,
+                      "score": userScore,
+                      "likes": numberOfLikes,
+                      "currentUserStarPost": currentUserStar,
+                      'OneSignalUserId': item.OneSignalUserId
+                    })
+                    if (postIndex == lastPostElement) {
+                      res.json(data)
+                      db.close()
+                    }
+                  })
+                }
+              });
             })
-            if (index == lastElement) {
-              res.json(data)
-              db.close()
-            }
-          })
+          } else {
+            //Finds posters score and active badge
+            console.log("this");
+            users.findOne({
+              "username": username,
+            }, (err, user) => {
+              userScore = (user) ? user.score : null;
+              userBadge = (user) ? user.active_badge : null;
+              data.push({
+                "_id": id,
+                "text_content": text,
+                "username": username,
+                "userBadge": userBadge,
+                "time": formatedTimeLeft,
+                "replies": replies,
+                "score": userScore,
+                "likes": numberOfLikes,
+                "currentUserStarPost": currentUserStar,
+                'OneSignalUserId': item.OneSignalUserId
+              })
+              if (postIndex == lastPostElement) {
+                res.json(data)
+                db.close()
+              }
+            })
+          }
         });
       } else {
         res.json(data)
@@ -166,8 +195,8 @@ router.post('/api', function(req, res) {
       res.json({
         "text_content": text,
         "username": username,
-        "userBadge": (req.session.user)?req.session.user.active_badge:null,
-        "score": (req.session.user)?req.session.user.score:null,
+        "userBadge": (req.session.user) ? req.session.user.active_badge : null,
+        "score": (req.session.user) ? req.session.user.score : null,
         "time": "36h remaining",
         "_id": post.insertedIds[0]
       });
@@ -191,12 +220,12 @@ router.post('/api/reply', function(req, res) {
     var text = sanitizer.escape(data.text_content);
     var replyPostId = data.replypostid;
     var username = (req.session.user) ? req.session.user.username : null;
-    var badge = (req.session.user.active_badge) ? req.session.user.active_badge : null;
+    var badge = (req.session.user) ? req.session.user.active_badge : null;
     var newReply = {
       'text_content': text,
       'username': username,
       'date': new Date(),
-      'badge':badge
+      'badge': badge
     }
     posts.findOneAndUpdate({
       '_id': new ObjectId(replyPostId)
@@ -240,7 +269,7 @@ router.post('/api/like', (req, res) => {
             "likes": userId
           }
         }, (err, post) => {
-          if(err){
+          if (err) {
             res.status(500).send('unable to like');
             db.close();
             return
@@ -257,7 +286,7 @@ router.post('/api/like', (req, res) => {
               "score": 1
             }
           }, (err, posterData) => {
-            if(err){
+            if (err) {
               res.status(500).send('unable to like');
               db.close();
               return
@@ -280,7 +309,7 @@ router.post('/api/like', (req, res) => {
             "likes": userId
           }
         }, (err, postData) => {
-          if(err){
+          if (err) {
             res.status(500).send('unable to unlike');
             db.close();
             return
@@ -294,7 +323,7 @@ router.post('/api/like', (req, res) => {
               "score": -1
             }
           }, (err, posterData) => {
-            if(err){
+            if (err) {
               res.status(500).send('unable to like');
               db.close();
               return
@@ -313,16 +342,16 @@ function badgeUnlocked(user) {
   //+1 for the like they just recieved
   if (!user.badges && user.badges.indexOf(badges[0]) < 0)
     unlockedBadges.push(badges[0])
-  if (user.score+1 >= 5 && user.badges.indexOf(badges[1]) < 0)
+  if (user.score + 1 >= 5 && user.badges.indexOf(badges[1]) < 0)
     unlockedBadges.push(badges[1])
-  if (user.score+1 >= 15 && user.badges.indexOf(badges[2]) < 0)
+  if (user.score + 1 >= 15 && user.badges.indexOf(badges[2]) < 0)
     unlockedBadges.push(badges[2])
-  if (user.score+1 >= 30 && user.badges.indexOf(badges[3]) < 0)
+  if (user.score + 1 >= 30 && user.badges.indexOf(badges[3]) < 0)
     unlockedBadges.push(badges[3])
 
-    console.log(user)
-    console.log(user.score >= 5)
-    console.log(unlockedBadges);
+  console.log(user)
+  console.log(user.score >= 5)
+  console.log(unlockedBadges);
   if (unlockedBadges) {
     MongoClient.connect(url, (err, db) => {
       db.collection('users').findOneAndUpdate({

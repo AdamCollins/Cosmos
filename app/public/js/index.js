@@ -7,6 +7,12 @@ $("#RegisterMenu").hide().removeClass("hidden");
 $('#BadgesMenu').hide().removeClass('hidden')
 $('.carousel').carousel();
 
+// Enable navigation prompt
+window.onbeforeunload = function() {
+    return true;
+};
+// Remove navigation prompt
+window.onbeforeunload = null;
 
 // $(document).ready(function() {
 //     $(".loading").fadeOut(800);

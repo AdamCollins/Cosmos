@@ -352,7 +352,7 @@ i.exit-btn {
   }
 
   div.register-page > h4{
-    margin-top: -32px;
+    margin-top: -32px !important;
     margin-bottom: -12px;
   }
 }

@@ -120,7 +120,7 @@ function createPost(post, prepend) {
 
   var colorStar = (post.currentUserStarPost == 1) ? "coloredStar" : "unColoredStar";
   postDOM += '  <div class="post col s12 m6 hidden z-depth-2" post_id="' + post._id + '">';
-  postDOM += '    <span class="post postDate">' + post.time + '</span>';
+  postDOM += '    <span class="post postDate">' + (post.time + post.likes.length) + '</span>';
   postDOM += '    <div class="user post">' + ((post.username) ? usernameDOM : anonUserDOM) + '</div>'
   postDOM += '    <p>' + post.text_content.replace('\n', '</br>') + '</p>';
   postDOM += '    <div class="fixed-action-btn horizontal myButtonGroup">';

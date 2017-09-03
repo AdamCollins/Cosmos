@@ -65,7 +65,7 @@ router.get('/sessions/clear', (req, res) => {
   }
 });
 
-
+//Routes
 router.post('/login', (req, res) => {
   MongoClient.connect(url, (err, database) => {
     var userCol = database.collection('users');

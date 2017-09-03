@@ -36,11 +36,25 @@ router.get('/api', function(req, res) {
       console.log('No session');
 
     //find by 36 hours
-    posts.find({
-      "date": {
-        $gte: (new Date((new Date()).getTime() - (36 * 60 * 60 * 1000)))
-      }
-    }).sort({
+    var x = (new Date((new Date()).getTime() - (36 * 60 * 60 * 1000)))
+    posts.aggregate([
+  { "$redact": {
+    "$cond": {
+      "if": {
+        "$gt": [
+          { "$add": [ "$date", {"$multiply":[{$size:"$likes"},60*60]}] },
+          (new Date((new Date()).getTime() - (36 * 60 * 60 * 1000)))
+        ]
+      },
+      "then": "$$KEEP",
+      "else": "$$PRUNE"
+    }
+  }}
+]
+      // "date": {
+      //   $gte: (new Date((new Date()).getTime() - (36 * 60 * 60 * 1000)))
+      // }
+    ).sort({
       "date": -1
     }).toArray((err, datapost) => {
       if (err) {
@@ -106,7 +120,6 @@ router.get('/api', function(req, res) {
             })
           } else {
             //Finds posters score and active badge
-            console.log("this");
             users.findOne({
               "username": username,
             }, (err, user) => {
@@ -275,10 +288,8 @@ router.post('/api/like', (req, res) => {
             return
           }
           var posterUsername = post.value.username
-          console.log("poster:" + posterUsername)
           //Increments poster score
           //TODO not finding user
-
           users.findOneAndUpdate({
             "username": posterUsername
           }, {
@@ -338,6 +349,8 @@ router.post('/api/like', (req, res) => {
 })
 
 function badgeUnlocked(user) {
+  if(user == null)
+    return
   var unlockedBadges = [];
   //+1 for the like they just recieved
   if (!user.badges && user.badges.indexOf(badges[0]) < 0)
@@ -348,10 +361,6 @@ function badgeUnlocked(user) {
     unlockedBadges.push(badges[2])
   if (user.score + 1 >= 30 && user.badges.indexOf(badges[3]) < 0)
     unlockedBadges.push(badges[3])
-
-  console.log(user)
-  console.log(user.score >= 5)
-  console.log(unlockedBadges);
   if (unlockedBadges) {
     MongoClient.connect(url, (err, db) => {
       db.collection('users').findOneAndUpdate({

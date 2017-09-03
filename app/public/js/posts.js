@@ -120,7 +120,7 @@ function createPost(post, prepend) {
 
   var colorStar = (post.currentUserStarPost == 1) ? "coloredStar" : "unColoredStar";
   postDOM += '  <div class="post col s12 m6 hidden z-depth-2" post_id="' + post._id + '">';
-  postDOM += '    <span class="post postDate">' + (post.time + post.likes.length) + '</span>';
+  postDOM += '    <span class="post postDate">' + post.time + '</span>';
   postDOM += '    <div class="user post">' + ((post.username) ? usernameDOM : anonUserDOM) + '</div>'
   postDOM += '    <p>' + post.text_content.replace('\n', '</br>') + '</p>';
   postDOM += '    <div class="fixed-action-btn horizontal myButtonGroup">';
@@ -164,9 +164,9 @@ function createReply(reply) {
   if (reply.username) {
     poster = '<img src="'+reply.badge.icon +'" width="32px" style="margin-left:-5px; margin-right:3px"/>' + reply.username
   } else {
-    poster = ' <i class="fa fa-rocket fa-2x" aria-hidden="true"></i><span class="username"><i>Unknown Cosmonaut</i></span>'
+    username = ' <i class="fa fa-rocket fa-2x" aria-hidden="true"></i><span class="username"><i>Unknown Cosmonaut</i></span>'
   }
-  replyDOM += '<span class="user reply">' + poster  + '</span>';
+  replyDOM += '<span class="user reply">' + username  + '</span>';
   replyDOM += '<span class="reply postDate" style="margin-left:50px;">' + time + '</span>';
   replyDOM += '<p style="border-top:1px solid #52FFB8; margin-left:50px;  margin-bottom:15px;">' + reply.text_content + '</p>';
   return replyDOM;

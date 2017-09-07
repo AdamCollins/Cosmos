@@ -40,7 +40,7 @@ $('.badge-tile').hover(
   }
 );
 
-$("#loginMenuBtn, #registerMenuBtn").click(openLoginMenu);
+$("#loginMenuBtn").click(openLoginMenu);
 $('#BadgesBtn').click(openBageMenu);
 
 function openBageMenu(){

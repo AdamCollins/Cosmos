@@ -16,7 +16,7 @@ function login() {
       },
       datatype: 'json',
       success: function(data) {
-        window.location = "";
+        window.location = "/index";
       },
       error: function(data) {
         console.log(data)
@@ -45,7 +45,7 @@ function invalidLogin(){
 }
 
 function accountUnverified(){
-  Materialize.toast('Please verify your account 📧', 2000);
+  Materialize.toast('Please verify your account 📧', 4000);
   $('#RegProgress').css('visibility', 'hidden');
 }
 
@@ -94,6 +94,7 @@ $('#RegisterBtn').click(function(e) {
             datatype: 'json',
             success: function(data) {
               accountUnverified();
+              $("#LoginBtn").removeClass('hidden').fadeIn(500);
             },
             error: function() {
               alert('oops something went wrong')

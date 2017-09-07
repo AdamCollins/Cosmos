@@ -9,7 +9,6 @@ $('#SubmitReply').on('click',()=>{
       datatype: 'json',
       success:(data)=>{
         if(data.status==200){
-          console.log(data)
           addReply(createReply(data.reply),replypostid)
           $("#ReplyArea").fadeOut(300);
         }

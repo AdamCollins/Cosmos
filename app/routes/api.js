@@ -97,7 +97,6 @@ router.get('/api', function(req, res) {
                   }, (err, user) => {
                     userScore = (user) ? user.score : null;
                     userBadge = (user) ? user.active_badge : null;
-                    console.log(replies);
                     data.push({
                       "_id": id,
                       "text_content": text,

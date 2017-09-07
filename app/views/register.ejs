@@ -1,79 +1,85 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8" />
-    <meta name="description" content="Cosmos(beta) is a platform designed to connect university/college students and keep them updated on what is happening on and around campus.">
-    <meta name="keywords" content="Cosmos go cosmos gocosmos campus university college">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#52FFB8" />
-    <title>Cosmos - Register</title>
-    <link rel="icon" href="favicon.png" type="images/png" sizes="96x96">
-    <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script type="text/javascript" src="js/jquery.serializejson.js"></script>
-    <script type="text/javascript" src="js/posts.js"></script>
-    <!--Materialize-->
-    <!-- Compiled and minified CSS -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.99.0/css/materialize.min.css">
-    <!-- Compiled and minified JavaScript -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.99.0/js/materialize.min.js"></script>
-    <!--Icons-->
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
-    <!--MyStyleSheets-->
-    <link href="css/StyleSheet.css" rel="stylesheet" />
-  </head>
-  <body>
-    <div class="header">
-      <h1><img src="images/logo.png" style="margin-bottom:-10px" height="64px">COSMOS<!--<span style="font-size:14px">beta</span>--></h1>
-    </div>
-    <div ID="RegisterMenu" style="position:relative; background:none" class="replyOverlay">
-      <div ID="Panel2" class="submitPanel row">
-        <div class="col m3"></div>
-        <div class="col s12 m6 replyField">
-          <div class="input-field col s12">
-            <!--Fix later-->
-          </div>
-          <div class="row register-page">
-            <h4 class="col s12">Register</h4>
-            <div class="col s12" id="LoginContainer" style="position:relative">
-              <div class="input-field col s12 m6">
-                <input ID="usernameTF" type="email" maxlength="12" autocomplete="off"></input>
-                <label for="usernameTF">Username</label>
-              </div>
-              <div class="input-field col s12 m6">
-                <input ID="passwordTF" type="password" class="validate" autocomplete="off" maxlength="40"></input>
-                <label for="password">Password</label>
-              </div>
-            </div>
-            <div class="col s12" id="RegisterContainer" style="position:relative">
-              <div class="input-field col s12 m6">
-                <input ID="passwordConfTF" type="password" autocomplete="off" maxlength="40"></input>
-                <label for="passwordconf">Confirm Password</label>
-              </div>
-              <div class="input-field col s12 m6">
-                <input ID="emailTF" type="email" autocomplete="off" maxlength="40"></input>
-                <label for="emailTF">Email</label>
-              </div>
-            </div>
-            <div class="col m6"></div>
-          </div>
-          <row>
-            <div class="col s12 m6"></div>
-            <div class="reglog-btngroup col s12 m6">
-              <div class="row">
-                <button ID="LoginBtn" class="btn waves-effect waves-light col s5 m5" type="submit">Login</button>
-                <div class="col s1"></div>
-                <button ID="RegisterBtn" class="btn waves-effect waves-light col s5 m5" type="submit">Register</button>
-              </div>
-            </div>
-            <div id="RegProgress" class="progress col s12">
-              <div class="indeterminate"></div>
-            </div>
-          </row>
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="description" content="Cosmos(beta) is a platform designed to connect university/college students and keep them updated on what is happening on and around campus.">
+  <meta name="keywords" content="Cosmos go cosmos gocosmos campus university college">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#52FFB8" />
+  <title>Cosmos - Register</title>
+  <link rel="icon" href="favicon.png" type="images/png" sizes="96x96">
+  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script type="text/javascript" src="js/jquery.serializejson.js"></script>
+  <script type="text/javascript" src="js/posts.js"></script>
+  <!--Materialize-->
+  <!-- Compiled and minified CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.99.0/css/materialize.min.css">
+  <!-- Compiled and minified JavaScript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.99.0/js/materialize.min.js"></script>
+  <!--Icons-->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <!--MyStyleSheets-->
+  <link href="css/StyleSheet.css" rel="stylesheet" />
+</head>
+
+<body>
+  <div class="header">
+    <a href="/" style="color:#52FFB8"><h1><img src="images/logo.png" style="margin-bottom:-10px" height="64px">COSMOS<!--<span style="font-size:14px">beta</span>--></h1></a> </div>
+  <div ID="RegisterMenu" style="position:relative; background:none" class="replyOverlay">
+    <div ID="Panel2" class="submitPanel row">
+      <div class="col m3"></div>
+      <div class="col s12 m6 replyField">
+        <div class="input-field col s12">
+          <!--Fix later-->
         </div>
-        <div class="col m3"></div>
+        <div class="row register-page">
+          <h4 class="col s12">Register</h4>
+          <div class="col s12" id="LoginContainer" style="position:relative">
+            <div class="input-field col s12 m6">
+              <input ID="usernameTF" type="email" maxlength="12" autocomplete="off"></input>
+              <label for="usernameTF">Username</label>
+            </div>
+            <div class="input-field col s12 m6">
+              <input ID="passwordTF" type="password" class="validate" autocomplete="off" maxlength="40"></input>
+              <label for="password">Password</label>
+            </div>
+          </div>
+          <div class="col s12" id="RegisterContainer" style="position:relative">
+            <div class="input-field col s12 m6">
+              <input ID="passwordConfTF" type="password" autocomplete="off" maxlength="40"></input>
+              <label for="passwordconf">Confirm Password</label>
+            </div>
+            <div class="input-field col s12 m6">
+              <input ID="emailTF" type="email" autocomplete="off" maxlength="40"></input>
+              <label for="emailTF">Email</label>
+            </div>
+          </div>
+          <div class="col m6"></div>
+        </div>
+        <row>
+          <div class="col s12 m6"></div>
+          <div class="reglog-btngroup col s12 m6">
+            <div class="row">
+              <button ID="LoginBtn" class="btn waves-effect waves-light col s5 m5 hidden" type="submit">Login</button>
+              <div class="col s1"></div>
+              <button ID="RegisterBtn" class="btn waves-effect waves-light col s5 m5" type="submit">Register</button>
+            </div>
+          </div>
+          <div id="RegProgress" class="progress col s12">
+            <div class="indeterminate"></div>
+          </div>
+        </row>
       </div>
+      <div class="col m3"></div>
     </div>
-  </body>
+  </div>
+</body>
+<script type="text/javascript" src="js/register.js"></script>
+<script type="text/javascript">
+  $('#RegProgress').css('visibility', 'hidden');
+</script>
+
 </html>

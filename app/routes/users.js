@@ -179,7 +179,7 @@ function addUser(userdata, callback) {
   MongoClient.connect(url, (err, database) => {
     let hashed_password = bcrypt.hashSync(userdata.password, 10);
     //Creates high entropy unique websafe code for email verification
-    let verificationCode = (Math.random() * 1e32).toString(36);
+    let verificationCode = (Math.random() * 1e32).toString(36)+(Math.random() * 1e32).toString(36);
     database.collection('users').insertOne({
       "username": userdata.username,
       "hashed_password": hashed_password,
@@ -237,14 +237,15 @@ router.get('/register/accountverify/:verificationCode', (req, res) => {
     }, function(err, user) {
       if (user.verified == false)
         req.session.user = user;
+        
+        database.collection('users').updateOne({
+          "verification_code": req.params.verificationCode
+        }, {
+          $set: {
+            verified: true
+          }
+        }, (err, data) => {})
     });
-    database.collection('users').updateOne({
-      "verification_code": req.params.verificationCode
-    }, {
-      $set: {
-        verified: true
-      }
-    }, (err, data) => {})
   });
   res.send('<script>setTimeout(function(){location.replace("/"),1000})</script>Thank you for verifying')
 });

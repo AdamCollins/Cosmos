@@ -1,9 +1,10 @@
 $("form.submitPanel").on('submit', function(e) {
   e.preventDefault();
-  var text = $('#PostTextArea').val();
+  var text = $('#PostTextArea').val().trim();
+    if(!text)
+      return
   $('#PostTextArea').val('');
   $('#CharCount').text('');
-  console.log('here')
   OneSignal.push(function() {
     OneSignal.getUserId(function(userId) {
       console.log("OneSignal User ID:", userId);

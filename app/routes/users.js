@@ -99,6 +99,10 @@ router.post('/login', (req, res) => {
   });
 });
 
+router.get('/register',(req,res)=>{
+  res.render('register.ejs');
+})
+
 router.get('/users/score/:username', (req, res) => {
   MongoClient.connect(url, (err, db) => {
     var users = db.collection('users');

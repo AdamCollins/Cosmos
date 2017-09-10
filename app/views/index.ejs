@@ -161,9 +161,10 @@
           <div class="col s12 m6"></div>
           <div class="reglog-btngroup col s12 m6">
             <div class="row">
-              <button ID="LoginBtn" class="btn waves-effect waves-light col s5 m5" type="submit">Login</button>
+              <button ID="RegisterBtn" class="btn waves-effect waves-light col s5 m5 hidden" type="submit">Register</button>
               <div class="col s1"></div>
-              <!--<button ID="RegisterBtn" class="btn waves-effect waves-light col s5 m5" type="submit">Register</button>-->
+
+              <button ID="LoginBtn" class="btn waves-effect waves-light col s5 m5" type="submit">Login</button>
             </div>
           </div>
           <div id="RegProgress" class="progress col s12">
@@ -203,6 +204,13 @@
   <div ID="PostsPanel" class="row">
   </div>
   </div>
+  <footer class="page-footer">
+    <div class="footer-copyright">
+            <div class="container">
+            © <%= new Date().getFullYear()%> Copyright Cosmos
+            <text class="grey-text text-lighten-4 right">For business inquiries contact <a href="mailto:gocosmosxyz@gmail.com" target="_blank" class="grey-text text-lighten-4">gocosmosxyz@gmail.com</a></text>
+            </div>
+  </footer>
 </body>
 <!--MyJavascript-->
 <script type="text/javascript" src="js/register.js"></script>

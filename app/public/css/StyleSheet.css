@@ -423,3 +423,22 @@ img.badgeGallery{
 img.badgeGallery.active{
   outline: #52ffb8 solid 2px;
 }
+
+body {
+  min-height: 100vh;
+}
+
+main {
+  flex: 1 0 auto;
+}
+
+.page-footer{
+  background-color: #615756;
+  color:#52FFB8;
+  margin-top:40vh;
+}
+@media only screen and (max-width: 601px) {
+  .page-footer{
+    margin-top:20vh;
+  }
+}

@@ -68,7 +68,6 @@ router.get('/api', function(req, res) {
           var text = item.text_content;
           var username = item.username;
           var date = item.date;
-          var fomatedTimeLeft = formatDate(date);
           var replies = [];
           var currentUserId = (req.session.user) ? req.session.user._id : null;
           var currentUserStar = item.likes.includes(currentUserId) ? 1 : 0;
@@ -102,7 +101,7 @@ router.get('/api', function(req, res) {
                       "text_content": text,
                       "username": username,
                       "userBadge": userBadge,
-                      "time": formatedTimeLeft,
+                      "time": formatedDate(item.date),
                       "replies": replies,
                       "score": userScore,
                       "likes": numberOfLikes,
@@ -129,7 +128,7 @@ router.get('/api', function(req, res) {
                 "text_content": text,
                 "username": username,
                 "userBadge": userBadge,
-                "time": formatedTimeLeft,
+                "time": formatedDate(item.date),
                 "replies": replies,
                 "score": userScore,
                 "likes": numberOfLikes,
@@ -152,14 +151,25 @@ router.get('/api', function(req, res) {
   });
 });
 
+function formatedDate(date){
+  var unixPostTime = date.getTime()
+  var unixTimeDiff = new Date().getTime() - date.getTime()
+  var hoursRemaing = 36 - unixTimeDiff/(1000 * 60 * 60)
+  if(hoursRemaing >=1){
+    return Math.ceil(hoursRemaing)+"h remaining"
+  }else{
+    var minsRemaing = (36*60) - unixTimeDiff/(1000 * 60 * 60)
+    return (Math.ceil(minsRemaing) - unixTimeDiff/(1000 * 60))+"m remaining"
+  }
+}
 
-function formatDate(date) {
+/*function formatDate(date) {
   var currentDate = new Date();
   var msDate = currentDate - date;
   var limit = 1000 * 60 * 60 * 36;
   var timeLeft = limit - msDate;
   return formatedTimeLeft = msToTime(timeLeft);
-}
+}*/
 
 
 function msToTime(msDate) {

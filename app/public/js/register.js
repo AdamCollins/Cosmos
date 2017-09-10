@@ -16,7 +16,7 @@ function login() {
       },
       datatype: 'json',
       success: function(data) {
-        window.location = "/index";
+        window.location = "/";
       },
       error: function(data) {
         console.log(data)

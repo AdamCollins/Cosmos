@@ -26,8 +26,9 @@ $("form.submitPanel").on('submit', function(e) {
           $('div.post.hidden').hide().removeClass('hidden').fadeIn(800);
           openReply();
         },
-        error: function() {
+        error: function(err) {
           console.log(4);
+          console.log(err);
           alert('oops something went wrong')
         }
       });

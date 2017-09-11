@@ -8,7 +8,9 @@ $("form.submitPanel").on('submit', function(e) {
   $('#CharCount').text('');
   console.log(1);
   OneSignal.push(function() {
+    console.log(1.5);
     OneSignal.getUserId(function(userId) {
+      console.log(1.6);
       console.log("OneSignal User ID:", userId);
       var params = {
         'text_content': text,
@@ -27,8 +29,6 @@ $("form.submitPanel").on('submit', function(e) {
           openReply();
         },
         error: function(err) {
-          console.log(4);
-          console.log(err);
           alert('oops something went wrong')
         }
       });

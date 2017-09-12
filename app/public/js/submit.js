@@ -38,7 +38,7 @@ $("form.submitPanel").on('submit', function(e) {
   }else{
     var params = {
       'text_content': text,
-      'OneSignalUserId': userId
+      'OneSignalUserId': null
     }
     $.ajax({
       method: 'post',

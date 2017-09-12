@@ -36,6 +36,10 @@ $("form.submitPanel").on('submit', function(e) {
       });
     });
   }else{
+    var params = {
+      'text_content': text,
+      'OneSignalUserId': userId
+    }
     $.ajax({
       method: 'post',
       url: '/api',

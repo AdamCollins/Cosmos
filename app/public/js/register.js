@@ -2,7 +2,7 @@ $('#LoginBtn').click(login);
 
 function login() {
   $('#RegProgress').css('visibility', 'visible');
-  console.log('attempting login...');
+  console.log('logging in...');
   let username = $('#usernameTF').val().trim();
   let password = $('#passwordTF').val();
 
@@ -62,7 +62,7 @@ $('#RegisterBtn').click(function(e) {
   let email = $('#emailTF').val().trim();
   if(username.includes(" ")){
     makeInvalid($('#usernameTF'));
-    Materialize.toast('Usernames cannot have Spaces',2000);
+    Materialize.toast('Usernames cannot have spaces',2000);
   }
 
   if (username.length < 2)
@@ -87,7 +87,7 @@ $('#RegisterBtn').click(function(e) {
       makeValid($('#passwordConfTF'));
       //Checks user selected ToS
       if(!tosChecked){
-        Materialize.toast('Please agree to terms of service 🏦', 2000);
+        Materialize.toast('Please agree to the terms of service 🏦', 2000);
         $('#RegProgress').css('visibility', 'hidden');
         return;
       }
@@ -115,7 +115,7 @@ $('#RegisterBtn').click(function(e) {
           });
         } else {
           makeInvalid($('#usernameTF'));
-          Materialize.toast('Username not availible', 2000);
+          Materialize.toast('Username not available', 2000);
           $('#RegProgress').css('visibility', 'hidden');
         }
       });
@@ -126,7 +126,7 @@ $('#RegisterBtn').click(function(e) {
       $("#passwordConfTF").removeClass('valid').addClass('invalid');
     }
   } else {
-    Materialize.toast('Password must be atleast 6 characters', 2000);
+    Materialize.toast('Password must be at least 6 characters', 2000);
     $("#passwordTF").addClass('invalid');
   }
 });

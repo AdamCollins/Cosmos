@@ -32,7 +32,7 @@ $("form.submitPanel").on('submit', function(e) {
           error: function(err) {
             console.log(err.responseText);
             if (err.status == 429) {
-              Materialize.toast('You are posting too much. Try agin in a few minutes', 5000);
+              Materialize.toast('Too many posts! Try again in a few minutes', 5000);
             } else {
               alert('oops something went wrong')
             }

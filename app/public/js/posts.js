@@ -79,7 +79,7 @@ function upVote() {
         $(this).find("i.coloredStar").css('color', 'white')
         $(this).parents().eq(1).find('.stars').text("");
         openLoginMenu();
-        console.log("Server error: post was not able to be liked" + textStatus);
+        console.log("Server error: post could not be be liked" + textStatus);
         //}
       }
     });
@@ -91,14 +91,14 @@ function updateHours(addOrSubtract, clickButton) {
     var addedTimeString = clickButton.parents().eq(1).find('.stars').text();
     var addedTimeInt = addedTimeString.replace(/\D/g, '');
     var timeAdded = (parseInt(addedTimeInt) === 0) ? 0 : parseInt(addedTimeInt) - 1;
-    var addedTimeText = (timeAdded === 0) ? '' : 'ADDED ' + timeAdded + ' HOUR' + ((timeAdded != 1) ? 'S' : '');
+    var addedTimeText = (timeAdded === 0) ? '' : 'LIFESPAN EXTENDED BY ' + timeAdded + ' HOUR' + ((timeAdded != 1) ? 'S' : '');
     clickButton.parents().eq(1).find('.stars').text(addedTimeText);
 
   } else {
     var addedTimeString = clickButton.parents().eq(1).find('.stars').text();
     var addedTimeInt = addedTimeString.replace(/\D/g, '');
     var timeAdded = isNaN(parseInt(addedTimeInt)) ? 1 : parseInt(addedTimeInt) + 1;
-    clickButton.parents().eq(1).find('.stars').text('ADDED ' + timeAdded + ' HOUR' + ((timeAdded != 1) ? 'S' : '')).hide().fadeIn(300);
+    clickButton.parents().eq(1).find('.stars').text('LIFESPAN EXTENDED BY ' + timeAdded + ' HOUR' + ((timeAdded != 1) ? 'S' : '')).hide().fadeIn(300);
   }
 }
 

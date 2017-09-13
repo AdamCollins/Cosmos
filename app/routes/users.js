@@ -68,7 +68,7 @@ router.get('/setUserScore/:userId/:score', (req, res) => {
           res.send(err)
         }
         else{
-          res.send("Users score set to: "+ req.params.score)
+          res.send("User's score set to: "+ req.params.score)
         }
       })
       database.close();
@@ -221,7 +221,7 @@ router.post('/users/change-badge', (req, res) => {
 })
 
 
-router.get('/registraion/availible/:username', (req, res) => {
+router.get('/registration/available/:username', (req, res) => {
   let bannedUsernames = config.bannedUsernames
   forEach(bannedUsernames, function*(item) {
     if (req.params.username.toLowerCase().includes(item) && !res.headersSent) {
@@ -352,7 +352,7 @@ function passwordMatchesHash(plainTextPassword, hash) {
 
 router.get('/logout', (req, res) => {
   req.session.destroy();
-  res.send('Logout successfully');
+  res.send('Logout successful');
 });
 
 function generateEmail(username, verificationCode) {
@@ -682,7 +682,7 @@ function generateEmail(username, verificationCode) {
                       <tr>
                         <td style="word-break:break-word;font-size:0px;padding:0px 20px;" align="center">
                           <div style="cursor:auto;color: #52ffb8;font-family:'Avenir Next', Avenir, sans-serif;font-size:13px;line-height:20px;">
-                            If you have any inquires on questions please direct contact us at: adamcollins6@gmail.com
+                            If you have any inquiries or questions, please contact us at: adamcollins6@gmail.com
                           </div>
                         </td>
                       </tr>

@@ -115,7 +115,7 @@ $('#RegisterBtn').click(function(e) {
           });
         } else {
           makeInvalid($('#usernameTF'));
-          Materialize.toast('Username not availible', 2000);
+          Materialize.toast('Username not available', 2000);
           $('#RegProgress').css('visibility', 'hidden');
         }
       });

@@ -38,12 +38,11 @@ router.get('/deleteUser/:userId', (req, res) => {
       var userCol = database.collection('users');
       userCol.remove({
         '_id': new ObjectId(req.params.userId)
-      },(err,data)=>{
-        if(err){
+      }, (err, data) => {
+        if (err) {
           res.send(err)
-        }
-        else{
-          res.send("Removed user: "+ req.params.userId)
+        } else {
+          res.send("Removed user: " + req.params.userId)
         }
       })
       database.close();
@@ -58,17 +57,40 @@ router.get('/setUserScore/:userId/:score', (req, res) => {
       var userCol = database.collection('users');
       userCol.findOneAndUpdate({
         '_id': new ObjectId(req.params.userId)
-      },{
+      }, {
         $set: {
           "score": parseInt(req.params.score)
         }
-      },(err,data)=>{
+      }, (err, data) => {
         console.log(data);
-        if(err){
+        if (err) {
           res.send(err)
+        } else {
+          res.send("Users score set to: " + req.params.score)
         }
-        else{
-          res.send("Users score set to: "+ req.params.score)
+      })
+      database.close();
+    });
+  }
+});
+router.get('/editPost/:postId', (req, res) => {
+  const DEVMODE = req.app.get('DEVMODE')
+  text = `"Welcome to the Cosmos beta!🌠\nCosmos is a social media designed to help keep you up to date on what is happening on your university/college campus. Here you can post about upcoming events, campus life, or really anything on your mind! When you post on Cosmos your post has a 36 hour life time. If the community likes your post they can extend its life by an hour by star-ing it. On Cosmos you have the option of posting anonymously or under your own username.\nCosmos is still in development but, because it was created by a UBC-O student UBC-O gets exclusive access to the beta! Now, go explore! —The Cosmos Team🚀"`
+  if (DEVMODE) {
+    MongoClient.connect(url, (err, database) => {
+      var userCol = database.collection('users');
+      userCol.findOneAndUpdate({
+        '_id': new ObjectId(req.params.userId)
+      }, {
+        $set: {
+          "text_content": text
+        }
+      }, (err, data) => {
+        console.log(data);
+        if (err) {
+          res.send(err)
+        } else {
+          res.send("Users score set to: " + req.params.score)
         }
       })
       database.close();
@@ -76,19 +98,18 @@ router.get('/setUserScore/:userId/:score', (req, res) => {
   }
 });
 //Drops post by :postId
-router.get('/deletePost/:postId', (req, res) => {
+router.get('/editPost/:postId', (req, res) => {
   const DEVMODE = req.app.get('DEVMODE')
   if (DEVMODE) {
     MongoClient.connect(url, (err, database) => {
       var postCol = database.collection('posts');
-      postCol.remove({
+      postCol.findOneAndUpdate({
         '_id': new ObjectId(req.params.postId)
-      },(err,data)=>{
-        if(err){
+      }, (err, data) => {
+        if (err) {
           res.send(err)
-        }
-        else{
-          res.send("Removed post: "+ req.params.postId)
+        } else {
+          res.send("Removed post: " + req.params.postId)
         }
       })
       database.close();

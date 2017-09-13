@@ -58,9 +58,14 @@ $('#RegisterBtn').click(function(e) {
   e.preventDefault();
 
   $('#RegProgress').css('visibility', 'visible');
-  let username = $('#usernameTF').val();
-  let email = $('#emailTF').val();
-  if (username.length < 1)
+  let username = $('#usernameTF').val().trim();
+  let email = $('#emailTF').val().trim();
+  if(username.includes(" ")){
+    makeInvalid($('#usernameTF'));
+    Materialize.toast('Usernames cannot have Spaces',2000);
+  }
+
+  if (username.length < 2)
     makeInvalid($('#usernameTF'));
 
   if(!email.match(/[A-z0-9]+@+[A-z0-9]+.+[A-z]/g)){

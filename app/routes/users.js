@@ -1,4 +1,5 @@
 var express = require('express');
+var forEach = require('co-foreach');
 var MongoClient = require('mongodb').MongoClient;
 var bodyParser = require('body-parser');
 var config = require('../data/config');
@@ -99,7 +100,7 @@ router.post('/login', (req, res) => {
   });
 });
 
-router.get('/register',(req,res)=>{
+router.get('/register', (req, res) => {
   res.render('register.ejs');
 })
 
@@ -152,25 +153,43 @@ router.post('/users/change-badge', (req, res) => {
 
 
 router.get('/registraion/availible/:username', (req, res) => {
-  MongoClient.connect(url, (err, database) => {
-    var userCol = database.collection('users');
-    userCol.findOne({
-      "username": {
-        $regex: new RegExp("^" + req.params.username.toLowerCase(), "i")
-      }
-    }, function(err, docs) {
-      if (docs)
-        res.json({
-          "username_exists": true,
-          "verified": docs.verified
+  let bannedUsernames = config.bannedUsernames
+  forEach(bannedUsernames, function*(item) {
+    if (req.params.username.toLowerCase().includes(item) && !res.headersSent) {
+      res.json({
+        "username_exists": true,
+        "verified": true
+      });
+    }
+  }).then(() => {
+    console.log("is banned?" + res.headersSent)
+    if (!res.headersSent) {
+      MongoClient.connect(url, (err, database) => {
+        var userCol = database.collection('users');
+        userCol.findOne({
+          "username": {
+            $regex: new RegExp("^" + req.params.username.toLowerCase(), "i")
+          }
+        }, function(err, docs) {
+          if (req.params.username.length < 2 || req.params.username.includes(" ")) {
+            res.json({
+              "username_exists": true,
+              "verified": true
+            });
+          } else if (docs)
+            res.json({
+              "username_exists": true,
+              "verified": docs.verified
+            });
+          else
+            res.json({
+              "username_exists": false
+            });
         });
-      else
-        res.json({
-          "username_exists": false
-        });
-    });
-    database.close();
-  });
+        database.close();
+      });
+    }
+  })
 });
 
 
@@ -179,7 +198,7 @@ function addUser(userdata, callback) {
   MongoClient.connect(url, (err, database) => {
     let hashed_password = bcrypt.hashSync(userdata.password, 10);
     //Creates high entropy unique websafe code for email verification
-    let verificationCode = (Math.random() * 1e32).toString(36)+(Math.random() * 1e32).toString(36);
+    let verificationCode = (Math.random() * 1e32).toString(36) + (Math.random() * 1e32).toString(36);
     database.collection('users').insertOne({
       "username": userdata.username,
       "hashed_password": hashed_password,
@@ -237,14 +256,14 @@ router.get('/register/accountverify/:verificationCode', (req, res) => {
     }, function(err, user) {
       if (user.verified == false)
         req.session.user = user;
-        
-        database.collection('users').updateOne({
-          "verification_code": req.params.verificationCode
-        }, {
-          $set: {
-            verified: true
-          }
-        }, (err, data) => {})
+
+      database.collection('users').updateOne({
+        "verification_code": req.params.verificationCode
+      }, {
+        $set: {
+          verified: true
+        }
+      }, (err, data) => {})
     });
   });
   res.send('<script>setTimeout(function(){location.replace("/"),1000})</script>Thank you for verifying')

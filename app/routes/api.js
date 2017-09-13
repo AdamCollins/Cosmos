@@ -1,4 +1,5 @@
 var config = require('../data/config');
+var forEach = require('co-foreach');
 var express = require('express');
 var MongoClient = require('mongodb').MongoClient;
 var ObjectId = require('mongodb').ObjectID;
@@ -23,7 +24,6 @@ router.use(bodyParser.urlencoded({
 // const client = new OneSignalClient(config.oneSignalAppID, config.oneSignalRestAPIKey);
 
 router.get('/api', function(req, res) {
-  var data = [];
   MongoClient.connect(url, (err, db) => {
     if (err) {
       console.log(err);
@@ -32,25 +32,28 @@ router.get('/api', function(req, res) {
 
     var posts = db.collection('posts');
     var users = db.collection('users');
-    if (!req.session.user)
-      console.log('No session');
 
     //find by 36 hours
     var x = (new Date((new Date()).getTime() - (36 * 60 * 60 * 1000)))
-    posts.aggregate([
-  { "$redact": {
-    "$cond": {
-      "if": {
-        "$gt": [
-          { "$add": [ "$date", {"$multiply":[{$size:"$likes"},60*60]}] },
-          (new Date((new Date()).getTime() - (36 * 60 * 60 * 1000)))
-        ]
-      },
-      "then": "$$KEEP",
-      "else": "$$PRUNE"
-    }
-  }}
-]
+    posts.aggregate([{
+        "$redact": {
+          "$cond": {
+            "if": {
+              "$gt": [{
+                  "$add": ["$date", {
+                    "$multiply": [{
+                      $size: "$likes"
+                    }, 60 * 60]
+                  }]
+                },
+                (new Date((new Date()).getTime() - (36 * 60 * 60 * 1000)))
+              ]
+            },
+            "then": "$$KEEP",
+            "else": "$$PRUNE"
+          }
+        }
+      }]
       // "date": {
       //   $gte: (new Date((new Date()).getTime() - (36 * 60 * 60 * 1000)))
       // }
@@ -61,9 +64,10 @@ router.get('/api', function(req, res) {
 
       }
       //go through make each post
+      var data = [];
       if (datapost.length > 0) {
         var lastPostElement = datapost.length - 1;
-        datapost.forEach((item, postIndex) => {
+        datapost.forEach((item, postIndex)=> {
           var id = item._id
           var text = item.text_content;
           var username = item.username;
@@ -75,8 +79,9 @@ router.get('/api', function(req, res) {
           var userScore;
           //Creates an array of replies
           var lastReplyElement = item.replies.length - 1;
+          console.log(item.date);
           //TODO Fix code duplication
-          if (item.replies.length > 0) {
+          /*if (item.replies.length > 0) {
             item.replies.forEach((reply, replyIndex) => {
               var minutes = Math.floor((new Date() - new Date(reply.date)) / (60 * 1000))
               users.findOne({
@@ -108,40 +113,42 @@ router.get('/api', function(req, res) {
                       "currentUserStarPost": currentUserStar,
                       'OneSignalUserId': item.OneSignalUserId
                     })
-                    if (postIndex == lastPostElement) {
-                      res.json(data)
-                      db.close()
-                    }
                   })
                 }
               });
             })
-          } else {
-            //Finds posters score and active badge
-            users.findOne({
+          } else {*/
+          //Finds posters score and active badge
+          users.findOne({
+            "username": username,
+          }, (err, user) => {
+            userScore = (user) ? user.score : null;
+            userBadge = (user) ? user.active_badge : null;
+            data.push({
+              "_id": id,
+              "text_content": text,
               "username": username,
-            }, (err, user) => {
-              userScore = (user) ? user.score : null;
-              userBadge = (user) ? user.active_badge : null;
-              data.push({
-                "_id": id,
-                "text_content": text,
-                "username": username,
-                "userBadge": userBadge,
-                "time": formatedDate(item.date),
-                "replies": replies,
-                "score": userScore,
-                "likes": numberOfLikes,
-                "currentUserStarPost": currentUserStar,
-                'OneSignalUserId': item.OneSignalUserId
-              })
-              if (postIndex == lastPostElement) {
-                res.json(data)
-                db.close()
-              }
+              "userBadge": userBadge,
+              "time": formatedDate(item.date),
+              "replies": item.replies,
+              "score": userScore,
+              "likes": numberOfLikes,
+              "currentUserStarPost": currentUserStar,
+              'OneSignalUserId': item.OneSignalUserId
             })
-          }
-        });
+            console.log(postIndex);
+            if (postIndex == lastPostElement) {
+              console.log(data);
+              res.json(data)
+              db.close()
+            }
+            //console.log(data.length);
+          })
+        })
+
+        function updateData(d) {
+          data = d;
+        }
       } else {
         res.json(data)
         db.close()
@@ -151,15 +158,15 @@ router.get('/api', function(req, res) {
   });
 });
 
-function formatedDate(date){
+function formatedDate(date) {
   var unixPostTime = date.getTime()
   var unixTimeDiff = new Date().getTime() - date.getTime()
-  var hoursRemaing = 36 - unixTimeDiff/(1000 * 60 * 60)
-  if(hoursRemaing >=1){
-    return Math.ceil(hoursRemaing)+"h remaining"
-  }else{
-    var minsRemaing = (36*60) - unixTimeDiff/(1000 * 60 * 60)
-    return (Math.ceil(minsRemaing) - unixTimeDiff/(1000 * 60))+"m remaining"
+  var hoursRemaing = 36 - unixTimeDiff / (1000 * 60 * 60)
+  if (hoursRemaing >= 1) {
+    return Math.ceil(hoursRemaing) + "h remaining"
+  } else {
+    var minsRemaing = (36 * 60) - unixTimeDiff / (1000 * 60 * 60)
+    return (Math.ceil(minsRemaing) - unixTimeDiff / (1000 * 60)) + "m remaining"
   }
 }
 
@@ -358,7 +365,7 @@ router.post('/api/like', (req, res) => {
 })
 
 function badgeUnlocked(user) {
-  if(user == null)
+  if (user == null)
     return
   var unlockedBadges = [];
   //+1 for the like they just recieved

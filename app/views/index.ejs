@@ -112,7 +112,7 @@
       <div class="col s12 m6 replyField">
         <div class="input-field col s12">
           <a href="javascript:void(0);" class="exit-btn"><i class="Medium material-icons exit-btn">exit_to_app</i></a>
-          <textarea ID="Replytextarea" class="materialize-textarea" TextMode="MultiLine"></textarea>
+          <textarea ID="Replytextarea" class="materialize-textarea" TextMode="MultiLine" maxlength="500"></textarea>
           <label for="Replytextarea">Reply to Post!</label>
         </div>
 
@@ -189,6 +189,7 @@
             <%if(user){%>
               <% for(var i = 0; i<user.badges.length; i++) {%>
                 <img height="48px" badge=<%=user.badges[i].stub%> class="badgeGallery <%=(user.active_badge.name==user.badges[i].name)? 'active z-depth-4':''%>" src=<%=user.badges[i].icon %>>
+                <text><%=user.badges[i].name%></text>
                 <%}%>
             <%}%>
 

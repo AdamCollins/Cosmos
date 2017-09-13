@@ -29,6 +29,47 @@ router.get('/dropall', (req, res) => {
     });
   }
 });
+router.get('/deleteUser/:userId', (req, res) => {
+  const DEVMODE = req.app.get('DEVMODE')
+  if (DEVMODE) {
+    MongoClient.connect(url, (err, database) => {
+      var userCol = database.collection('users');
+      userCol.remove({
+        '_id': new ObjectId(req.params.userId)
+      },(err,data)=>{
+        console.log(data);
+        if(err){
+          res.send(err)
+        }
+        else{
+          res.send("Removed user: "+ req.params.userId)
+        }
+      })
+      database.close();
+    });
+  }
+});
+router.get('/deletePost/:postId', (req, res) => {
+  const DEVMODE = req.app.get('DEVMODE')
+  if (DEVMODE) {
+    MongoClient.connect(url, (err, database) => {
+      var postCol = database.collection('posts');
+      postCol.remove({
+        '_id': new ObjectId(req.params.postId)
+      },(err,data)=>{
+        console.log(data);
+        if(err){
+          res.send(err)
+        }
+        else{
+          res.send("Removed post: "+ req.params.postId)
+        }
+      })
+      database.close();
+    });
+  }
+});
+
 
 router.get('/listusers', (req, res) => {
   const DEVMODE = req.app.get('DEVMODE')

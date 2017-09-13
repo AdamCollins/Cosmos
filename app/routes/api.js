@@ -194,96 +194,106 @@ router.post('/api', function(req, res) {
   // client.sendNotification('test notification', {
   //     included_segments: 'all'
   // });
-  MongoClient.connect(url, (err, db) => {
-    if (err) {
-      
-    }
+  if (req.body.text_content.length > 500) {
+    res.status(413).send("Illegal post request")
+    return
+  } else {
+    MongoClient.connect(url, (err, db) => {
+      if (err) {
 
-
-    var posts = db.collection('posts');
-    var data = req.body;
-    var text = sanitizer.escape(data.text_content);
-    var username = (req.session.user) ? req.session.user.username : null;
-    //Finds array of posts poster has made in the last 10 minutes
-    posts.find({
-      $and: [{
-        "username": username
-      }, {
-        "date": {
-          "$gt": (new Date((new Date()).getTime() - (1000 * 60 * 10)))
-        }
-      }]
-    }).toArray(function(err, postsInLast5mins) {
-      //If the user has posted twice in the past 10 minutes already an error is thrown
-      if (username && postsInLast5mins.length >= 2) {
-        res.status(429).send("Too many posts")
-        console.log("Too many post requests by user:" + username);
-        db.close();
-      } else {
-        posts.insert({
-          'text_content': text,
-          'username': username,
-          'date': new Date(),
-          'replies': [],
-          'likes': [],
-          'currentUserStarPost': 0,
-          'OneSignalUserId': data.OneSignalUserId,
-        }, (err, post) => {
-
-          res.json({
-            "text_content": text,
-            "username": username,
-            "userBadge": (req.session.user) ? req.session.user.active_badge : null,
-            "score": (req.session.user) ? req.session.user.score : null,
-            "time": "36h remaining",
-            "_id": post.insertedIds[0]
-          });
-          db.close();
-        });
       }
-    });
 
 
-    if (username) {
-      console.log('sending notification...')
-      notifier.sendNotification('<h2>' + username + ' just made a new Post!</h2>' + text)
-    }
-  })
+      var posts = db.collection('posts');
+      var data = req.body;
+      var text = sanitizer.escape(data.text_content);
+      var username = (req.session.user) ? req.session.user.username : null;
+      //Finds array of posts poster has made in the last 10 minutes
+      posts.find({
+        $and: [{
+          "username": username
+        }, {
+          "date": {
+            "$gt": (new Date((new Date()).getTime() - (1000 * 60 * 10)))
+          }
+        }]
+      }).toArray(function(err, postsInLast5mins) {
+        //If the user has posted twice in the past 10 minutes already an error is thrown
+        if (username && postsInLast5mins.length >= 2) {
+          res.status(429).send("Too many posts")
+          console.log("Too many post requests by user:" + username);
+          db.close();
+        } else {
+          posts.insert({
+            'text_content': text,
+            'username': username,
+            'date': new Date(),
+            'replies': [],
+            'likes': [],
+            'currentUserStarPost': 0,
+            'OneSignalUserId': data.OneSignalUserId,
+          }, (err, post) => {
+
+            res.json({
+              "text_content": text,
+              "username": username,
+              "userBadge": (req.session.user) ? req.session.user.active_badge : null,
+              "score": (req.session.user) ? req.session.user.score : null,
+              "time": "36h remaining",
+              "_id": post.insertedIds[0]
+            });
+            db.close();
+          });
+        }
+      });
+
+
+      if (username) {
+        console.log('sending notification...')
+        notifier.sendNotification('<h2>' + username + ' just made a new Post!</h2>' + text)
+      }
+    })
+  }
 });
 
 router.post('/api/reply', function(req, res) {
-  MongoClient.connect(url, (err, db) => {
-    if (err)
-      console.log(err);
+  if (req.body.text_content.length > 500) {
+    res.status(413).send("Illegal post request")
+    return
+  } else {
+    MongoClient.connect(url, (err, db) => {
+      if (err)
+        console.log(err);
 
-    var posts = db.collection('posts');
-    var data = req.body;
-    var text = sanitizer.escape(data.text_content);
-    var replyPostId = data.replypostid;
-    var username = (req.session.user) ? req.session.user.username : null;
-    var badge = (req.session.user) ? req.session.user.active_badge : null;
-    var newReply = {
-      'text_content': text,
-      'username': username,
-      'date': new Date(),
-      'badge': badge
-    }
-    posts.findOneAndUpdate({
-      '_id': new ObjectId(replyPostId)
-    }, {
-      '$push': {
-        "replies": newReply
+      var posts = db.collection('posts');
+      var data = req.body;
+      var text = sanitizer.escape(data.text_content);
+      var replyPostId = data.replypostid;
+      var username = (req.session.user) ? req.session.user.username : null;
+      var badge = (req.session.user) ? req.session.user.active_badge : null;
+      var newReply = {
+        'text_content': text,
+        'username': username,
+        'date': new Date(),
+        'badge': badge
       }
-    }, (err, data) => {
-      if (data.value.OneSignalUserId)
-        notifier.sendNotification('Yo, someone replied to your post: ' + text, data.value.OneSignalUserId);
+      posts.findOneAndUpdate({
+        '_id': new ObjectId(replyPostId)
+      }, {
+        '$push': {
+          "replies": newReply
+        }
+      }, (err, data) => {
+        if (data.value.OneSignalUserId)
+          notifier.sendNotification('Yo, someone replied to your post: ' + text, data.value.OneSignalUserId);
+      })
+      db.close();
+      res.json({
+        "status": 200,
+        "reply": newReply
+      })
     })
-    db.close();
-    res.json({
-      "status": 200,
-      "reply": newReply
-    })
-  })
+  }
 });
 
 router.post('/api/like', (req, res) => {

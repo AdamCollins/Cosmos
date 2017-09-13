@@ -167,7 +167,6 @@ function createReply(reply) {
     timeAgo = 'now'
   }else if(timeAgo>60){
     timeAgo=Math.floor(timeAgo/60)+"h" //converts to hours
-    console.log(1);
   }else{
     timeAgo+="m"
   }

@@ -432,6 +432,11 @@ main {
   flex: 1 0 auto;
 }
 
+.checkbox-orange[type="checkbox"].filled-in:unchecked + label:after{
+     border: 2px solid #ff9800;
+     background-color: #ff9800;
+}
+
 .page-footer{
   background-color: #615756;
   color:#52FFB8;
@@ -441,4 +446,15 @@ main {
   .page-footer{
     margin-top:20vh;
   }
+}
+
+.tos{
+  text-decoration: underline;
+}
+.red-underline{
+  text-decoration: underline;
+  text-decoration-color: red;
+}
+.filled-in[type="checkbox"]:not(:checked) + label::after {
+  border: 2px solid #539987;
 }

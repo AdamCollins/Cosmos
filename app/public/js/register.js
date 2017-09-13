@@ -72,6 +72,7 @@ $('#RegisterBtn').click(function(e) {
   else{
     makeValid($('#emailTF'));
   }
+  let tosChecked = $("#ToSCheckbox").is(':checked')
 
   let password = $('#passwordTF').val();
   let passwordConfig = $('#passwordConfTF').val();
@@ -79,6 +80,13 @@ $('#RegisterBtn').click(function(e) {
     if (password === passwordConfig) {
       makeValid($('#passwordTF'));
       makeValid($('#passwordConfTF'));
+      //Checks user selected ToS
+      if(!tosChecked){
+        Materialize.toast('Please agree to terms of service 🏦', 2000);
+        $('#RegProgress').css('visibility', 'hidden');
+        return;
+      }
+
       $.getJSON('/registraion/availible/' + username, (usernameData) => {
         valid = !usernameData.username_exists;
         if (valid) {

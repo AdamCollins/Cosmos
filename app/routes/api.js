@@ -54,9 +54,6 @@ router.get('/api', function(req, res) {
           }
         }
       }]
-      // "date": {
-      //   $gte: (new Date((new Date()).getTime() - (36 * 60 * 60 * 1000)))
-      // }
     ).sort({
       "date": -1
     }).toArray((err, datapost) => {

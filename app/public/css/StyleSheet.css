@@ -17,6 +17,11 @@ h1 {
   margin-bottom: 25px;
 }
 
+span.pin{
+  color:#52FFB8;
+  font-weight: bold;
+}
+
 div.loginmenu {
   /*display: inline-block;*/
   margin-left: auto;

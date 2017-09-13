@@ -26,7 +26,7 @@ router.use(bodyParser.urlencoded({
 router.get('/api', function(req, res) {
   MongoClient.connect(url, (err, db) => {
     if (err) {
-      console.log(err);
+
     }
     console.log('connected successfully to database');
 
@@ -36,25 +36,24 @@ router.get('/api', function(req, res) {
     //find by 36 hours
     var x = (new Date((new Date()).getTime() - (36 * 60 * 60 * 1000)))
     posts.aggregate([{
-        "$redact": {
-          "$cond": {
-            "if": {
-              "$gt": [{
-                  "$add": ["$date", {
-                    "$multiply": [{
-                      $size: "$likes"
-                    }, 60 * 60]
-                  }]
-                },
-                (new Date((new Date()).getTime() - (36 * 60 * 60 * 1000)))
-              ]
-            },
-            "then": "$$KEEP",
-            "else": "$$PRUNE"
-          }
+      "$redact": {
+        "$cond": {
+          "if": {
+            "$gt": [{
+                "$add": ["$date", {
+                  "$multiply": [{
+                    $size: "$likes"
+                  }, 60 * 60]
+                }]
+              },
+              (new Date((new Date()).getTime() - (36 * 60 * 60 * 1000)))
+            ]
+          },
+          "then": "$$KEEP",
+          "else": "$$PRUNE"
         }
-      }]
-    ).sort({
+      }
+    }]).sort({
       "date": -1
     }).toArray((err, datapost) => {
       if (err) {
@@ -64,7 +63,7 @@ router.get('/api', function(req, res) {
       var data = [];
       if (datapost.length > 0) {
         var lastPostElement = datapost.length - 1;
-        datapost.forEach((item, postIndex)=> {
+        datapost.forEach((item, postIndex) => {
           var id = item._id
           var text = item.text_content;
           var username = item.username;
@@ -76,7 +75,6 @@ router.get('/api', function(req, res) {
           var userScore;
           //Creates an array of replies
           var lastReplyElement = item.replies.length - 1;
-          console.log(item.date);
           //TODO Fix code duplication
           /*if (item.replies.length > 0) {
             item.replies.forEach((reply, replyIndex) => {
@@ -133,9 +131,7 @@ router.get('/api', function(req, res) {
               "currentUserStarPost": currentUserStar,
               'OneSignalUserId': item.OneSignalUserId
             })
-            console.log(postIndex);
             if (postIndex == lastPostElement) {
-              console.log(data);
               res.json(data)
               db.close()
             }
@@ -200,7 +196,7 @@ router.post('/api', function(req, res) {
   // });
   MongoClient.connect(url, (err, db) => {
     if (err) {
-      console.log(err);
+      
     }
 
 
@@ -208,27 +204,46 @@ router.post('/api', function(req, res) {
     var data = req.body;
     var text = sanitizer.escape(data.text_content);
     var username = (req.session.user) ? req.session.user.username : null;
-    posts.insert({
-      'text_content': text,
-      'username': username,
-      'date': new Date(),
-      'replies': [],
-      'likes': [],
-      'currentUserStarPost': 0,
-      'OneSignalUserId': data.OneSignalUserId,
-    }, (err, post) => {
+    //Finds array of posts poster has made in the last 10 minutes
+    posts.find({
+      $and: [{
+        "username": username
+      }, {
+        "date": {
+          "$gt": (new Date((new Date()).getTime() - (1000 * 60 * 10)))
+        }
+      }]
+    }).toArray(function(err, postsInLast5mins) {
+      //If the user has posted twice in the past 10 minutes already an error is thrown
+      if (username && postsInLast5mins.length >= 2) {
+        res.status(429).send("Too many posts")
+        console.log("Too many post requests by user:" + username);
+        db.close();
+      } else {
+        posts.insert({
+          'text_content': text,
+          'username': username,
+          'date': new Date(),
+          'replies': [],
+          'likes': [],
+          'currentUserStarPost': 0,
+          'OneSignalUserId': data.OneSignalUserId,
+        }, (err, post) => {
 
-      res.json({
-        "text_content": text,
-        "username": username,
-        "userBadge": (req.session.user) ? req.session.user.active_badge : null,
-        "score": (req.session.user) ? req.session.user.score : null,
-        "time": "36h remaining",
-        "_id": post.insertedIds[0]
-      });
+          res.json({
+            "text_content": text,
+            "username": username,
+            "userBadge": (req.session.user) ? req.session.user.active_badge : null,
+            "score": (req.session.user) ? req.session.user.score : null,
+            "time": "36h remaining",
+            "_id": post.insertedIds[0]
+          });
+          db.close();
+        });
+      }
     });
 
-    db.close();
+
     if (username) {
       console.log('sending notification...')
       notifier.sendNotification('<h2>' + username + ' just made a new Post!</h2>' + text)
@@ -311,7 +326,7 @@ router.post('/api/like', (req, res) => {
             }
           }, (err, posterData) => {
             if (err) {
-              res.status(500).send('unable to like');
+              res.status(500).send(err);
               db.close();
               return
             }
@@ -374,6 +389,18 @@ function badgeUnlocked(user) {
     unlockedBadges.push(badges[2])
   if (user.score + 1 >= 30 && user.badges.indexOf(badges[3]) < 0)
     unlockedBadges.push(badges[3])
+  if (user.score + 1 >= 45 && user.badges.indexOf(badges[4]) < 0)
+    unlockedBadges.push(badges[4])
+  if (user.score + 1 >= 60 && user.badges.indexOf(badges[5]) < 0)
+    unlockedBadges.push(badges[5])
+  if (user.score + 1 >= 75 && user.badges.indexOf(badges[6]) < 0)
+    unlockedBadges.push(badges[6])
+  if (user.score + 1 >= 90 && user.badges.indexOf(badges[7]) < 0)
+    unlockedBadges.push(badges[7])
+  if (user.score + 1 >= 100 && user.badges.indexOf(badges[8]) < 0)
+    unlockedBadges.push(badges[8])
+  if (user.score + 1 >= 115 && user.badges.indexOf(badges[9]) < 0)
+    unlockedBadges.push(badges[9])
   if (unlockedBadges) {
     MongoClient.connect(url, (err, db) => {
       db.collection('users').findOneAndUpdate({

@@ -15,6 +15,7 @@ var ObjectId = require('mongodb').ObjectID;
 
 
 //Debug Routes
+//Drops everything in database
 router.get('/dropall', (req, res) => {
   const DEVMODE = req.app.get('DEVMODE')
   if (DEVMODE) {
@@ -29,6 +30,7 @@ router.get('/dropall', (req, res) => {
     });
   }
 });
+//Drops deleteUser by ID
 router.get('/deleteUser/:userId', (req, res) => {
   const DEVMODE = req.app.get('DEVMODE')
   if (DEVMODE) {
@@ -37,7 +39,6 @@ router.get('/deleteUser/:userId', (req, res) => {
       userCol.remove({
         '_id': new ObjectId(req.params.userId)
       },(err,data)=>{
-        console.log(data);
         if(err){
           res.send(err)
         }
@@ -49,6 +50,32 @@ router.get('/deleteUser/:userId', (req, res) => {
     });
   }
 });
+//Sets user :userId score to :score
+router.get('/setUserScore/:userId/:score', (req, res) => {
+  const DEVMODE = req.app.get('DEVMODE')
+  if (DEVMODE) {
+    MongoClient.connect(url, (err, database) => {
+      var userCol = database.collection('users');
+      userCol.findOneAndUpdate({
+        '_id': new ObjectId(req.params.userId)
+      },{
+        $set: {
+          "score": parseInt(req.params.score)
+        }
+      },(err,data)=>{
+        console.log(data);
+        if(err){
+          res.send(err)
+        }
+        else{
+          res.send("Users score set to: "+ req.params.score)
+        }
+      })
+      database.close();
+    });
+  }
+});
+//Drops post by :postId
 router.get('/deletePost/:postId', (req, res) => {
   const DEVMODE = req.app.get('DEVMODE')
   if (DEVMODE) {
@@ -57,7 +84,6 @@ router.get('/deletePost/:postId', (req, res) => {
       postCol.remove({
         '_id': new ObjectId(req.params.postId)
       },(err,data)=>{
-        console.log(data);
         if(err){
           res.send(err)
         }
@@ -83,6 +109,8 @@ router.get('/listusers', (req, res) => {
     });
   }
 });
+
+
 
 router.get('/sessions', (req, res) => {
   const DEVMODE = req.app.get('DEVMODE')

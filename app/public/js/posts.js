@@ -4,7 +4,12 @@ $.getJSON('/api', loadPosts);
 
 function loadPosts(postData) {
   $.each(postData, function(key, post) {
-    createPost(post);
+    //Pins posts made by CosmosTeam account
+    if (post.username === "CosmosTeam"){
+      createPost(post,true,true);
+      console.log("pinned post!");
+    }else
+      createPost(post);
   });
   //Fades in posts
   openReply();
@@ -74,7 +79,7 @@ function upVote() {
         $(this).find("i.coloredStar").css('color', 'white')
         $(this).parents().eq(1).find('.stars').text("");
         openLoginMenu();
-        console.err("Server error: post was not able to be liked");
+        console.log("Server error: post was not able to be liked" + textStatus);
         //}
       }
     });
@@ -98,7 +103,7 @@ function updateHours(addOrSubtract, clickButton) {
 }
 
 
-function createPost(post, prepend) {
+function createPost(post, prepend, pinned) {
   var postDOM = '';
   var repliesDOM = '';
   var userScore = post.score;
@@ -114,13 +119,15 @@ function createPost(post, prepend) {
   $.each(post.replies, function(key, item) {
     repliesDOM += createReply(item);
   });
+  post.text_content = post.text_content.replace("\n","</br>")
+  console.log(post.text_content);
   //<a class="btn tooltipped" data-position="bottom" data-delay="50" data-tooltip="I am a tooltip ">Hover me!</a>
   var usernameDOM = '<img src="' + ((post.userBadge != null) ? post.userBadge.icon : '') + '" width="32px"/><span class="username tooltipped" data-position="top" data-delay="50" data-tooltip="' + post.score + ' ">' + post.username + '</span>';
   var anonUserDOM = ' <i class="fa fa-rocket fa-2x" aria-hidden="true"></i><span class="username"><i>Unknown Cosmonaut</i></span>';
 
   var colorStar = (post.currentUserStarPost == 1) ? "coloredStar" : "unColoredStar";
   postDOM += '  <div class="post col s12 m6 hidden z-depth-2" post_id="' + post._id + '">';
-  postDOM += '    <span class="post postDate">' + post.time + '</span>';
+  postDOM += '    <span class="post postDate">' +(pinned?"<span class='pin'>pinned</span> – ":"") + post.time + '</span>';
   postDOM += '    <div class="user post">' + ((post.username) ? usernameDOM : anonUserDOM) + '</div>'
   postDOM += '    <p>' + post.text_content.replace('\n', '</br>') + '</p>';
   postDOM += '    <div class="fixed-action-btn horizontal myButtonGroup">';
@@ -162,7 +169,7 @@ function createReply(reply) {
   }
   var poster;
   if (reply.username) {
-    poster = '<img src="'+reply.badge.icon +'" width="32px" style="margin-left:-5px; margin-right:3px"/>' + reply.username
+    poster = '<img src="' + reply.badge.icon + '" width="32px" style="margin-left:-5px; margin-right:3px"/>' + reply.username
   } else {
     poster = ' <i class="fa fa-rocket fa-2x" aria-hidden="true"></i><span class="username"><i>Unknown Cosmonaut</i></span>'
   }

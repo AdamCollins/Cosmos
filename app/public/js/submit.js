@@ -9,7 +9,7 @@ $("form.submitPanel").on('submit', function(e) {
 
   var firefox = navigator.userAgent.indexOf('Firefox') > -1;
   var chrome = navigator.userAgent.indexOf('Chrome') > -1;
-  if(firefox | chrome){
+  if (firefox | chrome) {
     OneSignal.push(function() {
       OneSignal.getUserId(function(userId) {
         console.log("OneSignal User ID:", userId);
@@ -30,12 +30,17 @@ $("form.submitPanel").on('submit', function(e) {
             openReply();
           },
           error: function(err) {
-            alert('oops something went wrong')
+            console.log(err.responseText);
+            if (err.status == 429) {
+              Materialize.toast('You are posting too much. Try agin in a few minutes', 5000);
+            } else {
+              alert('oops something went wrong')
+            }
           }
         });
       });
     });
-  }else{
+  } else {
     var params = {
       'text_content': text,
       'OneSignalUserId': null

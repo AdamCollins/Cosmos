@@ -120,7 +120,6 @@ function createPost(post, prepend, pinned) {
     repliesDOM += createReply(item);
   });
   post.text_content = post.text_content.replace("\n","</br>")
-  console.log(post.text_content);
   //<a class="btn tooltipped" data-position="bottom" data-delay="50" data-tooltip="I am a tooltip ">Hover me!</a>
   var usernameDOM = '<img src="' + ((post.userBadge != null) ? post.userBadge.icon : '') + '" width="32px"/><span class="username tooltipped" data-position="top" data-delay="50" data-tooltip="' + post.score + ' ">' + post.username + '</span>';
   var anonUserDOM = ' <i class="fa fa-rocket fa-2x" aria-hidden="true"></i><span class="username"><i>Unknown Cosmonaut</i></span>';
@@ -163,9 +162,14 @@ function createPost(post, prepend, pinned) {
 
 function createReply(reply) {
   var replyDOM = '';
-  var time = reply.time;
-  if (!time || time < 0) {
-    time = 'now'
+  var timeAgo = Math.floor((new Date()-new Date(reply.date).getTime())/(1000*60))//in minutes
+  if (!timeAgo || timeAgo < 1) {
+    timeAgo = 'now'
+  }else if(timeAgo>60){
+    timeAgo=Math.floor(timeAgo/60)+"h" //converts to hours
+    console.log(1);
+  }else{
+    timeAgo+="m"
   }
   var poster;
   if (reply.username) {
@@ -174,7 +178,7 @@ function createReply(reply) {
     poster = ' <i class="fa fa-rocket fa-2x" aria-hidden="true"></i><span class="username"><i>Unknown Cosmonaut</i></span>'
   }
   replyDOM += '<span class="user reply">' + poster + '</span>';
-  replyDOM += '<span class="reply postDate" style="margin-left:50px;">' + time + '</span>';
+  replyDOM += '<span class="reply postDate" style="margin-left:50px;">' + timeAgo + '</span>';
   replyDOM += '<p style="border-top:1px solid #52FFB8; margin-left:50px;  margin-bottom:15px;">' + reply.text_content + '</p>';
   return replyDOM;
 }

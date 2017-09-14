@@ -97,19 +97,21 @@ router.get('/editPost/:postId', (req, res) => {
     });
   }
 });
+
 //Drops post by :postId
-router.get('/editPost/:postId', (req, res) => {
+router.get('/deletePost/:postId', (req, res) => {
   const DEVMODE = req.app.get('DEVMODE')
   if (DEVMODE) {
     MongoClient.connect(url, (err, database) => {
       var postCol = database.collection('posts');
-      postCol.findOneAndUpdate({
+      postCol.remove({
         '_id': new ObjectId(req.params.postId)
-      }, (err, data) => {
-        if (err) {
+      },(err,data)=>{
+        if(err){
           res.send(err)
-        } else {
-          res.send("Removed post: " + req.params.postId)
+        }
+        else{
+          res.send("Removed post: "+ req.params.postId)
         }
       })
       database.close();

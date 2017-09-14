@@ -119,6 +119,7 @@ router.get('/api', function(req, res) {
           }, (err, user) => {
             userScore = (user) ? user.score : null;
             userBadge = (user) ? user.active_badge : null;
+            officialAccount = (user) ? user.official : null;
             data.push({
               "_id": id,
               "text_content": text,
@@ -126,6 +127,7 @@ router.get('/api', function(req, res) {
               "userBadge": userBadge,
               "time": formatedDate(item.date),
               "replies": item.replies,
+              "officialAccount":officialAccount,
               "score": userScore,
               "likes": numberOfLikes,
               "currentUserStarPost": currentUserStar,

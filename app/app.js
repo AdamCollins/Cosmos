@@ -6,7 +6,6 @@ var https = require('https');
 var http = require('http');
 var fs = require('fs');
 var app = express();
-var postData = require('./data/posts.json');
 var port = process.env.PORT || 3000;
 if (HTTPSENABLED)
   var httpsOptions = {
@@ -24,6 +23,7 @@ app.use(require('./routes/index'));
 app.use(require('./routes/api'));
 app.use(require('./routes/users'));
 app.use(require('./routes/tos'))
+app.use(require('./routes/robots'))
 // app.use(require('./modules/notifications'));
 // app.use(require('./routes/notifications'));
 

@@ -1,0 +1,1 @@
+{"data":"User-agent: *Allow: /\nAllow: /register\nDisallow: /api\nDisallow: /register/accountverify/*"}

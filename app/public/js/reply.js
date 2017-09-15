@@ -14,6 +14,7 @@ $('#SubmitReply').on('click', () => {
       if (data.status == 200) {
         addReply(createReply(data.reply), replypostid)
         $("#ReplyArea").fadeOut(300);
+        $('#Replytextarea').val('')
       }
       error: (err) => {
         alert("Something went wrong. ERROR"+error.status)

@@ -89,6 +89,7 @@ div.post {
   margin: 10px;
   margin-left: auto;
   margin-right: auto;
+  overflow-wrap: break-word;
   /*display: block;*/
 }
 

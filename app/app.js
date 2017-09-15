@@ -24,6 +24,7 @@ app.use(require('./routes/api'));
 app.use(require('./routes/users'));
 app.use(require('./routes/tos'))
 app.use(require('./routes/robots'))
+app.use(require('./routes/sitemap'))
 // app.use(require('./modules/notifications'));
 // app.use(require('./routes/notifications'));
 

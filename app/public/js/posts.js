@@ -122,7 +122,7 @@ function createPost(post, prepend, pinned) {
   post.text_content = post.text_content.replace("\n","</br>")
   var officialBadgeDOM = (post.officialAccount)?'<i style="color:#52FFB8" class="tiny material-icons tooltipped" data-position="top" data-delay="50" data-tooltip="Verified">check_circle</i>':''
   //<a class="btn tooltipped" data-position="bottom" data-delay="50" data-tooltip="I am a tooltip ">Hover me!</a>
-  var usernameDOM = '<img src="' + ((post.userBadge != null) ? post.userBadge.icon : '') + '" width="32px"/><span class="username tooltipped" data-position="top" data-delay="50" data-tooltip="' + post.score + ' ">' + post.username + '</span>'+officialBadgeDOM;
+  var usernameDOM = '<img src="' + ((post.userBadge != null) ? post.userBadge.icon : '') + '" width="32px"/><span class="username tooltipped" data-position="top" data-delay="50" data-tooltip="' + post.score +  ' star points">' + post.username + '</span>'+officialBadgeDOM;
   var anonUserDOM = ' <i class="fa fa-rocket fa-2x" aria-hidden="true"></i><span class="username"><i>Unknown Cosmonaut</i></span>';
 
   var colorStar = (post.currentUserStarPost == 1) ? "coloredStar" : "unColoredStar";

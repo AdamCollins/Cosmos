@@ -10,6 +10,7 @@ var session = require('express-session');
 const MongoStore = require('connect-mongo')(session);
 var router = express.Router();
 var cookieParser = require('cookie-parser');
+var sanitizer = require('sanitizer');
 router.use(cookieParser());
 router.use(session({
   secret: config.sessionSecretKey,

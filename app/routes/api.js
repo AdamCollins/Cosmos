@@ -126,7 +126,7 @@ router.get('/api', function(req, res) {
               "userBadge": userBadge,
               "time": formatedDate(item.date),
               "replies": item.replies,
-              "officialAccount":officialAccount,
+              "officialAccount": officialAccount,
               "score": userScore,
               "likes": numberOfLikes,
               "currentUserStarPost": currentUserStar,
@@ -396,22 +396,26 @@ function badgeUnlocked(user) {
     unlockedBadges.push(badges[0])
   if (user.score + 1 >= 5 && user.badges.indexOf(badges[1]) < 0)
     unlockedBadges.push(badges[1])
-  if (user.score + 1 >= 15 && user.badges.indexOf(badges[2]) < 0)
+  if (user.score + 1 >= 10 && user.badges.indexOf(badges[2]) < 0)
     unlockedBadges.push(badges[2])
-  if (user.score + 1 >= 30 && user.badges.indexOf(badges[3]) < 0)
+  if (user.score + 1 >= 15 && user.badges.indexOf(badges[3]) < 0)
     unlockedBadges.push(badges[3])
-  if (user.score + 1 >= 45 && user.badges.indexOf(badges[4]) < 0)
+  if (user.score + 1 >= 30 && user.badges.indexOf(badges[4]) < 0)
     unlockedBadges.push(badges[4])
-  if (user.score + 1 >= 60 && user.badges.indexOf(badges[5]) < 0)
+  if (user.score + 1 >= 30 && user.badges.indexOf(badges[5]) < 0)
     unlockedBadges.push(badges[5])
-  if (user.score + 1 >= 75 && user.badges.indexOf(badges[6]) < 0)
+  if (user.score + 1 >= 45 && user.badges.indexOf(badges[6]) < 0)
     unlockedBadges.push(badges[6])
-  if (user.score + 1 >= 90 && user.badges.indexOf(badges[7]) < 0)
+  if (user.score + 1 >= 60 && user.badges.indexOf(badges[7]) < 0)
     unlockedBadges.push(badges[7])
-  if (user.score + 1 >= 100 && user.badges.indexOf(badges[8]) < 0)
+  if (user.score + 1 >= 75 && user.badges.indexOf(badges[8]) < 0)
     unlockedBadges.push(badges[8])
-  if (user.score + 1 >= 115 && user.badges.indexOf(badges[9]) < 0)
+  if (user.score + 1 >= 90 && user.badges.indexOf(badges[9]) < 0)
     unlockedBadges.push(badges[9])
+  if (user.score + 1 >= 100 && user.badges.indexOf(badges[10]) < 0)
+    unlockedBadges.push(badges[19])
+  if (user.score + 1 >= 115 && user.badges.indexOf(badges[11]) < 0)
+    unlockedBadges.push(badges[11])
   if (unlockedBadges) {
     MongoClient.connect(url, (err, db) => {
       db.collection('users').findOneAndUpdate({

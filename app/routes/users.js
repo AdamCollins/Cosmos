@@ -12,7 +12,7 @@ var bcrypt = require('bcrypt');
 var router = express.Router();
 var cookieParser = require('cookie-parser');
 var ObjectId = require('mongodb').ObjectID;
-
+var sanitizer = require('sanitizer');
 
 //Debug Routes
 //Drops everything in database
@@ -260,7 +260,7 @@ router.get('/registraion/availible/:username', (req, res) => {
         var userCol = database.collection('users');
         userCol.findOne({
           "username": {
-            $regex: new RegExp("^" + req.params.username.toLowerCase(), "i")
+            $regex: new RegExp("^" + sanitizer.escape(req.params.username).toLowerCase(), "i")
           }
         }, function(err, docs) {
           if (req.params.username.length < 2 || req.params.username.includes(" ")) {
@@ -292,7 +292,7 @@ function addUser(userdata, callback) {
     //Creates high entropy unique websafe code for email verification
     let verificationCode = (Math.random() * 1e32).toString(36) + (Math.random() * 1e32).toString(36);
     database.collection('users').insertOne({
-      "username": userdata.username,
+      "username": sanitizer.escape(userdata.username),
       "hashed_password": hashed_password,
       "score": 0,
       "create_date": new Date(),

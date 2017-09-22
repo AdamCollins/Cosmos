@@ -15,9 +15,9 @@ $("form.submitPanel").on('submit', function(e) {
         console.log("OneSignal User ID:", userId);
         var params = {
           'text_content': text,
-          'OneSignalUserId': userId
+          'OneSignalUserId': userId,
+          'anon':!($('#Anon-toggle-switch').is(':checked')==true)
         }
-        console.log(2);
         $.ajax({
           method: 'post',
           url: '/api',

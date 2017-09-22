@@ -6,7 +6,9 @@ h1 {
   font-weight: bold;
   margin: 0px;
 }
-
+.anon-switch{
+  margin-left: 20px;
+}
 .header {
   color: #52FFB8;
   padding-left: 15px;
@@ -164,6 +166,14 @@ textarea.materialize-textarea:focus:not([readonly]) {
   margin: auto;
   top: 0;
   left: 0;
+}
+
+.anon-toggle{
+  white-space: nowrap;
+}
+
+.anon-toggle.active{
+  color:#26a69a;
 }
 
 .spinner {
@@ -453,7 +463,6 @@ main {
     margin-top:20vh;
   }
 }
-
 .tos{
   text-decoration: underline;
 }

@@ -23,7 +23,7 @@
         "@type": "ContactPoint",
         "email": "gocosmosxyz@gmail.com",
         "contactType": "Customer service"
-      } 
+      }
     }
   </script>
   <!--Materialize-->
@@ -110,9 +110,17 @@
             <textarea ID="PostTextArea" class="materialize-textarea" TextMode="MultiLine" maxlength="500"></textarea>
             <label for="PostTextArea">What's on your mind? <span id='CharCount'></span></label>
           </div>
-
           <button ID="PostSubmitButton" class="btn waves-effect waves-light" type="submit">Submit
                             <i class="material-icons right">send</i></button>
+            <%if(user){%>
+              <div class="switch anon-switch">
+                <label>
+                  <input type="checkbox" id="Anon-toggle-switch" checked>
+                  <span class="lever"></span>
+                  <span class="anon-toggle active">Post as <%=user.username%></span>
+               </label>
+             </div>
+           <%}%>
         </div>
       </form>
     </div>

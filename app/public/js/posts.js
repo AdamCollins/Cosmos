@@ -169,7 +169,7 @@ function createReply(reply) {
   }else if(timeAgo>60){
     timeAgo=Math.floor(timeAgo/60)+"h" //converts to hours
   }else{
-    timeAgo+="m"
+    timeAgo=Math.floor(timeAgo)+"m"
   }
   var poster;
   if (reply.username) {

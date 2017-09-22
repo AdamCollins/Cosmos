@@ -75,44 +75,6 @@ router.get('/api', function(req, res) {
           //Creates an array of replies
           var lastReplyElement = item.replies.length - 1;
           //TODO Fix code duplication
-          /*if (item.replies.length > 0) {
-            item.replies.forEach((reply, replyIndex) => {
-              var minutes = Math.floor((new Date() - new Date(reply.date)) / (60 * 1000))
-              users.findOne({
-                "username": reply.username
-              }, (err, user) => {
-                replies.push({
-                  "text_content": reply.text_content,
-                  "username": reply.username,
-                  "badge": (user) ? user.active_badge : null,
-                  "time": minutes < 120 ? minutes + 'm ago' : Math.floor(minutes / 60) + 'h ago',
-                  "date": reply.date
-                })
-                if (replyIndex == lastReplyElement) {
-                  //Finds posters score and active badge
-                  users.findOne({
-                    "username": username,
-                  }, (err, user) => {
-                    userScore = (user) ? user.score : null;
-                    userBadge = (user) ? user.active_badge : null;
-                    data.push({
-                      "_id": id,
-                      "text_content": text,
-                      "username": username,
-                      "userBadge": userBadge,
-                      "time": formatedDate(item.date),
-                      "replies": replies,
-                      "score": userScore,
-                      "likes": numberOfLikes,
-                      "currentUserStarPost": currentUserStar,
-                      'OneSignalUserId': item.OneSignalUserId
-                    })
-                  })
-                }
-              });
-            })
-          } else {*/
-          //Finds posters score and active badge
           users.findOne({
             "username": username,
           }, (err, user) => {
@@ -136,7 +98,6 @@ router.get('/api', function(req, res) {
               res.json(data)
               db.close()
             }
-            //console.log(data.length);
           })
         })
 
@@ -164,14 +125,6 @@ function formatedDate(date) {
   }
 }
 
-/*function formatDate(date) {
-  var currentDate = new Date();
-  var msDate = currentDate - date;
-  var limit = 1000 * 60 * 60 * 36;
-  var timeLeft = limit - msDate;
-  return formatedTimeLeft = msToTime(timeLeft);
-}*/
-
 
 function msToTime(msDate) {
   var milliseconds = parseInt((msDate % 1000) / 100);
@@ -191,10 +144,6 @@ function msToTime(msDate) {
 
 //add post to database
 router.post('/api', function(req, res) {
-  //   // send a notification
-  // client.sendNotification('test notification', {
-  //     included_segments: 'all'
-  // });
   if (req.body.text_content.length > 500) {
     res.status(413).send("Illegal post request")
     return
@@ -225,9 +174,13 @@ router.post('/api', function(req, res) {
           console.log("Too many post requests by user:" + username);
           db.close();
         } else {
+          //Removes username if post is specified to be anonymous
+          //TODO cast data.anon as bool
+          if(data.anon==='true')
+            username=null;
           posts.insert({
             'text_content': text,
-            'username': username,
+            'username':username,
             'date': new Date(),
             'replies': [],
             'likes': [],

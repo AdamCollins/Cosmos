@@ -371,7 +371,7 @@ function badgeUnlocked(user) {
   if (user.score + 1 >= 90 && user.badges.indexOf(badges[9]) < 0)
     unlockedBadges.push(badges[9])
   if (user.score + 1 >= 100 && user.badges.indexOf(badges[10]) < 0)
-    unlockedBadges.push(badges[19])
+    unlockedBadges.push(badges[10])
   if (user.score + 1 >= 115 && user.badges.indexOf(badges[11]) < 0)
     unlockedBadges.push(badges[11])
   if (unlockedBadges) {

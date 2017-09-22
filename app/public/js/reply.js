@@ -3,7 +3,8 @@ $('#SubmitReply').on('click', () => {
   var replyContent = $('#Replytextarea').val();
   var params = {
     "replypostid": replypostid,
-    "text_content": replyContent
+    "text_content": replyContent,
+    'anon':!($('#Anon-toggle-switch-reply').is(':checked')==true)
   }
   $.ajax({
     method: 'post',

@@ -134,6 +134,15 @@
         <div class="input-field col s12">
           <a href="javascript:void(0);" class="exit-btn"><i class="Medium material-icons exit-btn">exit_to_app</i></a>
           <textarea ID="Replytextarea" class="materialize-textarea" TextMode="MultiLine" maxlength="350"></textarea>
+          <%if(user){%>
+            <div class="switch anon-switch" style="position:relative">
+              <label>
+                <input type="checkbox" id="Anon-toggle-switch-reply" checked>
+                <span class="lever"></span>
+                <span class="anon-toggle active">Reply as <%=user.username%></span>
+             </label>
+           </div>
+         <%}%>
           <label for="Replytextarea">Reply to Post!</label>
         </div>
 

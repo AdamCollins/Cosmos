@@ -225,6 +225,11 @@ router.post('/api/reply', function(req, res) {
       var replyPostId = data.replypostid;
       var username = (req.session.user) ? req.session.user.username : null;
       var badge = (req.session.user) ? req.session.user.active_badge : null;
+      //TODO cast data.anon as bool
+      console.log(data.anon);
+      console.log(typeof(data.anon));
+      if(data.anon==='true')
+        username=null;
       var newReply = {
         'text_content': text,
         'username': username,

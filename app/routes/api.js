@@ -32,8 +32,8 @@ router.get('/api', function(req, res) {
     var posts = db.collection('posts');
     var users = db.collection('users');
 
-    //find by 36 hours
-    var x = (new Date((new Date()).getTime() - (36 * 60 * 60 * 1000)))
+    //find by 42 hours
+    var x = (new Date((new Date()).getTime() - (42 * 60 * 60 * 1000)))
     posts.aggregate([{
       "$redact": {
         "$cond": {
@@ -45,7 +45,7 @@ router.get('/api', function(req, res) {
                   }, 60 * 60]
                 }]
               },
-              (new Date((new Date()).getTime() - (36 * 60 * 60 * 1000)))
+              (new Date((new Date()).getTime() - (42 * 60 * 60 * 1000)))
             ]
           },
           "then": "$$KEEP",
@@ -116,11 +116,11 @@ router.get('/api', function(req, res) {
 function formatedDate(date) {
   var unixPostTime = date.getTime()
   var unixTimeDiff = new Date().getTime() - date.getTime()
-  var hoursRemaing = 36 - unixTimeDiff / (1000 * 60 * 60)
+  var hoursRemaing = 42 - unixTimeDiff / (1000 * 60 * 60)
   if (hoursRemaing >= 1) {
     return Math.ceil(hoursRemaing) + "h remaining"
   } else {
-    var minsRemaing = (36 * 60) - unixTimeDiff / (1000 * 60 * 60)
+    var minsRemaing = (42 * 60) - unixTimeDiff / (1000 * 60 * 60)
     return (Math.ceil(minsRemaing) - unixTimeDiff / (1000 * 60)) + "m remaining"
   }
 }
@@ -130,7 +130,7 @@ function msToTime(msDate) {
   var milliseconds = parseInt((msDate % 1000) / 100);
   var seconds = parseInt((msDate / 1000) % 60);
   var minutes = parseInt((msDate / (1000 * 60)) % 60);
-  var hours = parseInt((msDate / (1000 * 60 * 60)) % 36);
+  var hours = parseInt((msDate / (1000 * 60 * 60)) % 42);
 
   hours = (hours < 10) ? hours : hours;
   minutes = (minutes < 10) ? minutes : minutes;
@@ -193,7 +193,7 @@ router.post('/api', function(req, res) {
               "username": username,
               "userBadge": (req.session.user) ? req.session.user.active_badge : null,
               "score": (req.session.user) ? req.session.user.score : null,
-              "time": "36h remaining",
+              "time": "42h remaining",
               "_id": post.insertedIds[0]
             });
             db.close();

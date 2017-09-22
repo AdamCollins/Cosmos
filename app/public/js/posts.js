@@ -119,17 +119,16 @@ function createPost(post, prepend, pinned) {
   $.each(post.replies, function(key, item) {
     repliesDOM += createReply(item);
   });
-  post.text_content = post.text_content.replace("\n","</br>")
+  post.text_content = post.text_content.replace(/\n/g, "<br />");
   var officialBadgeDOM = (post.officialAccount)?'<i style="color:#52FFB8" class="tiny material-icons tooltipped" data-position="top" data-delay="50" data-tooltip="Verified">check_circle</i>':''
   //<a class="btn tooltipped" data-position="bottom" data-delay="50" data-tooltip="I am a tooltip ">Hover me!</a>
   var usernameDOM = '<img src="' + ((post.userBadge != null) ? post.userBadge.icon : '') + '" width="32px"/><span class="username tooltipped" data-position="top" data-delay="50" data-tooltip="' + post.score +  ' star points">' + post.username + '</span>'+officialBadgeDOM;
   var anonUserDOM = ' <i class="fa fa-rocket fa-2x" aria-hidden="true"></i><span class="username"><i>Unknown Cosmonaut</i></span>';
-
   var colorStar = (post.currentUserStarPost == 1) ? "coloredStar" : "unColoredStar";
   postDOM += '  <div class="post col s12 m6 hidden z-depth-2" post_id="' + post._id + '">';
   postDOM += '    <span class="post postDate">' +(pinned?"<span class='pin'>pinned</span> – ":"") + post.time + '</span>';
   postDOM += '    <div class="user post">' + ((post.username) ? usernameDOM : anonUserDOM) + '</div>'
-  postDOM += '    <p>' + post.text_content.replace('\n', '</br>') + '</p>';
+  postDOM += '    <p>' + post.text_content + '</p>';
   postDOM += '    <div class="fixed-action-btn horizontal myButtonGroup">';
   if (post.likes > 0)
     postDOM += '    <span class="stars">ADDED ' + post.likes + ' HOUR' + ((post.likes != 1) ? 'S' : '') + '</span>';

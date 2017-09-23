@@ -43,7 +43,8 @@ $("form.submitPanel").on('submit', function(e) {
   } else {
     var params = {
       'text_content': text,
-      'OneSignalUserId': null
+      'OneSignalUserId': null,
+      'anon':!($('#Anon-toggle-switch').is(':checked')==true)
     }
     $.ajax({
       method: 'post',

@@ -121,7 +121,7 @@ function formatedDate(date) {
     return Math.ceil(hoursRemaing) + "h remaining"
   } else {
     var minsRemaing = (42 * 60) - unixTimeDiff / (1000 * 60 * 60)
-    return (Math.ceil(minsRemaing) - unixTimeDiff / (1000 * 60)) + "m remaining"
+    return (Math.ceil(minsRemaing - unixTimeDiff / (1000 * 60))) + "m remaining"
   }
 }
 

@@ -236,7 +236,10 @@ div.myButtonGroup {
   left: 0px;
   right: 0px;
 }
-
+.linkified{
+  color: #52FFB8;
+  text-decoration: underline;
+}
 .hidden {
   visibility: hidden;
 }

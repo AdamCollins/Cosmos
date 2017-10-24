@@ -119,7 +119,7 @@ function createPost(post, prepend, pinned) {
   $.each(post.replies, function(key, item) {
     repliesDOM += createReply(item);
   });
-  post.text_content = post.text_content.replace(/\n/g, "<br />");
+  post.text_content = linkifyStr(post.text_content.replace(/\n/g, "<br />")); //adds line breaks and a tags
   var officialBadgeDOM = (post.officialAccount)?'<i style="color:#52FFB8" class="tiny material-icons tooltipped" data-position="top" data-delay="50" data-tooltip="Verified">check_circle</i>':''
   //<a class="btn tooltipped" data-position="bottom" data-delay="50" data-tooltip="I am a tooltip ">Hover me!</a>
   var usernameDOM = '<img src="' + ((post.userBadge != null) ? post.userBadge.icon : '') + '" width="32px"/><span class="username tooltipped" data-position="top" data-delay="50" data-tooltip="' + post.score +  ' star points">' + post.username + '</span>'+officialBadgeDOM;
@@ -178,7 +178,7 @@ function createReply(reply) {
   }
   replyDOM += '<span class="user reply">' + poster + '</span>';
   replyDOM += '<span class="reply postDate" style="margin-left:50px;">' + timeAgo + '</span>';
-  replyDOM += '<p style="border-top:1px solid #52FFB8; margin-left:50px;  margin-bottom:15px;">' + reply.text_content + '</p>';
+  replyDOM += '<p style="border-top:1px solid #52FFB8; margin-left:50px;  margin-bottom:15px;">' + linkifyStr(reply.text_content) + '</p>';
   return replyDOM;
 }
 

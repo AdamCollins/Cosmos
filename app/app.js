@@ -48,4 +48,5 @@ if (HTTPSENABLED) {
     console.log('HTTPS DISABLED: listening on port 3000');
   })
 }
-reload(server, app);
+if(DEVMODE)
+  reload(server, app);
